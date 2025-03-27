@@ -49,7 +49,7 @@ title: 春秋云境——Tsclient
 
 既然可以直接连接mssql，我们直接上Multiple.Database.Utilization.Tools来梭哈一下。注意工具启动的java版本必须是java8，进入后需要先初始化，再正常新建连接即可。
 
-![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/tsclient/001.png?raw=true)
+![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/Tsclient/001.png?raw=true)
 
 进入后查看权限为mssqlserver权限，蛮低的其实。所以我们需要在MDUT里面提一下权。提权漏洞选用Godpotato，为保证提权后会话的持久化、且保证Godpotato运行尽可能少的次数(跑多次会直接宕机)，建议直接拿godpotato跑msf的后门。
 
@@ -60,9 +60,9 @@ set payload windows/meterpreter/bind_tcp
 
 笔者个人比较喜欢用正向后门，毕竟不是什么时候都能有个可以反弹的公网ip。
 
-![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/tsclient/002.png?raw=true)
+![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/Tsclient/002.png?raw=true)
 
-![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/tsclient/003.png?raw=true)
+![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/Tsclient/003.png?raw=true)
 
 拿到system权限后，我们先添加本地的管理员账户，再RDP登上去看一下。拿到了flag01
 
@@ -105,7 +105,7 @@ C:\Windows\system32>
 
 按教程逐步操作即可。笔者选用psexec提权至system的方法。感觉纯windows还是得上Cobalt Strike，打一半去换了个C2回来接着打。Cobalt Strike操作不再介绍，进程注入直接就能切换用户。
 
-![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/tsclient/004.png?raw=true)
+![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/Tsclient/004.png?raw=true)
 
 ```cmd
 xiaorang.lab\Aldrich:Ald@rLMWuy7Z!#
