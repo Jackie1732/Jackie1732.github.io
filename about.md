@@ -5,14 +5,14 @@ title: About
 
 Security Research
 
-More to learn
+Looking For Light.
 
 
 ### Contact
 
-Drops:    三好学生
+Drops:    GAiLO
 
-Github:   [3gstudent](https://github.com/3gstudent)
+Github:   [Jackie1732](https://github.com/Jackie1732)
 
 ---
 
@@ -1064,5 +1064,4 @@ Github:   [3gstudent](https://github.com/3gstudent)
 
 ---
 
-![](https://raw.githubusercontent.com/3gstudent/3gstudent.github.io/master/images/QRCode.png "https://3gstudent.github.io/about/")
 
