@@ -16,7 +16,7 @@ email:    2550750389@qq.com
 
 Github:   [Jackie1732](https://github.com/Jackie1732)
 
-Links:    [NPUSEC](www.npusec.org.cn)
+Links:    [NPUSEC](https://www.npusec.org.cn)
 
 ---
 
