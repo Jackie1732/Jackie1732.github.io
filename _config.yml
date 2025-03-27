@@ -1,9 +1,9 @@
-title: 3gstudent-Blog
+title: GAiLO-Blog
 description: "A Jekyll Blog Theme For Hackers"
 author:
-  name: "3gstudent"
-  email: "no"
-  url: "https://3gstudent.github.io/"
+  name: "GAiLO"
+  email: "ga1lo@qq.com"
+  url: "https://Jackie1732.github.io/"
 
 baseurl: /
 
@@ -28,5 +28,5 @@ plugins:
   - jekyll-sitemap
 
 # Custom variables
-owner : "3gstudent"
-year : "2021"
+owner : "GAiLO"
+year : "2025"
