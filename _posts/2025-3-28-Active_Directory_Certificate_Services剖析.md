@@ -3,8 +3,6 @@ layout: post
 title: ADCS中各项技术详解与剖析
 ---
 
-# Active Directory 证书服务
-
 ## 0x01 Active Directory 证书服务简介
 
 ---
