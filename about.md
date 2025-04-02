@@ -20,26 +20,30 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 
 ---
 
-### HackTheBox
+### HackTheBox Machine&Sherlocks
 
 - 
- [HTB——Dog](https://jackie1732.github.io/HTB-Dog)
+ [HTB—Machine—Dog](https://jackie1732.github.io/HTB-Dog)
 
 - 
- [HTB——Cicada](https://jackie1732.github.io/HTB-Cicada)
+ [HTB—Machine—Cicada](https://jackie1732.github.io/HTB-Cicada)
 
 - 
- [HTB——Escapetwo](https://jackie1732.github.io/HTB-Escapetwo)
+ [HTB—Machine—Escapetwo](https://jackie1732.github.io/HTB-Escapetwo)
 
 - 
- [HTB——Code](https://jackie1732.github.io/HTB-Code)
+ [HTB—Machine—Code](https://jackie1732.github.io/HTB-Code)
+
+- 
+ [HTB—Machine—Support](https://jackie1732.github.io/HTB-Support)
+
+- 
+ [HTB—Machine—Alert](https://jackie1732.github.io/HTB-Alert)
 
 ---
 
-### Windows&Active Directory域
+### 玄机
 
-- 
- [Windows个人凭据&企业凭据获取利用](https://jackie1732.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Windows%E4%B8%AA%E4%BA%BA%E5%87%AD%E6%8D%AE&%E4%BC%81%E4%B8%9A%E5%87%AD%E6%8D%AE%E8%8E%B7%E5%8F%96%E5%88%A9%E7%94%A8)
 
 ---
 
@@ -60,5 +64,8 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 
 - 
  [数字中国产业积分争夺赛——WriteUp](https://jackie1732.github.io/%E6%95%B0%E5%AD%97%E4%B8%AD%E5%9B%BD%E7%A7%AF%E5%88%86%E4%BA%89%E5%A4%BA%E8%B5%9B)
+
+- 
+ [Windows个人凭据&企业凭据获取利用](https://jackie1732.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Windows%E4%B8%AA%E4%BA%BA%E5%87%AD%E6%8D%AE&%E4%BC%81%E4%B8%9A%E5%87%AD%E6%8D%AE%E8%8E%B7%E5%8F%96%E5%88%A9%E7%94%A8)
 
 ---
