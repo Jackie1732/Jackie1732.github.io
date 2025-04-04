@@ -40,6 +40,18 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 - 
  [HTB—Machine—Alert](https://jackie1732.github.io/HTB-Alert)
 
+- 
+ [HTB—Machine—Forest](https://jackie1732.github.io/HTB-Forest)
+
+- 
+ [HTB—Machine—Chemistry](https://jackie1732.github.io/HTB-Chemistry)
+
+- 
+ [HTB—Machine—Hospital](https://jackie1732.github.io/HTB-Hospital)
+
+- 
+ [HTB—Machine—Strutted](https://jackie1732.github.io/HTB-Strutted)
+
 ---
 
 ### 玄机
