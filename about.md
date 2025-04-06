@@ -52,6 +52,15 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 - 
  [HTB—Machine—Strutted](https://jackie1732.github.io/HTB-Strutted)
 
+- 
+ [HTB—Machine—Certified](https://jackie1732.github.io/HTB-Certified)
+
+- 
+ [HTB—Machine—Cap](https://jackie1732.github.io/HTB-Cap)
+
+- 
+ [HTB—Machine—Instant](https://jackie1732.github.io/HTB-Instant)
+
 ---
 
 ### 玄机
