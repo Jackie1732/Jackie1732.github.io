@@ -61,10 +61,24 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 - 
  [HTB—Machine—Instant](https://jackie1732.github.io/HTB-Instant)
 
+- 
+ [HTB—Machine—Sightless](https://jackie1732.github.io/HTB-Sightless)
+
 ---
 
 ### 玄机
 
+- 
+ [玄机——第一章——webshell查杀](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-%E7%AC%AC%E4%B8%80%E7%AB%A0-webshell%E6%9F%A5%E6%9D%80)
+
+- 
+ [玄机——Linux后门应急](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-Linux%E5%90%8E%E9%97%A8%E5%BA%94%E6%80%A5)
+
+- 
+ [玄机——IIS日志分析](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-IIS%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90)
+
+- 
+ [玄机——windows应急-应急与研判训练计划一](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-%E5%BA%94%E6%80%A5%E4%B8%8E%E7%A0%94%E5%88%A4%E8%AE%AD%E7%BB%83%E8%AE%A1%E5%88%92%E4%B8%80)
 
 ---
 
@@ -91,7 +105,7 @@ Links:    [NPUSEC](https://www.npusec.org.cn)
 
 ---
 
-### BUUOJ刷题记录
+### CTF刷题记录
 
 
 ---
