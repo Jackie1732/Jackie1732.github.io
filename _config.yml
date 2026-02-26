@@ -31,6 +31,14 @@ markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  auto_ids: true
+  hard_wrap: false
+  parse_block_html: true
+  parse_span_html: true
+  header_offset: 0
+  smart_quotes: [apos, apos, quot, quot]
+  syntax_highlighter_opts:
+    default_lang: text
 
 # Custom variables
 owner: "GAiLO"
