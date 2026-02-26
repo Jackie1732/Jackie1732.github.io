@@ -1,38 +1,32 @@
 ---
 layout: page
-title: Archive
+title: 归档
 ---
 
-<section>
+<div class="archive-stats">
+  <span>共 <strong>{{ site.posts | size }}</strong> 篇文章</span>
+</div>
+
+<section class="archive">
   {% if site.posts[0] %}
-
-    {% capture currentyear %}{{ 'now' | date: "%Y" }}{% endcapture %}
-    {% capture firstpostyear %}{{ site.posts[0].date | date: '%Y' }}{% endcapture %}
-    {% if currentyear == firstpostyear %}
-        <h3>This year's posts</h3>
-    {% else %}  
-        <h3>{{ firstpostyear }}</h3>
-    {% endif %}
-
-    {%for post in site.posts %}
-      {% unless post.next %}
-        <ul>
-      {% else %}
-        {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
-        {% capture nyear %}{{ post.next.date | date: '%Y' }}{% endcapture %}
-        {% if year != nyear %}
-          </ul>
-          <h3>{{ post.date | date: '%Y' }}</h3>
-          <ul>
-        {% endif %}
-      {% endunless %}
-        <li><time>{{ post.date | date:"%d %b" }} - </time>
-          <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
-            {{ post.title }}
-          </a>
+    {% assign currentYear = "" %}
+    {% for post in site.posts %}
+      {% capture thisYear %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% if thisYear != currentYear %}
+        {% if currentYear != "" %}</ul>{% endif %}
+        <h3 class="archive-year">{{ thisYear }}</h3>
+        <ul class="archive-list">
+        {% assign currentYear = thisYear %}
+      {% endif %}
+        <li class="archive-item">
+          <time>{{ post.date | date: "%m-%d" }}</time>
+          <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a>
+          <span class="archive-item-tags">
+            {% include resolve_tags.html post=post %}
+            {% include render_tags.html tags=resolved_tags %}
+          </span>
         </li>
     {% endfor %}
     </ul>
-
   {% endif %}
 </section>

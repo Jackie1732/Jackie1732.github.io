@@ -2,8 +2,67 @@
 layout: default
 ---
 
-<article>
-  <h2>{{ page.title }}</h2>
-  <time datetime="{{ page.date | date_to_xmlschema }}" class="by-line">{{ page.date | date_to_string }}</time>
-  {{ content }}
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y年%m月%d日" }}</time>
+      {% include resolve_tags.html post=page %}
+      {% include render_tags.html tags=resolved_tags %}
+      {% if page.difficulty %}
+        {% include render_difficulty.html difficulty=page.difficulty %}
+      {% endif %}
+    </div>
+  </header>
+
+  {% if page.toc %}
+  <nav class="toc" aria-label="目录">
+    <h3 class="toc-title">目录</h3>
+    {% assign headers = content | split: '<h' %}
+    <ul class="toc-list">
+    {% for header in headers %}
+      {% if header contains 'id="' %}
+        {% assign hLevel = header | slice: 0, 1 %}
+        {% if hLevel == '2' or hLevel == '3' %}
+          {% assign hId = header | split: 'id="' | last | split: '"' | first %}
+          {% assign hText = header | split: '">' | last | split: '</h' | first %}
+          <li class="toc-item toc-h{{ hLevel }}"><a href="#{{ hId }}">{{ hText }}</a></li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-footer-nav">
+      <a href="{{ '/' | prepend: site.baseurl | replace: '//', '/' }}" class="back-link">&larr; 返回首页</a>
+    </div>
+    <div class="post-footer-prevnext">
+      {% if page.previous.url %}
+        <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" class="prev-post">&larr; {{ page.previous.title | truncate: 35 }}</a>
+      {% endif %}
+      {% if page.next.url %}
+        <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" class="next-post">{{ page.next.title | truncate: 35 }} &rarr;</a>
+      {% endif %}
+    </div>
+  </footer>
 </article>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">&uarr;</button>
+
+<script>
+(function() {
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>

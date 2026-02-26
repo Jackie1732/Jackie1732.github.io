@@ -1,0 +1,14 @@
+{% comment %}
+  Render difficulty badge.
+  Usage: {% include render_difficulty.html difficulty=page.difficulty %}
+{% endcomment %}
+
+{% if include.difficulty %}
+  {% assign diff_key = include.difficulty | downcase | strip %}
+  {% assign diff_info = site.difficulty_map[diff_key] %}
+  {% if diff_info %}
+    <span class="diff-badge {{ diff_info.class }}">{{ diff_info.label }}</span>
+  {% else %}
+    <span class="diff-badge diff-medium">{{ include.difficulty }}</span>
+  {% endif %}
+{% endif %}

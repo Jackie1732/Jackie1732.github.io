@@ -1,5 +1,5 @@
 title: GAiLO-Blog
-description: "A Jekyll Blog Theme For Hackers"
+description: "Security Research & Development Notes"
 author:
   name: "GAiLO"
   email: "ga1lo@qq.com"
@@ -10,7 +10,7 @@ baseurl: /
 source: .
 destination: ./_site
 permalink: /:title
-paginate: 10
+paginate: 12
 paginate_path: /page/:num/
 
 defaults:
@@ -27,6 +27,61 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
 
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
 # Custom variables
-owner : "GAiLO"
-year : "2025"
+owner: "GAiLO"
+year: "2025"
+github_username: Jackie1732
+motto: "Looking for light."
+
+# Tag display configuration (label / css-class)
+tag_map:
+  HTB:
+    label: "HackTheBox"
+    class: "tag-htb"
+  春秋云:
+    label: "春秋云境"
+    class: "tag-chunqiu"
+  玄机:
+    label: "玄机"
+    class: "tag-xuanji"
+  域渗透:
+    label: "域渗透"
+    class: "tag-ad"
+  Active_Directory:
+    label: "域渗透"
+    class: "tag-ad"
+  ADCS:
+    label: "域渗透"
+    class: "tag-ad"
+  Go:
+    label: "Go"
+    class: "tag-go"
+  Java:
+    label: "Java"
+    class: "tag-java"
+  开发:
+    label: "开发"
+    class: "tag-dev"
+  CTF:
+    label: "CTF"
+    class: "tag-ctf"
+
+# Difficulty levels
+difficulty_map:
+  easy:
+    label: "简单"
+    class: "diff-easy"
+  medium:
+    label: "中等"
+    class: "diff-medium"
+  hard:
+    label: "困难"
+    class: "diff-hard"
+  insane:
+    label: "疯狂"
+    class: "diff-insane"

@@ -1,19 +1,53 @@
 /*
-   original: https://github.com/pages-themes/hacker 
+   Modern dark theme color palette
 */
 
-$apple-blossom: #ac4142;
+// Base colors
+$bg-primary: #0d1117;
+$bg-secondary: #161b22;
+$bg-tertiary: #1c2128;
+$bg-overlay: #21262d;
+
+// Border
+$border-default: #30363d;
+$border-muted: #21262d;
+
+// Text
+$text-primary: #e6edf3;
+$text-secondary: #8b949e;
+$text-muted: #656d76;
+
+// Accent
+$accent-green: #3fb950;
+$accent-green-dim: rgba(63, 185, 80, 0.15);
+$accent-blue: #58a6ff;
+$accent-blue-dim: rgba(88, 166, 255, 0.15);
+$accent-purple: #bc8cff;
+$accent-purple-dim: rgba(188, 140, 255, 0.15);
+$accent-orange: #d29922;
+$accent-orange-dim: rgba(210, 153, 34, 0.15);
+$accent-red: #f85149;
+$accent-red-dim: rgba(248, 81, 73, 0.15);
+$accent-cyan: #56d4dd;
+$accent-cyan-dim: rgba(86, 212, 221, 0.15);
+$accent-pink: #f778ba;
+$accent-pink-dim: rgba(247, 120, 186, 0.15);
+$accent-yellow: #e3b341;
+$accent-yellow-dim: rgba(227, 179, 65, 0.15);
+
+// Legacy compat aliases used by rouge
+$apple-blossom: $accent-red;
 $alto: #d0d0d0;
-$bouquet: #aa759f;
-$chelsea-cucumber: #90a959;
-$cod-grey: #151515;
-$conifer: #b5e853;
-$dove-grey: #666;
-$gallery: #eaeaea;
-$grey: #888;
-$gulf-stream: #75b5aa;
-$hippie-blue: #6a9fb5;
+$bouquet: $accent-purple;
+$chelsea-cucumber: $accent-green;
+$cod-grey: $bg-primary;
+$conifer: $accent-green;
+$dove-grey: $text-muted;
+$gallery: $text-primary;
+$grey: $text-secondary;
+$gulf-stream: $accent-cyan;
+$hippie-blue: $accent-blue;
 $potters-clay: #8f5536;
-$rajah: #f4bf75;
+$rajah: $accent-orange;
 $raw-sienna: #d28445;
-$silver-chalice: #aaa;
+$silver-chalice: $text-secondary;

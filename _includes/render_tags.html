@@ -1,0 +1,17 @@
+{% comment %}
+  Render tag badges from resolved_tags array.
+  Looks up display info from site.tag_map config.
+  Usage: {% include render_tags.html tags=resolved_tags %}
+{% endcomment %}
+
+{% for tag in include.tags %}
+  {% assign tag_trimmed = tag | strip %}
+  {% if tag_trimmed != "" %}
+    {% assign tag_info = site.tag_map[tag_trimmed] %}
+    {% if tag_info %}
+      <span class="post-tag {{ tag_info.class }}">{{ tag_info.label }}</span>
+    {% else %}
+      <span class="post-tag tag-other">{{ tag_trimmed }}</span>
+    {% endif %}
+  {% endif %}
+{% endfor %}

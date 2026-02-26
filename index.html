@@ -2,12 +2,27 @@
 layout: default
 ---
 
-<ul>
+<div class="home-hero">
+  <p class="hero-greeting">Hi, I'm <strong>{{ site.owner }}</strong></p>
+  <p class="hero-desc">Security Researcher &amp; Developer &mdash; {{ site.motto }}</p>
+  <div class="hero-stats">
+    <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇文章</span>
+  </div>
+</div>
+
+<ul class="post-list">
     {% for post in paginator.posts %}
-      <li>
-          <h2><a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a></h2>
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time>
-          <p>{{ post.content | strip_html | truncatewords:50 }}</p>
+      <li class="post-card">
+          <div class="post-card-meta">
+            <span class="post-card-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+            {% include resolve_tags.html post=post %}
+            {% include render_tags.html tags=resolved_tags %}
+            {% if post.difficulty %}
+              {% include render_difficulty.html difficulty=post.difficulty %}
+            {% endif %}
+          </div>
+          <h2 class="post-card-title"><a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a></h2>
+          <p class="post-card-excerpt">{{ post.content | strip_html | truncatewords: 40 }}</p>
       </li>
     {% endfor %}
 </ul>

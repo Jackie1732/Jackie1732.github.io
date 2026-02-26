@@ -1,1 +1,20 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-motto">{{ site.motto }}</p>
+    <p class="footer-copy">&copy; {{ site.year }}-{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> &middot; Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p>
+  </div>
+</footer>
 
+<script>
+// Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+  var toggle = document.querySelector('.menu-toggle');
+  var nav = document.querySelector('.site-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function() {
+      nav.classList.toggle('open');
+      toggle.classList.toggle('open');
+    });
+  }
+});
+</script>

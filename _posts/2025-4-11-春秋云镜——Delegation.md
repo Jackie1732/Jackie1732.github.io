@@ -1,5 +1,5 @@
 ---
-layout： post
+layout: post
 title: 春秋云镜——Delegation
 ---
 

@@ -1,0 +1,48 @@
+{% comment %}
+  Resolve tags for a post. Supports two modes:
+  1. Explicit: post has `tags` in front matter
+  2. Auto: detect from post title keywords
+  Output: sets `resolved_tags` as a comma-separated string
+  Usage: {% include resolve_tags.html post=post %}
+{% endcomment %}
+
+{% assign p = include.post %}
+{% assign resolved_tags = "" %}
+
+{% if p.tags and p.tags.size > 0 %}
+  {% comment %} Explicit tags from front matter {% endcomment %}
+  {% for tag in p.tags %}
+    {% assign resolved_tags = resolved_tags | append: tag | append: "," %}
+  {% endfor %}
+{% else %}
+  {% comment %} Auto-detect from title {% endcomment %}
+  {% assign t = p.title %}
+  {% if t contains 'HTB' %}
+    {% assign resolved_tags = resolved_tags | append: "HTB," %}
+  {% endif %}
+  {% if t contains '春秋云' %}
+    {% assign resolved_tags = resolved_tags | append: "春秋云," %}
+  {% endif %}
+  {% if t contains '玄机' %}
+    {% assign resolved_tags = resolved_tags | append: "玄机," %}
+  {% endif %}
+  {% if t contains '域渗透' or t contains 'Active_Directory' or t contains 'ADCS' %}
+    {% assign resolved_tags = resolved_tags | append: "域渗透," %}
+  {% endif %}
+  {% if t contains 'Go语言' or t contains 'Go开发' or t contains 'Golang' %}
+    {% assign resolved_tags = resolved_tags | append: "Go," %}
+  {% endif %}
+  {% if t contains 'Java' %}
+    {% assign resolved_tags = resolved_tags | append: "Java," %}
+  {% endif %}
+  {% if t contains '开发' %}
+    {% unless t contains 'Go语言' or t contains 'Go开发' or t contains 'Golang' or t contains 'Java' %}
+      {% assign resolved_tags = resolved_tags | append: "开发," %}
+    {% endunless %}
+  {% endif %}
+  {% if t contains 'CTF' or t contains '积分争夺赛' %}
+    {% assign resolved_tags = resolved_tags | append: "CTF," %}
+  {% endif %}
+{% endif %}
+
+{% assign resolved_tags = resolved_tags | split: "," | compact %}
