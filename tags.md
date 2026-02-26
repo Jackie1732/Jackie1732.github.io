@@ -4,7 +4,7 @@ title: 标签
 permalink: /tags
 ---
 
-<div class="tags-page">
+<div class="tags-page" markdown="0">
 
   {% comment %} Build a tag count map {% endcomment %}
   {% assign all_tags_arr = "" | split: "" %}

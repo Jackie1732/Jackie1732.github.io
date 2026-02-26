@@ -1063,6 +1063,91 @@ body {
   border-bottom: 1px solid $border-default;
 }
 
+/* ===== Page-content specificity overrides =====
+   Archive/Tags pages use structured HTML inside .page-content.
+   The generic .page-content a / ul / li / h3 rules would override
+   component-specific styles due to higher specificity (0,1,1 vs 0,1,0).
+   Scoping under .page-content raises component specificity to 0,2,0. */
+
+.page-content {
+
+  // Archive heading: override .page-content h3 margins & font-size
+  .archive-year {
+    font-size: 20px;
+    margin: 28px 0 12px 0;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  // Archive list: override .page-content ul padding
+  .archive-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+
+  // Archive item: override .page-content ul li list-style
+  .archive-item {
+    list-style: none;
+    list-style-type: none;
+    margin-bottom: 0;
+
+    a {
+      color: $text-primary;
+      border-bottom: none;
+
+      &:hover {
+        color: $accent-green;
+        border-bottom: none;
+      }
+    }
+  }
+
+  // Tag cloud items: override .page-content a link styles
+  .tag-cloud-item {
+    border-bottom: none;
+
+    &:hover {
+      border-bottom: none;
+    }
+  }
+
+  // Tag section heading: override .page-content h3
+  .tag-section-title {
+    font-size: 18px;
+    margin: 0 0 12px 0;
+  }
+
+  // Tag section links
+  .tag-section .archive-item a {
+    color: $text-primary;
+    border-bottom: none;
+
+    &:hover {
+      color: $accent-green;
+      border-bottom: none;
+    }
+  }
+
+  // Preserve tag-specific colors (override .page-content a color 0,1,1)
+  .tag-htb { color: $accent-green; }
+  .tag-chunqiu { color: $accent-blue; }
+  .tag-xuanji { color: $accent-purple; }
+  .tag-ad { color: $accent-orange; }
+  .tag-go { color: $accent-cyan; }
+  .tag-java { color: $accent-red; }
+  .tag-dev { color: $accent-pink; }
+  .tag-ctf { color: $accent-yellow; }
+  .tag-other { color: $text-secondary; }
+
+  // Archive stats override
+  .archive-stats {
+    margin-bottom: 24px;
+  }
+}
+
 /* ===== Footer ===== */
 
 .site-footer {

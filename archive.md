@@ -3,15 +3,15 @@ layout: page
 title: 归档
 ---
 
-<div class="archive-stats">
+<div class="archive-stats" markdown="0">
   <span>共 <strong>{{ site.posts | size }}</strong> 篇文章</span>
 </div>
 
-<section class="archive">
+<section class="archive" markdown="0">
   {% if site.posts[0] %}
     {% assign currentYear = "" %}
     {% for post in site.posts %}
-      {% capture thisYear %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% assign thisYear = post.date | date: "%Y" %}
       {% if thisYear != currentYear %}
         {% if currentYear != "" %}</ul>{% endif %}
         <h3 class="archive-year">{{ thisYear }}</h3>
