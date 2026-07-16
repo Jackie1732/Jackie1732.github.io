@@ -3,6 +3,8 @@ layout: default
 ---
 
 {% assign track_info = site.note_track_map[page.track] %}
+{% assign type_info = site.note_type_map[page.content_type] %}
+{% assign status_info = site.note_status_map[page.status] %}
 
 <article class="note">
   <header class="note-header">
@@ -14,11 +16,30 @@ layout: default
     {% if page.description %}<p class="note-description">{{ page.description }}</p>{% endif %}
     <div class="note-meta">
       {% if track_info %}<span class="note-track {{ track_info.class }}">{{ track_info.label }}</span>{% endif %}
+      {% if type_info %}<span class="note-kind {{ type_info.class }}">{{ type_info.label }}</span>{% endif %}
+      {% if status_info %}<span class="note-status {{ status_info.class }}">{{ status_info.label }}</span>{% endif %}
       {% if page.series %}<span class="note-series">系列：{{ page.series }}</span>{% endif %}
       {% if page.updated %}<time datetime="{{ page.updated | date_to_xmlschema }}">更新于 {{ page.updated | date: "%Y-%m-%d" }}</time>{% endif %}
       {% include render_tags.html tags=page.tags %}
     </div>
   </header>
+
+  {% if page.audience or page.prerequisites %}
+  <aside class="note-reader-guide" aria-label="阅读指引">
+    {% if page.audience %}
+    <div>
+      <span class="note-reader-guide-label">适合读者</span>
+      <p>{{ page.audience }}</p>
+    </div>
+    {% endif %}
+    {% if page.prerequisites %}
+    <div>
+      <span class="note-reader-guide-label">前置知识</span>
+      <p>{{ page.prerequisites | join: "、" }}</p>
+    </div>
+    {% endif %}
+  </aside>
+  {% endif %}
 
   {% if page.toc %}
   <nav class="toc" aria-label="目录">
@@ -45,19 +66,20 @@ layout: default
 
   <footer class="note-footer">
     <a href="{{ '/research/' | relative_url }}" class="back-link">&larr; 返回研究笔记</a>
+    <a href="https://github.com/{{ site.repository }}/issues" class="back-link" target="_blank" rel="noopener">反馈勘误或讨论 &nearr;</a>
   </footer>
 </article>
 
-<button class="back-to-top" id="backToTop" aria-label="回到顶部">&uarr;</button>
+<a class="back-to-top" id="backToTop" href="#top" aria-label="回到顶部">&uarr;</a>
 
 <script>
 (function() {
   var btn = document.getElementById('backToTop');
-  window.addEventListener('scroll', function() {
+  if (!btn) return;
+  function updateBackToTop() {
     btn.classList.toggle('visible', window.scrollY > 400);
-  });
-  btn.addEventListener('click', function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  }
+  updateBackToTop();
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
 })();
 </script>

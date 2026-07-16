@@ -1,10 +1,14 @@
 ---
 layout: page
-title: 归档
+title: 文章归档
 ---
 
+<div class="archive-intro" markdown="0">
+  <p>按发布时间浏览安全实战、开发记录与阶段性文章。想按技术主题查找，可前往 <a href="{{ '/tags' | relative_url }}">主题导航</a>。</p>
+</div>
+
 <div class="archive-stats" markdown="0">
-  <span>共 <strong>{{ site.posts | size }}</strong> 篇文章</span>
+  <span>已发布 <strong>{{ site.posts | size }}</strong> 篇文章</span>
 </div>
 
 <section class="archive" markdown="0">

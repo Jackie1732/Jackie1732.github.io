@@ -1,113 +1,57 @@
 ---
 layout: page
-title: About
+title: 关于本站
+permalink: /about
 ---
 
-Security Research · Deep Learning · LLM Research Notes
+<section class="about-intro" markdown="0">
+  <p class="research-kicker">About GAiLO-Blog</p>
+  <h2>一个面向公开读者的技术学习与实践站点。</h2>
+  <p>这里记录我在安全研究、深度学习与 LLM 系统方向的长期学习和实践。目标不是堆放个人流水账，而是把问题、判断过程和可复用的经验整理成陌生读者也能理解、检索和继续验证的内容。</p>
+  <div class="about-intro-actions">
+    <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">浏览 AI/LLM 笔记 <span aria-hidden="true">&rarr;</span></a>
+    <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">浏览安全文章 <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
 
-目前将安全研究与 AI/LLM 学习并行记录。课程笔记、论文阅读与实验复盘请访问 [研究笔记]({{ '/research/' | relative_url }})；安全实战文章仍可通过 [归档]({{ '/archive' | relative_url }}) 与 [标签]({{ '/tags' | relative_url }}) 浏览。
+<section class="about-grid" aria-label="内容范围" markdown="0">
+  <article class="about-card">
+    <p class="about-card-kicker">Security</p>
+    <h2>安全文章</h2>
+    <p>围绕授权靶场、CTF、公开漏洞材料与防守视角的复盘，尽量解释攻击路径背后的关键观察，以及相应的检测和缓解思路。</p>
+  </article>
+  <article class="about-card">
+    <p class="about-card-kicker">AI / LLM</p>
+    <h2>研究笔记</h2>
+    <p>覆盖数学基础、深度学习、Transformer、论文阅读和实验。文章会逐步补充前置知识、参考资料、实验条件与结论边界。</p>
+  </article>
+  <article class="about-card">
+    <p class="about-card-kicker">Engineering</p>
+    <h2>开发与复盘</h2>
+    <p>记录工具、代码和系统实现中真正踩过的坑。能复现的部分给出环境和版本，仍在探索的部分会如实标为进行中。</p>
+  </article>
+</section>
 
-雄关漫道真如铁，而今迈步从头越
+<section class="writing-principles" aria-labelledby="writing-principles-title" markdown="0">
+  <div class="section-heading-row">
+    <div>
+      <p class="section-kicker">Editorial policy</p>
+      <h2 id="writing-principles-title" class="section-heading">写作与更新原则</h2>
+    </div>
+  </div>
+  <ol class="writing-principle-list">
+    <li><strong>读者优先：</strong>先交代问题、结论与适用范围，再展开过程；避免只对“当时的自己”有意义的缩写和上下文。</li>
+    <li><strong>证据优先：</strong>引用资料、实验结果与个人推导会尽量区分；不确定的结论会标注限制与待验证项。</li>
+    <li><strong>修订优先：</strong>知识和工具都会变化。内容会尽量标注更新时间；欢迎通过 GitHub 提出勘误、补充或不同观点。</li>
+  </ol>
+</section>
 
+<section class="safety-note" aria-labelledby="safety-note-title" markdown="0">
+  <h2 id="safety-note-title">安全内容说明</h2>
+  <p>安全相关文章仅面向授权靶场、竞赛环境、公开材料和防守学习。真实目标的测试应先取得明确授权；本文站不提供针对未授权系统的操作建议。</p>
+</section>
 
-### Contact
-
-Drops:    GAiLO
-
-email:    2550750389@qq.com
-
-Github:   [Jackie1732](https://github.com/Jackie1732)
-
-Links:    [NPUSEC](https://www.npusec.org.cn)
-
----
-
-### HackTheBox Machine&Sherlocks
-
-- 
- [HTB—Machine—Dog](https://jackie1732.github.io/HTB-Dog)
-
-- 
- [HTB—Machine—Cicada](https://jackie1732.github.io/HTB-Cicada)
-
-- 
- [HTB—Machine—Escapetwo](https://jackie1732.github.io/HTB-Escapetwo)
-
-- 
- [HTB—Machine—Code](https://jackie1732.github.io/HTB-Code)
-
-- 
- [HTB—Machine—Support](https://jackie1732.github.io/HTB-Support)
-
-- 
- [HTB—Machine—Alert](https://jackie1732.github.io/HTB-Alert)
-
-- 
- [HTB—Machine—Forest](https://jackie1732.github.io/HTB-Forest)
-
-- 
- [HTB—Machine—Chemistry](https://jackie1732.github.io/HTB-Chemistry)
-
-- 
- [HTB—Machine—Hospital](https://jackie1732.github.io/HTB-Hospital)
-
-- 
- [HTB—Machine—Strutted](https://jackie1732.github.io/HTB-Strutted)
-
-- 
- [HTB—Machine—Certified](https://jackie1732.github.io/HTB-Certified)
-
-- 
- [HTB—Machine—Cap](https://jackie1732.github.io/HTB-Cap)
-
-- 
- [HTB—Machine—Instant](https://jackie1732.github.io/HTB-Instant)
-
-- 
- [HTB—Machine—Sightless](https://jackie1732.github.io/HTB-Sightless)
-
----
-
-### 玄机
-
-- 
- [玄机——第一章——webshell查杀](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-%E7%AC%AC%E4%B8%80%E7%AB%A0-webshell%E6%9F%A5%E6%9D%80)
-
-- 
- [玄机——Linux后门应急](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-Linux%E5%90%8E%E9%97%A8%E5%BA%94%E6%80%A5)
-
-- 
- [玄机——IIS日志分析](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-IIS%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90)
-
-- 
- [玄机——windows应急-应急与研判训练计划一](https://jackie1732.github.io/%E7%8E%84%E6%9C%BA-%E5%BA%94%E6%80%A5%E4%B8%8E%E7%A0%94%E5%88%A4%E8%AE%AD%E7%BB%83%E8%AE%A1%E5%88%92%E4%B8%80)
-
----
-
-### 春秋云境
-
-- 
- [春秋云境——time](https://jackie1732.github.io/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-time)
-
-- 
- [春秋云境——tsclient](https://jackie1732.github.io/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-tsclient)
-
----
-
-### 拾枝杂谈
-
-- 
- [第一篇博客](https://jackie1732.github.io/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA-start)
-
-- 
- [数字中国产业积分争夺赛——WriteUp](https://jackie1732.github.io/%E6%95%B0%E5%AD%97%E4%B8%AD%E5%9B%BD%E7%A7%AF%E5%88%86%E4%BA%89%E5%A4%BA%E8%B5%9B)
-
-- 
- [Windows个人凭据&企业凭据获取利用](https://jackie1732.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Windows%E4%B8%AA%E4%BA%BA%E5%87%AD%E6%8D%AE&%E4%BC%81%E4%B8%9A%E5%87%AD%E6%8D%AE%E8%8E%B7%E5%8F%96%E5%88%A9%E7%94%A8)
-
----
-
-### CTF刷题记录
-
-
----
+<section class="about-contact" aria-labelledby="about-contact-title" markdown="0">
+  <h2 id="about-contact-title">联系与反馈</h2>
+  <p>发现错误、希望讨论某个主题，或想补充参考资料，欢迎通过 <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a> 联系；也可以发送邮件至 <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>。</p>
+</section>

@@ -1,7 +1,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-motto">{{ site.motto }}</p>
-    <p class="footer-copy">&copy; {{ site.year }}-{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> &middot; Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p>
+    <p class="footer-copy">&copy; {{ site.year }}-{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> &middot; <a href="{{ '/atom.xml' | relative_url }}">订阅 RSS</a> &middot; Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p>
   </div>
 </footer>
 
@@ -10,11 +10,28 @@
 document.addEventListener('DOMContentLoaded', function() {
   var toggle = document.querySelector('.menu-toggle');
   var nav = document.querySelector('.site-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', function() {
-      nav.classList.toggle('open');
-      toggle.classList.toggle('open');
-    });
+  if (!toggle || !nav) return;
+
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '收起主导航' : '展开主导航');
   }
+
+  toggle.addEventListener('click', function() {
+    setMenu(!nav.classList.contains('open'));
+  });
+
+  nav.addEventListener('click', function(event) {
+    if (event.target.closest('a')) setMenu(false);
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && nav.classList.contains('open')) {
+      setMenu(false);
+      toggle.focus();
+    }
+  });
 });
 </script>

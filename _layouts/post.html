@@ -53,16 +53,16 @@ layout: default
   </footer>
 </article>
 
-<button class="back-to-top" id="backToTop" aria-label="回到顶部">&uarr;</button>
+<a class="back-to-top" id="backToTop" href="#top" aria-label="回到顶部">&uarr;</a>
 
 <script>
 (function() {
   var btn = document.getElementById('backToTop');
-  window.addEventListener('scroll', function() {
+  if (!btn) return;
+  function updateBackToTop() {
     btn.classList.toggle('visible', window.scrollY > 400);
-  });
-  btn.addEventListener('click', function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  }
+  updateBackToTop();
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
 })();
 </script>

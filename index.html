@@ -2,36 +2,72 @@
 layout: default
 ---
 
-<div class="home-hero">
-  <p class="hero-greeting">Hi, I'm <strong>{{ site.owner }}</strong></p>
-  <p class="hero-desc">Security Researcher, Developer &amp; AI/LLM Learner &mdash; {{ site.motto }}</p>
-  <div class="hero-stats">
-    <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇文章</span>
-    <span class="stat-item"><span class="stat-num">{{ site.notes | size }}</span> 篇研究笔记</span>
+<section class="home-hero motion-enter" aria-labelledby="home-title">
+  <p class="hero-eyebrow">Public Technical Notes · Security × AI</p>
+  <h1 id="home-title" class="hero-title">把安全实战与 AI 学习，整理成可复用的公开笔记。</h1>
+  <p class="hero-desc">这里记录授权环境中的安全复盘，以及深度学习、LLM、论文与实验的持续学习过程。尽量把结论、依据、边界与后续修订说清楚，让自己和后来读到它的人都能继续往前走。</p>
+  <div class="hero-actions">
+    <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">从 AI/LLM 笔记开始 <span aria-hidden="true">&rarr;</span></a>
+    <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">浏览安全文章 <span aria-hidden="true">&rarr;</span></a>
   </div>
-</div>
+  <div class="hero-stats" aria-label="站点内容统计">
+    <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇公开文章</span>
+    <span class="stat-item"><span class="stat-num">{{ site.notes | size }}</span> 篇持续修订笔记</span>
+  </div>
+</section>
 
-<section class="content-map" aria-label="内容入口">
+<section class="content-map motion-enter motion-enter-delay-1" aria-labelledby="content-map-title">
+  <h2 id="content-map-title" class="sr-only">内容入口</h2>
   <a class="content-area-card content-area-research" href="{{ '/research/' | relative_url }}">
-    <span class="content-area-kicker">Knowledge Base</span>
-    <h2>研究笔记</h2>
-    <p>Deep Learning、LLM、论文阅读与实验记录；持续修订，不与时间流文章混在一起。</p>
-    <span class="content-area-link">进入知识库 &rarr;</span>
+    <span class="content-area-kicker">公开知识库</span>
+    <h2>AI / LLM 笔记</h2>
+    <p>从数学与 PyTorch 基础出发，逐步覆盖 D2L、Transformer、论文阅读和实验复盘；每篇笔记会标注更新时间、前置知识与验证状态。</p>
+    <span class="content-area-link">沿学习路线阅读 <span aria-hidden="true">&rarr;</span></span>
   </a>
-  <a class="content-area-card content-area-security" href="{{ '/tags' | relative_url }}">
-    <span class="content-area-kicker">Writeups</span>
-    <h2>安全研究</h2>
-    <p>HTB、应急响应、域渗透与 CTF 实战文章，按标签和归档浏览。</p>
-    <span class="content-area-link">浏览安全文章 &rarr;</span>
+  <a class="content-area-card content-area-security" href="{{ '/archive' | relative_url }}">
+    <span class="content-area-kicker">授权实战复盘</span>
+    <h2>安全文章</h2>
+    <p>聚合 HTB、应急响应、域渗透与 CTF 的关键判断、攻击路径和防守视角；内容仅讨论授权环境、公开材料与学习用途。</p>
+    <span class="content-area-link">查看文章归档 <span aria-hidden="true">&rarr;</span></span>
   </a>
+</section>
+
+<section class="reader-guide motion-enter motion-enter-delay-2" aria-labelledby="reader-guide-title">
+  <div class="section-heading-row">
+    <div>
+      <p class="section-kicker">For readers</p>
+      <h2 id="reader-guide-title" class="section-heading">如何阅读这里</h2>
+    </div>
+    <a href="{{ '/about' | relative_url }}" class="section-more">了解写作原则 <span aria-hidden="true">&rarr;</span></a>
+  </div>
+  <div class="reader-principle-grid">
+    <article class="reader-principle">
+      <span class="reader-principle-index" aria-hidden="true">01</span>
+      <h3>先给可用结论</h3>
+      <p>先说明问题、适用范围与关键判断，再展开推导、命令、日志或实验过程。</p>
+    </article>
+    <article class="reader-principle">
+      <span class="reader-principle-index" aria-hidden="true">02</span>
+      <h3>保留验证依据</h3>
+      <p>能复现的内容会注明环境、版本、来源和限制；不确定的部分会明确标出。</p>
+    </article>
+    <article class="reader-principle">
+      <span class="reader-principle-index" aria-hidden="true">03</span>
+      <h3>持续修订与勘误</h3>
+      <p>笔记不是一次性结论。发现更好的解释、错误或新证据后，会更新原文并保留时间线。</p>
+    </article>
+  </div>
 </section>
 
 {% assign recent_notes = site.notes | sort: 'updated' | reverse %}
 {% if recent_notes.size > 0 %}
 <section class="home-section" aria-labelledby="recent-notes-title">
   <div class="section-heading-row">
-    <h2 id="recent-notes-title" class="section-heading">最新研究笔记</h2>
-    <a href="{{ '/research/' | relative_url }}" class="section-more">查看全部 &rarr;</a>
+    <div>
+      <p class="section-kicker">Research notes</p>
+      <h2 id="recent-notes-title" class="section-heading">最新研究笔记</h2>
+    </div>
+    <a href="{{ '/research/' | relative_url }}" class="section-more">查看全部 <span aria-hidden="true">&rarr;</span></a>
   </div>
   <ul class="note-preview-list">
     {% for note in recent_notes limit: 3 %}
@@ -49,23 +85,28 @@ layout: default
 </section>
 {% endif %}
 
-<div class="section-heading-row">
-  <h2 class="section-heading">最新文章</h2>
-  <a href="{{ '/archive' | relative_url }}" class="section-more">全部归档 &rarr;</a>
-</div>
-<ul class="post-list">
-    {% for post in paginator.posts %}
-      <li class="post-card">
-          <div class="post-card-meta">
-            <span class="post-card-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-            {% include resolve_tags.html post=post %}
-            {% include render_tags.html tags=resolved_tags %}
-            {% if post.difficulty %}
-              {% include render_difficulty.html difficulty=post.difficulty %}
-            {% endif %}
-          </div>
-          <h2 class="post-card-title"><a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a></h2>
-          <p class="post-card-excerpt">{{ post.content | strip_html | truncatewords: 40 }}</p>
-      </li>
-    {% endfor %}
-</ul>
+<section class="home-section" aria-labelledby="recent-posts-title">
+  <div class="section-heading-row">
+    <div>
+      <p class="section-kicker">Latest public writing</p>
+      <h2 id="recent-posts-title" class="section-heading">最近更新</h2>
+    </div>
+    <a href="{{ '/archive' | relative_url }}" class="section-more">全部文章 <span aria-hidden="true">&rarr;</span></a>
+  </div>
+  <ul class="post-list">
+      {% for post in paginator.posts %}
+        <li class="post-card">
+            <div class="post-card-meta">
+              <span class="post-card-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              {% include resolve_tags.html post=post %}
+              {% include render_tags.html tags=resolved_tags %}
+              {% if post.difficulty %}
+                {% include render_difficulty.html difficulty=post.difficulty %}
+              {% endif %}
+            </div>
+            <h3 class="post-card-title"><a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a></h3>
+            <p class="post-card-excerpt">{{ post.content | strip_html | truncatewords: 40 }}</p>
+        </li>
+      {% endfor %}
+  </ul>
+</section>

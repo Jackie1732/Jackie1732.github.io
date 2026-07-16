@@ -1,5 +1,5 @@
 title: GAiLO-Blog
-description: "Security, Deep Learning & LLM Research Notes"
+description: "公开记录安全研究、深度学习与 LLM 系统实践：可检索、可复现、持续修订。"
 url: "https://jackie1732.github.io"
 author:
   name: "GAiLO"
@@ -63,7 +63,8 @@ kramdown:
 owner: "GAiLO"
 year: "2025"
 github_username: Jackie1732
-motto: "Looking for light."
+repository: "Jackie1732/Jackie1732.github.io"
+motto: "公开学习，谨慎验证。"
 
 # Tag display configuration (label / css-class)
 tag_map:
@@ -147,6 +148,27 @@ note_track_map:
     label: "实验与项目"
     description: "可复现的实验、评测和项目复盘。"
     class: "track-experiments"
+
+# Public-facing note metadata. Future notes should state both their form and
+# the confidence / validation state of the conclusions.
+note_type_map:
+  study-note:
+    label: "学习笔记"
+    class: "note-kind-study"
+  paper-review:
+    label: "论文精读"
+    class: "note-kind-paper"
+  experiment:
+    label: "实验复盘"
+    class: "note-kind-experiment"
+
+note_status_map:
+  evolving:
+    label: "持续修订"
+    class: "note-status-evolving"
+  verified:
+    label: "已验证"
+    class: "note-status-verified"
 
 # Difficulty levels
 difficulty_map:
