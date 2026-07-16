@@ -1,5 +1,5 @@
 title: GAiLO-Blog
-description: "公开记录安全研究、深度学习与 LLM 系统实践：可检索、可复现、持续修订。"
+description: "安全、深度学习与 LLM 的学习笔记。"
 url: "https://jackie1732.github.io"
 author:
   name: "GAiLO"
@@ -64,7 +64,7 @@ owner: "GAiLO"
 year: "2025"
 github_username: Jackie1732
 repository: "Jackie1732/Jackie1732.github.io"
-motto: "公开学习，谨慎验证。"
+motto: "读过，做过，写下。"
 
 # Tag display configuration (label / css-class)
 tag_map:
@@ -130,27 +130,26 @@ tag_map:
 note_track_map:
   foundations:
     label: "数学与基础"
-    description: "线性代数、概率统计、Python 与 PyTorch 基础。"
+    description: "线性代数、概率、Python 与 PyTorch 的地基。"
     class: "track-foundations"
   deep-learning:
     label: "深度学习"
-    description: "D2L、视觉、优化和神经网络训练。"
+    description: "从 D2L 出发，走进网络、优化与训练。"
     class: "track-deep-learning"
   llm:
     label: "大语言模型"
-    description: "Transformer、预训练、微调、RAG 与推理系统。"
+    description: "Transformer、预训练、微调与推理系统。"
     class: "track-llm"
   papers:
     label: "论文阅读"
-    description: "论文精读、复现与研究问题记录。"
+    description: "从论文回到问题、方法与疑问。"
     class: "track-papers"
   experiments:
     label: "实验与项目"
-    description: "可复现的实验、评测和项目复盘。"
+    description: "让假设落到可观察的结果里。"
     class: "track-experiments"
 
-# Public-facing note metadata. Future notes should state both their form and
-# the confidence / validation state of the conclusions.
+# Public-facing note metadata.
 note_type_map:
   study-note:
     label: "学习笔记"
@@ -161,14 +160,6 @@ note_type_map:
   experiment:
     label: "实验复盘"
     class: "note-kind-experiment"
-
-note_status_map:
-  evolving:
-    label: "持续修订"
-    class: "note-status-evolving"
-  verified:
-    label: "已验证"
-    class: "note-status-verified"
 
 # Difficulty levels
 difficulty_map:

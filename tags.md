@@ -1,12 +1,12 @@
 ---
 layout: page
-title: 主题导航
+title: 主题
 permalink: /tags
 ---
 
 <div class="tags-page" markdown="0">
 
-  <p class="tags-intro">按平台、技术方向与学习主题浏览全部内容。研究笔记与时间流文章会一起出现在对应主题下。</p>
+  <p class="tags-intro">循着主题，找回散落在时间里的文章。</p>
 
   {% comment %} Build a tag count map {% endcomment %}
   {% assign all_tags_arr = "" | split: "" %}

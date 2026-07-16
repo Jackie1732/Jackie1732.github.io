@@ -105,16 +105,11 @@ toc: true
 
 `track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式。
 
-## Public Writing Standard
+## 写下笔记
 
-这个站点的内容面向公开读者，而不只是个人备忘。新的研究笔记应尽量遵守：
+新笔记从问题出发，写下推演、验证与参考。安全内容只属于授权的场景。
 
-1. 先说明问题、结论和适用范围，再展开过程；
-2. 标注读者前置知识、参考资料、更新时间与验证状态；
-3. 涉及实验时给出最小可复现环境、版本、数据处理和结果边界；
-4. 安全文章仅讨论授权靶场、CTF、公开材料和防守学习，不将真实目标作为测试对象。
-
-[`templates/ai-research-note.md`](templates/ai-research-note.md) 已按这一结构提供 TL;DR、范围、验证、局限和更新记录的占位框架。
+[`templates/ai-research-note.md`](templates/ai-research-note.md) 提供一个简洁的起点。
 
 ## License
 

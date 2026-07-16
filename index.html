@@ -3,58 +3,62 @@ layout: default
 ---
 
 <section class="home-hero motion-enter" aria-labelledby="home-title">
-  <p class="hero-eyebrow">Public Technical Notes · Security × AI</p>
-  <h1 id="home-title" class="hero-title">把安全实战与 AI 学习，整理成可复用的公开笔记。</h1>
-  <p class="hero-desc">这里记录授权环境中的安全复盘，以及深度学习、LLM、论文与实验的持续学习过程。尽量把结论、依据、边界与后续修订说清楚，让自己和后来读到它的人都能继续往前走。</p>
+  <p class="hero-eyebrow">安全 · 深度学习 · 大语言模型</p>
+  <h1 id="home-title" class="hero-title">在攻防与智能之间，写下所见与所学。</h1>
+  <p class="hero-desc">从攻防现场到模型推演，再到系统试验；愿每一篇都经得起回望。</p>
   <div class="hero-actions">
-    <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">从 AI/LLM 笔记开始 <span aria-hidden="true">&rarr;</span></a>
-    <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">浏览安全文章 <span aria-hidden="true">&rarr;</span></a>
+    <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">阅读 AI / LLM <span aria-hidden="true">&rarr;</span></a>
+    <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">阅读安全文章 <span aria-hidden="true">&rarr;</span></a>
   </div>
   <div class="hero-stats" aria-label="站点内容统计">
-    <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇公开文章</span>
-    <span class="stat-item"><span class="stat-num">{{ site.notes | size }}</span> 篇持续修订笔记</span>
+    <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇文章</span>
+    {% if site.notes.size > 0 %}
+    <span class="stat-item"><span class="stat-num">{{ site.notes | size }}</span> 篇笔记</span>
+    {% else %}
+    <span class="stat-item"><span class="stat-num">{{ site.note_track_map | size }}</span> 条路线</span>
+    {% endif %}
   </div>
 </section>
 
 <section class="content-map motion-enter motion-enter-delay-1" aria-labelledby="content-map-title">
   <h2 id="content-map-title" class="sr-only">内容入口</h2>
   <a class="content-area-card content-area-research" href="{{ '/research/' | relative_url }}">
-    <span class="content-area-kicker">公开知识库</span>
+    <span class="content-area-kicker">学习与研究</span>
     <h2>AI / LLM 笔记</h2>
-    <p>从数学与 PyTorch 基础出发，逐步覆盖 D2L、Transformer、论文阅读和实验复盘；每篇笔记会标注更新时间、前置知识与验证状态。</p>
-    <span class="content-area-link">沿学习路线阅读 <span aria-hidden="true">&rarr;</span></span>
+    <p>从数学、代码与 D2L 起步，沿着模型、论文和实验前行。</p>
+    <span class="content-area-link">沿路线阅读 <span aria-hidden="true">&rarr;</span></span>
   </a>
   <a class="content-area-card content-area-security" href="{{ '/archive' | relative_url }}">
-    <span class="content-area-kicker">授权实战复盘</span>
+    <span class="content-area-kicker">攻防与防守</span>
     <h2>安全文章</h2>
-    <p>聚合 HTB、应急响应、域渗透与 CTF 的关键判断、攻击路径和防守视角；内容仅讨论授权环境、公开材料与学习用途。</p>
-    <span class="content-area-link">查看文章归档 <span aria-hidden="true">&rarr;</span></span>
+    <p>靶场、应急响应、域渗透与 CTF；从关键判断，回到防守视角。</p>
+    <span class="content-area-link">进入归档 <span aria-hidden="true">&rarr;</span></span>
   </a>
 </section>
 
 <section class="reader-guide motion-enter motion-enter-delay-2" aria-labelledby="reader-guide-title">
   <div class="section-heading-row">
     <div>
-      <p class="section-kicker">For readers</p>
-      <h2 id="reader-guide-title" class="section-heading">如何阅读这里</h2>
+      <p class="section-kicker">阅读线索</p>
+      <h2 id="reader-guide-title" class="section-heading">问题、证据与余白</h2>
     </div>
-    <a href="{{ '/about' | relative_url }}" class="section-more">了解写作原则 <span aria-hidden="true">&rarr;</span></a>
+    <a href="{{ '/about' | relative_url }}" class="section-more">关于此站 <span aria-hidden="true">&rarr;</span></a>
   </div>
   <div class="reader-principle-grid">
     <article class="reader-principle">
       <span class="reader-principle-index" aria-hidden="true">01</span>
-      <h3>先给可用结论</h3>
-      <p>先说明问题、适用范围与关键判断，再展开推导、命令、日志或实验过程。</p>
+      <h3>问题</h3>
+      <p>先看它为何值得解。</p>
     </article>
     <article class="reader-principle">
       <span class="reader-principle-index" aria-hidden="true">02</span>
-      <h3>保留验证依据</h3>
-      <p>能复现的内容会注明环境、版本、来源和限制；不确定的部分会明确标出。</p>
+      <h3>证据</h3>
+      <p>回到推导、代码与现场。</p>
     </article>
     <article class="reader-principle">
       <span class="reader-principle-index" aria-hidden="true">03</span>
-      <h3>持续修订与勘误</h3>
-      <p>笔记不是一次性结论。发现更好的解释、错误或新证据后，会更新原文并保留时间线。</p>
+      <h3>余白</h3>
+      <p>不替未知急着下结论。</p>
     </article>
   </div>
 </section>
@@ -64,7 +68,7 @@ layout: default
 <section class="home-section" aria-labelledby="recent-notes-title">
   <div class="section-heading-row">
     <div>
-      <p class="section-kicker">Research notes</p>
+      <p class="section-kicker">近来所学</p>
       <h2 id="recent-notes-title" class="section-heading">最新研究笔记</h2>
     </div>
     <a href="{{ '/research/' | relative_url }}" class="section-more">查看全部 <span aria-hidden="true">&rarr;</span></a>
@@ -88,10 +92,10 @@ layout: default
 <section class="home-section" aria-labelledby="recent-posts-title">
   <div class="section-heading-row">
     <div>
-      <p class="section-kicker">Latest public writing</p>
-      <h2 id="recent-posts-title" class="section-heading">最近更新</h2>
+      <p class="section-kicker">文章归档</p>
+      <h2 id="recent-posts-title" class="section-heading">近期更新</h2>
     </div>
-    <a href="{{ '/archive' | relative_url }}" class="section-more">全部文章 <span aria-hidden="true">&rarr;</span></a>
+    <a href="{{ '/archive' | relative_url }}" class="section-more">查看归档 <span aria-hidden="true">&rarr;</span></a>
   </div>
   <ul class="post-list">
       {% for post in paginator.posts %}

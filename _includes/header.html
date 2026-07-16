@@ -8,7 +8,7 @@
     </button>
     <nav id="primary-navigation" class="site-nav" aria-label="主导航">
       <a href="{{ "/" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/' %}active{% endif %}"{% if page.url == '/' %} aria-current="page"{% endif %}>首页</a>
-      <a href="{{ "/research/" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url contains '/research/' %}active{% endif %}"{% if page.url contains '/research/' %} aria-current="page"{% endif %}>AI/LLM 笔记</a>
+      <a href="{{ "/research/" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url contains '/research/' %}active{% endif %}"{% if page.url contains '/research/' %} aria-current="page"{% endif %}>AI / LLM 笔记</a>
       <a href="{{ "/archive" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/archive' %}active{% endif %}"{% if page.url == '/archive' %} aria-current="page"{% endif %}>安全文章</a>
       <a href="{{ "/tags" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/tags' %}active{% endif %}"{% if page.url == '/tags' %} aria-current="page"{% endif %}>主题导航</a>
       <a href="{{ "/about" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/about' %}active{% endif %}"{% if page.url == '/about' %} aria-current="page"{% endif %}>关于</a>
