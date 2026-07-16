@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
-gem "github-pages", group: :jekyll_plugins
+# Keep local builds aligned with the GitHub Pages production dependency set.
+gem "github-pages", "= 232", group: :jekyll_plugins
 
 group :jekyll_plugins do
   gem "jekyll-seo-tag"

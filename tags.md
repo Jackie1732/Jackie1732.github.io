@@ -8,8 +8,9 @@ permalink: /tags
 
   {% comment %} Build a tag count map {% endcomment %}
   {% assign all_tags_arr = "" | split: "" %}
-  {% for post in site.posts %}
-    {% include resolve_tags.html post=post %}
+  {% assign content_items = site.posts | concat: site.notes %}
+  {% for item in content_items %}
+    {% include resolve_tags.html post=item %}
     {% for tag in resolved_tags %}
       {% assign tag_trimmed = tag | strip %}
       {% if tag_trimmed != "" %}
@@ -46,8 +47,8 @@ permalink: /tags
         {% if tag_info %}{{ tag_info.label }}{% else %}{{ tag }}{% endif %}
       </h3>
       <ul class="archive-list">
-        {% for post in site.posts %}
-          {% include resolve_tags.html post=post %}
+        {% for item in content_items %}
+          {% include resolve_tags.html post=item %}
           {% assign found = false %}
           {% for rt in resolved_tags %}
             {% assign rt_trimmed = rt | strip %}
@@ -55,10 +56,11 @@ permalink: /tags
           {% endfor %}
           {% if found %}
           <li class="archive-item">
-            <time>{{ post.date | date: "%Y-%m-%d" }}</time>
-            <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">{{ post.title }}</a>
-            {% if post.difficulty %}
-              {% include render_difficulty.html difficulty=post.difficulty %}
+            {% assign item_date = item.updated | default: item.date %}
+            {% if item_date %}<time>{{ item_date | date: "%Y-%m-%d" }}</time>{% endif %}
+            <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+            {% if item.difficulty %}
+              {% include render_difficulty.html difficulty=item.difficulty %}
             {% endif %}
           </li>
           {% endif %}

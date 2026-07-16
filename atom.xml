@@ -7,21 +7,18 @@ layout: null
     <title>{{ site.title | xml_escape }}</title>
     <description>{{ site.description | xml_escape }}</description>
     <link>{{ site.url }}</link>
-    <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="{{ '/atom.xml' | absolute_url }}" rel="self" type="application/rss+xml" />
     <author>
       <name>{{ site.author.name }}</name>
       <email>{{ site.author.email }}</email>
       <uri>{{ site.author.url }}</uri>
     </author>
     {% for post in site.posts limit:10 %}
-      <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.content | xml_escape }}</description>
-        <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
-        <link>{{ site.url }}/{{ post.url }}</link>
-        <link href="{{ site.url }}{{ post.url }}"/>
-        <guid isPermaLink="true">{{ site.url }}{{ post.url }}</guid>
-      </item>
+      {% include rss_item.xml item=post %}
+    {% endfor %}
+    {% assign latest_notes = site.notes | sort: 'updated' | reverse %}
+    {% for note in latest_notes limit:10 %}
+      {% include rss_item.xml item=note %}
     {% endfor %}
   </channel>
 </rss>

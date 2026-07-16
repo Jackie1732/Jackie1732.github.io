@@ -1,6 +1,6 @@
 ---
 layout: post
-title:HTB——Crafty
+title: "HTB——Crafty"
 ---
 
 ![Alt text](https://github.com/Jackie1732/Jackie1732.github.io/blob/main/pictures/Crafty/01.png?raw=true)

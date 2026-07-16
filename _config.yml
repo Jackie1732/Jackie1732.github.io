@@ -1,5 +1,6 @@
 title: GAiLO-Blog
-description: "Security Research & Development Notes"
+description: "Security, Deep Learning & LLM Research Notes"
+url: "https://jackie1732.github.io"
 author:
   name: "GAiLO"
   email: "ga1lo@qq.com"
@@ -20,6 +21,24 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+  -
+    scope:
+      path: ""
+      type: "notes"
+    values:
+      layout: "note"
+      section: "ai"
+      toc: true
+
+collections:
+  notes:
+    output: true
+    permalink: /notes/:path/
+
+exclude:
+  - templates
+  # Personal repository notes; not a public Jekyll page.
+  - Usage.md
 
 future: true
 plugins:
@@ -78,6 +97,56 @@ tag_map:
   CTF:
     label: "CTF"
     class: "tag-ctf"
+  deep-learning:
+    label: "深度学习"
+    class: "tag-deep-learning"
+  llm:
+    label: "LLM"
+    class: "tag-llm"
+  transformers:
+    label: "Transformer"
+    class: "tag-transformers"
+  pytorch:
+    label: "PyTorch"
+    class: "tag-pytorch"
+  d2l:
+    label: "D2L"
+    class: "tag-d2l"
+  mathematics:
+    label: "数学基础"
+    class: "tag-mathematics"
+  papers:
+    label: "论文阅读"
+    class: "tag-papers"
+  rag:
+    label: "RAG"
+    class: "tag-rag"
+  ai-systems:
+    label: "AI 系统"
+    class: "tag-ai-systems"
+
+# Controlled learning tracks for the evergreen research-note collection.
+note_track_map:
+  foundations:
+    label: "数学与基础"
+    description: "线性代数、概率统计、Python 与 PyTorch 基础。"
+    class: "track-foundations"
+  deep-learning:
+    label: "深度学习"
+    description: "D2L、视觉、优化和神经网络训练。"
+    class: "track-deep-learning"
+  llm:
+    label: "大语言模型"
+    description: "Transformer、预训练、微调、RAG 与推理系统。"
+    class: "track-llm"
+  papers:
+    label: "论文阅读"
+    description: "论文精读、复现与研究问题记录。"
+    class: "track-papers"
+  experiments:
+    label: "实验与项目"
+    description: "可复现的实验、评测和项目复盘。"
+    class: "track-experiments"
 
 # Difficulty levels
 difficulty_map:

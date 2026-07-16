@@ -3,7 +3,9 @@ layout: page
 title: About
 ---
 
-Security Research
+Security Research · Deep Learning · LLM Research Notes
+
+目前将安全研究与 AI/LLM 学习并行记录。课程笔记、论文阅读与实验复盘请访问 [研究笔记]({{ '/research/' | relative_url }})；安全实战文章仍可通过 [归档]({{ '/archive' | relative_url }}) 与 [标签]({{ '/tags' | relative_url }}) 浏览。
 
 雄关漫道真如铁，而今迈步从头越
 

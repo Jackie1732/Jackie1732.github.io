@@ -1,0 +1,9 @@
+{% assign item = include.item %}
+{% assign published_at = item.updated | default: item.date %}
+<item>
+  <title>{{ item.title | xml_escape }}</title>
+  <description>{{ item.description | default: item.content | strip_html | xml_escape }}</description>
+  {% if published_at %}<pubDate>{{ published_at | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>{% endif %}
+  <link>{{ item.url | absolute_url }}</link>
+  <guid isPermaLink="true">{{ item.url | absolute_url }}</guid>
+</item>

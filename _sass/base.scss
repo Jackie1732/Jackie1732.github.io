@@ -201,6 +201,7 @@ body {
 .hero-stats {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .stat-item {
@@ -212,6 +213,162 @@ body {
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
     font-size: 16px;
+  }
+}
+
+/* ===== Content map & research-note previews ===== */
+
+.content-map {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0 0 40px;
+}
+
+.content-area-card {
+  display: block;
+  min-height: 184px;
+  padding: 22px 24px;
+  border: 1px solid $border-default;
+  border-radius: 10px;
+  color: $text-primary;
+  text-decoration: none;
+  background: $bg-secondary;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: $bg-tertiary;
+    border-color: $accent-green;
+  }
+
+  h2 {
+    margin: 5px 0 8px;
+    color: $text-primary;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 0 0 16px;
+    color: $text-secondary;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+}
+
+.content-area-research {
+  border-top: 2px solid $accent-purple;
+
+  &:hover {
+    border-color: $accent-purple;
+  }
+}
+
+.content-area-security {
+  border-top: 2px solid $accent-green;
+}
+
+.content-area-kicker,
+.research-kicker {
+  color: $text-muted;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.content-area-link {
+  color: $accent-blue;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.home-section {
+  margin: 0 0 40px;
+}
+
+.section-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 14px;
+}
+
+.section-heading {
+  margin: 0;
+  color: $text-primary;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.section-more {
+  color: $text-secondary;
+  font-size: 13px;
+  text-decoration: none;
+
+  &:hover {
+    color: $accent-green;
+  }
+}
+
+.note-preview-list,
+.research-note-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.note-preview-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.note-preview-card,
+.research-note-card {
+  border: 1px solid $border-default;
+  border-radius: 8px;
+  background: $bg-secondary;
+}
+
+.note-preview-card {
+  padding: 16px;
+
+  h3 {
+    margin: 10px 0 8px;
+    font-size: 16px;
+    line-height: 1.45;
+
+    a {
+      color: $text-primary;
+      text-decoration: none;
+
+      &:hover { color: $accent-green; }
+    }
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+}
+
+.note-preview-meta,
+.research-note-card-meta,
+.note-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  time {
+    color: $text-muted;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
   }
 }
 
@@ -334,6 +491,39 @@ body {
 .tag-ctf {
   background: $accent-yellow-dim;
   color: $accent-yellow;
+}
+
+.tag-deep-learning {
+  background: $accent-blue-dim;
+  color: $accent-blue;
+}
+
+.tag-llm,
+.tag-transformers {
+  background: $accent-purple-dim;
+  color: $accent-purple;
+}
+
+.tag-pytorch {
+  background: $accent-orange-dim;
+  color: $accent-orange;
+}
+
+.tag-d2l,
+.tag-mathematics {
+  background: $accent-cyan-dim;
+  color: $accent-cyan;
+}
+
+.tag-papers {
+  background: $accent-pink-dim;
+  color: $accent-pink;
+}
+
+.tag-rag,
+.tag-ai-systems {
+  background: $accent-green-dim;
+  color: $accent-green;
 }
 
 .tag-other {
@@ -526,7 +716,8 @@ body {
 }
 
 .post-content,
-.page-content {
+.page-content,
+.note-content {
   font-size: 16px;
   line-height: 1.8;
 
@@ -865,6 +1056,234 @@ body {
   border-top: 1px solid $border-default;
 }
 
+/* ===== Research notes ===== */
+
+.note-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $border-default;
+}
+
+.note-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 14px;
+  color: $text-muted;
+  font-size: 13px;
+
+  a {
+    color: $text-secondary;
+    text-decoration: none;
+
+    &:hover { color: $accent-green; }
+  }
+}
+
+.note-title {
+  margin: 0 0 10px;
+  color: $text-primary;
+  font-size: 30px;
+  line-height: 1.3;
+}
+
+.note-description {
+  margin: 0 0 14px;
+  color: $text-secondary;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.note-track,
+.note-series {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 2px 8px;
+  border: 1px solid $border-default;
+  border-radius: 4px;
+  color: $text-secondary;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.track-foundations {
+  border-color: rgba($accent-cyan, 0.45);
+  background: $accent-cyan-dim;
+  color: $accent-cyan;
+}
+
+.track-deep-learning {
+  border-color: rgba($accent-blue, 0.45);
+  background: $accent-blue-dim;
+  color: $accent-blue;
+}
+
+.track-llm {
+  border-color: rgba($accent-purple, 0.45);
+  background: $accent-purple-dim;
+  color: $accent-purple;
+}
+
+.track-papers {
+  border-color: rgba($accent-pink, 0.45);
+  background: $accent-pink-dim;
+  color: $accent-pink;
+}
+
+.track-experiments {
+  border-color: rgba($accent-green, 0.45);
+  background: $accent-green-dim;
+  color: $accent-green;
+}
+
+.note-footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid $border-default;
+}
+
+.research-intro {
+  margin: -4px 0 36px;
+  padding: 26px 28px;
+  border: 1px solid $border-default;
+  border-left: 3px solid $accent-purple;
+  border-radius: 8px;
+  background: linear-gradient(120deg, rgba($accent-purple, 0.09), rgba($bg-secondary, 0.6));
+
+  h2 {
+    margin: 5px 0 9px;
+    color: $text-primary;
+    font-size: 24px;
+  }
+
+  p:last-child {
+    margin: 0;
+    color: $text-secondary;
+  }
+}
+
+.research-count {
+  color: $text-muted;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 38px;
+}
+
+.track-card {
+  position: relative;
+  display: block;
+  min-height: 128px;
+  padding: 18px;
+  border: 1px solid $border-default;
+  border-radius: 8px;
+  color: $text-primary;
+  text-decoration: none;
+  background: $bg-secondary;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: $bg-tertiary;
+  }
+
+  h3 {
+    margin: 0 30px 7px 0;
+    color: inherit;
+    font-size: 16px;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+}
+
+.track-card-count {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: inherit;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.track-card.track-foundations:hover { border-color: $accent-cyan; }
+.track-card.track-deep-learning:hover { border-color: $accent-blue; }
+.track-card.track-llm:hover { border-color: $accent-purple; }
+.track-card.track-papers:hover { border-color: $accent-pink; }
+.track-card.track-experiments:hover { border-color: $accent-green; }
+
+.empty-note-state {
+  margin: 0 0 38px;
+  padding: 22px 24px;
+  border: 1px dashed $border-default;
+  border-radius: 8px;
+  background: rgba($bg-secondary, 0.55);
+
+  h2 {
+    margin: 0 0 8px;
+    color: $text-primary;
+    font-size: 17px;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 14px;
+  }
+}
+
+.research-note-section {
+  margin: 0 0 38px;
+  scroll-margin-top: 76px;
+}
+
+.research-note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.research-note-card {
+  padding: 17px 20px;
+
+  h3 {
+    margin: 8px 0 6px;
+    font-size: 17px;
+    line-height: 1.45;
+
+    a {
+      color: $text-primary;
+      text-decoration: none;
+
+      &:hover { color: $accent-green; }
+    }
+  }
+
+  p {
+    margin: 0 0 12px;
+    color: $text-secondary;
+    font-size: 14px;
+  }
+}
+
+.research-note-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 .post-footer-nav {
   margin-bottom: 16px;
 }
@@ -1140,6 +1559,12 @@ body {
   .tag-java { color: $accent-red; }
   .tag-dev { color: $accent-pink; }
   .tag-ctf { color: $accent-yellow; }
+  .tag-deep-learning { color: $accent-blue; }
+  .tag-llm, .tag-transformers { color: $accent-purple; }
+  .tag-pytorch { color: $accent-orange; }
+  .tag-d2l, .tag-mathematics { color: $accent-cyan; }
+  .tag-papers { color: $accent-pink; }
+  .tag-rag, .tag-ai-systems { color: $accent-green; }
   .tag-other { color: $text-secondary; }
 
   // Archive stats override
@@ -1254,6 +1679,30 @@ pre, code {
 
   .hero-greeting {
     font-size: 20px;
+  }
+
+  .content-map,
+  .track-grid,
+  .note-preview-list {
+    grid-template-columns: 1fr;
+  }
+
+  .content-area-card {
+    min-height: 0;
+  }
+
+  .section-heading-row {
+    align-items: baseline;
+  }
+
+  .note-title {
+    font-size: 25px;
+  }
+
+  .research-intro {
+    padding: 20px;
+
+    h2 { font-size: 21px; }
   }
 
   .archive-item {

@@ -4,12 +4,55 @@ layout: default
 
 <div class="home-hero">
   <p class="hero-greeting">Hi, I'm <strong>{{ site.owner }}</strong></p>
-  <p class="hero-desc">Security Researcher &amp; Developer &mdash; {{ site.motto }}</p>
+  <p class="hero-desc">Security Researcher, Developer &amp; AI/LLM Learner &mdash; {{ site.motto }}</p>
   <div class="hero-stats">
     <span class="stat-item"><span class="stat-num">{{ site.posts | size }}</span> 篇文章</span>
+    <span class="stat-item"><span class="stat-num">{{ site.notes | size }}</span> 篇研究笔记</span>
   </div>
 </div>
 
+<section class="content-map" aria-label="内容入口">
+  <a class="content-area-card content-area-research" href="{{ '/research/' | relative_url }}">
+    <span class="content-area-kicker">Knowledge Base</span>
+    <h2>研究笔记</h2>
+    <p>Deep Learning、LLM、论文阅读与实验记录；持续修订，不与时间流文章混在一起。</p>
+    <span class="content-area-link">进入知识库 &rarr;</span>
+  </a>
+  <a class="content-area-card content-area-security" href="{{ '/tags' | relative_url }}">
+    <span class="content-area-kicker">Writeups</span>
+    <h2>安全研究</h2>
+    <p>HTB、应急响应、域渗透与 CTF 实战文章，按标签和归档浏览。</p>
+    <span class="content-area-link">浏览安全文章 &rarr;</span>
+  </a>
+</section>
+
+{% assign recent_notes = site.notes | sort: 'updated' | reverse %}
+{% if recent_notes.size > 0 %}
+<section class="home-section" aria-labelledby="recent-notes-title">
+  <div class="section-heading-row">
+    <h2 id="recent-notes-title" class="section-heading">最新研究笔记</h2>
+    <a href="{{ '/research/' | relative_url }}" class="section-more">查看全部 &rarr;</a>
+  </div>
+  <ul class="note-preview-list">
+    {% for note in recent_notes limit: 3 %}
+      {% assign track_info = site.note_track_map[note.track] %}
+      <li class="note-preview-card">
+        <div class="note-preview-meta">
+          {% if track_info %}<span class="note-track {{ track_info.class }}">{{ track_info.label }}</span>{% endif %}
+          {% if note.updated %}<time datetime="{{ note.updated | date_to_xmlschema }}">更新于 {{ note.updated | date: "%Y-%m-%d" }}</time>{% endif %}
+        </div>
+        <h3><a href="{{ note.url | relative_url }}">{{ note.title }}</a></h3>
+        {% if note.description %}<p>{{ note.description }}</p>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<div class="section-heading-row">
+  <h2 class="section-heading">最新文章</h2>
+  <a href="{{ '/archive' | relative_url }}" class="section-more">全部归档 &rarr;</a>
+</div>
 <ul class="post-list">
     {% for post in paginator.posts %}
       <li class="post-card">

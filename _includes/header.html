@@ -8,6 +8,7 @@
     </button>
     <nav class="site-nav">
       <a href="{{ "/" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/' %}active{% endif %}">首页</a>
+      <a href="{{ "/research/" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url contains '/research/' %}active{% endif %}">研究笔记</a>
       <a href="{{ "/archive" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/archive' %}active{% endif %}">归档</a>
       <a href="{{ "/tags" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/tags' %}active{% endif %}">标签</a>
       <a href="{{ "/about" | prepend: site.baseurl | replace: '//', '/' }}" class="nav-link {% if page.url == '/about' %}active{% endif %}">关于</a>
