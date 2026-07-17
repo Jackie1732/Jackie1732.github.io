@@ -103,7 +103,7 @@ math: true
 toc: true
 ```
 
-`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式、AMS 编号与化学式；设置 `bibliography: true` 后，可用 `{% raw %}{% cite citation-key %}{% endraw %}` 引用 `_bibliography/references.bib` 中的文献。图、表、Mermaid 与实验元数据的完整语法见 [学术写作格式](https://jackie1732.github.io/writing/academic/)。
+`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式、AMS 编号与化学式；设置 `bibliography: true` 后，可用 `{% raw %}{% cite citation-key %}{% endraw %}` 引用 `_bibliography/references.bib` 中的文献。图、表、Mermaid 与实验元数据的完整语法见[本地学术写作指南](templates/academic-writing-guide.md)。
 
 ## 写下笔记
 

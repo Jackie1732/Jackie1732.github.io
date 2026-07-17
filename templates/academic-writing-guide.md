@@ -58,19 +58,17 @@ $$
 
 论文图、实验曲线和架构图优先以版本化的 SVG、PNG 或 WebP 保存；图的生成脚本、数据版本与随机种子应和文章一起记录。这样浏览器只负责阅读，图像本身也可用于演示文稿与归档。
 
-{% include figure.html src="/assets/figures/academic-writing-flow.svg" alt="问题、方法、证据与结论构成的研究文章证据链" number="1" caption="一篇研究文章最小的证据链。" source="本站示例图" %}
-
-复用图组件时写：
+图组件统一给出图号、替代文本、图注、来源与可选标签：
 
 ```liquid
-{% raw %}{% include figure.html
+{% include figure.html
   src="/assets/figures/example.svg"
   alt="图像的文字等价说明"
-  number="2"
+  number="1"
   caption="图注应说明图展示了什么。"
   source="数据集或生成脚本"
   label="fig:example"
-%}{% endraw %}
+%}
 ```
 
 简单比较可用 GFM 表格；需要图注、行/列范围或复杂单元格时，使用原生 HTML 表格和 `caption`。窄屏下表格会成为可聚焦的横向滚动区域。

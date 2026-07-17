@@ -59,6 +59,11 @@ try {
         & $bundle exec jekyll serve --host 127.0.0.1 --destination $paths.Site
     }
     else {
+        & $bundle exec jekyll clean --destination $paths.Site
+        if ($LASTEXITCODE -ne 0) {
+            throw "Jekyll clean failed with exit code $LASTEXITCODE"
+        }
+
         & $bundle exec jekyll build --destination $paths.Site
     }
 
