@@ -2,3 +2,6 @@ _site
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
+
+# Local-only authoring guide; do not publish or commit.
+templates/academic-writing-guide.md
