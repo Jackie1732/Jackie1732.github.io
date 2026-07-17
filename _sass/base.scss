@@ -2543,6 +2543,96 @@ body {
   letter-spacing: 0.06em;
 }
 
+.note-reading-layout {
+  min-width: 0;
+}
+
+.note-reading-layout.has-toc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 224px;
+  grid-template-areas: "content toc";
+  align-items: start;
+  gap: 0 36px;
+}
+
+.note-reading-layout .note-content {
+  grid-area: content;
+  min-width: 0;
+  max-width: 690px;
+}
+
+.note-toc {
+  grid-area: toc;
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 104px);
+  margin: 4px 0 0;
+  padding: 2px 0 2px 16px;
+  overflow: auto;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid $border-default;
+  border-radius: 0;
+
+  .toc-title {
+    margin: 0 0 8px;
+    color: $text-muted;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: none;
+  }
+
+  .toc-list {
+    padding-top: 5px;
+    border-top: 1px solid rgba($border-default, 0.72);
+  }
+
+  .toc-item {
+    margin: 0;
+    line-height: 1.45;
+
+    a {
+      display: block;
+      margin-left: -17px;
+      padding: 5px 0 5px 15px;
+      color: $text-secondary;
+      border-left: 2px solid transparent;
+      font-size: 13px;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        color: $accent-green;
+        border-left-color: $accent-green;
+        outline: none;
+      }
+    }
+
+    &.toc-h3 a {
+      padding-left: 29px;
+      color: $text-muted;
+      font-size: 12px;
+    }
+  }
+}
+
+.note-content {
+  min-width: 0;
+
+  h2,
+  h3 {
+    scroll-margin-top: 82px;
+  }
+
+  mjx-container[display="true"] {
+    max-width: 100%;
+    padding: 3px 2px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
 .note-footer {
   display: flex;
   flex-wrap: wrap;
@@ -2634,6 +2724,45 @@ body {
 
   .note-reader-guide {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .note-reading-layout.has-toc {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "toc"
+      "content";
+    gap: 0;
+  }
+
+  .note-reading-layout .note-content {
+    max-width: none;
+  }
+
+  .note-toc {
+    position: static;
+    max-height: none;
+    margin: 0 0 26px;
+    padding: 15px 17px;
+    overflow: visible;
+    background: rgba($bg-secondary, 0.66);
+    border: 1px solid $border-default;
+    border-radius: 8px;
+
+    .toc-list {
+      padding-top: 7px;
+    }
+
+    .toc-item a {
+      margin-left: 0;
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .toc-item.toc-h3 a {
+      padding-left: 14px;
+    }
   }
 }
 

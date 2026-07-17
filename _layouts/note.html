@@ -7,7 +7,7 @@ layout: default
 
 <article class="note">
   <header class="note-header">
-    <nav class="note-breadcrumb" aria-label="Breadcrumb">
+    <nav class="note-breadcrumb" aria-label="面包屑导航">
       <a href="{{ '/research/' | relative_url }}">研究笔记</a>
       {% if track_info %}<span aria-hidden="true">/</span><span>{{ track_info.label }}</span>{% endif %}
     </nav>
@@ -39,27 +39,14 @@ layout: default
   </aside>
   {% endif %}
 
-  {% if page.toc %}
-  <nav class="toc" aria-label="目录">
-    <h2 class="toc-title">目录</h2>
-    {% assign headers = content | split: '<h' %}
-    <ul class="toc-list">
-    {% for header in headers %}
-      {% if header contains 'id="' %}
-        {% assign hLevel = header | slice: 0, 1 %}
-        {% if hLevel == '2' or hLevel == '3' %}
-          {% assign hId = header | split: 'id="' | last | split: '"' | first %}
-          {% assign hText = header | split: '">' | last | split: '</h' | first %}
-          <li class="toc-item toc-h{{ hLevel }}"><a href="#{{ hId }}">{{ hText }}</a></li>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    </ul>
-  </nav>
-  {% endif %}
+  <div class="note-reading-layout{% if page.toc %} has-toc{% endif %}">
+    {% if page.toc %}
+      {% include toc.html content=content class="toc note-toc" id="note-toc" title="本页目录" %}
+    {% endif %}
 
-  <div class="note-content">
-    {{ content }}
+    <div class="note-content">
+      {{ content }}
+    </div>
   </div>
 
   <footer class="note-footer">

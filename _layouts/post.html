@@ -16,22 +16,7 @@ layout: default
   </header>
 
   {% if page.toc %}
-  <nav class="toc" aria-label="目录">
-    <h3 class="toc-title">目录</h3>
-    {% assign headers = content | split: '<h' %}
-    <ul class="toc-list">
-    {% for header in headers %}
-      {% if header contains 'id="' %}
-        {% assign hLevel = header | slice: 0, 1 %}
-        {% if hLevel == '2' or hLevel == '3' %}
-          {% assign hId = header | split: 'id="' | last | split: '"' | first %}
-          {% assign hText = header | split: '">' | last | split: '</h' | first %}
-          <li class="toc-item toc-h{{ hLevel }}"><a href="#{{ hId }}">{{ hText }}</a></li>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    </ul>
-  </nav>
+    {% include toc.html content=content class="toc" id="post-toc" %}
   {% endif %}
 
   <div class="post-content">

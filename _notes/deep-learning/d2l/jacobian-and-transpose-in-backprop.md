@@ -278,7 +278,7 @@ print(A.grad)
 
 `x.grad` 对应 $A^T\nabla_yL$；`A.grad` 对应 $(\nabla_yL)x^T$。
 
-## 记住三句话
+## 小结
 
 1. 对向量函数 $y=Ax$，其 Jacobian 是 $A$。
 2. 对标量复合函数 $L(Ax)$，其输入梯度是 $A^T\nabla_yL$。

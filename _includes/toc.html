@@ -1,0 +1,24 @@
+{% assign toc_source = include.content %}
+{% assign toc_id = include.id | default: "page-toc" %}
+{% assign toc_title = include.title | default: "目录" %}
+{% assign headers = toc_source | split: '<h' %}
+
+<nav class="{{ include.class | default: 'toc' }}" aria-labelledby="{{ toc_id }}-title">
+  <h2 id="{{ toc_id }}-title" class="toc-title">{{ toc_title }}</h2>
+  <ol class="toc-list">
+  {% for header in headers %}
+    {% assign heading_level = header | slice: 0, 1 %}
+    {% if heading_level == '2' or heading_level == '3' %}
+      {% assign heading = header | split: '</h' | first %}
+      {% assign heading_opening = heading | split: '>' | first %}
+      {% if heading_opening contains 'id="' %}
+        {% assign heading_id = heading_opening | split: 'id="' | last | split: '"' | first %}
+        {% assign heading_text = heading | remove_first: heading_opening | remove_first: '>' | strip_html | strip %}
+        {% if heading_text != "" %}
+          <li class="toc-item toc-h{{ heading_level }}"><a href="#{{ heading_id | escape }}">{{ heading_text | escape }}</a></li>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  </ol>
+</nav>
