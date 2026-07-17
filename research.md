@@ -13,7 +13,7 @@ permalink: /research/
     <p>课程、论文与实验，都有来处，也留下尚未解开的地方。</p>
     <div class="research-intro-actions">
       <a class="action-link action-link-primary" href="#research-tracks">查看学习路线 <span aria-hidden="true">&darr;</span></a>
-      <a class="action-link action-link-secondary" href="{{ '/about' | relative_url }}">关于此站 <span aria-hidden="true">&rarr;</span></a>
+      <a class="action-link action-link-secondary" href="{{ '/writing/academic/' | relative_url }}">写作格式 <span aria-hidden="true">&rarr;</span></a>
     </div>
   </section>
 

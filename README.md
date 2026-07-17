@@ -23,7 +23,7 @@
 
 - 暗色主题 · 响应式布局 · 移动端适配
 - 自动标签检测 · 难度等级徽章
-- Markdown 全语法支持（代码高亮、任务列表、折叠面板、脚注等）
+- 学术写作支持：TeX/AMS 公式、化学式、BibTeX 引用、图注、语义表格、Mermaid 与实验元数据
 - `_posts` 时间流文章与 `_notes` 可持续修订的研究笔记分离
 - CSS 优先的轻量交互，支持键盘导航与“减少动态效果”系统偏好
 
@@ -47,7 +47,7 @@
 
 | 组件 | 技术 |
 |------|------|
-| 框架 | Jekyll 3.10 · github-pages 232 |
+| 框架 | Jekyll 4.4 · Jekyll-Scholar 7.3 |
 | 样式 | SCSS · Inter · JetBrains Mono |
 | 解析 | kramdown + GFM · Rouge 代码高亮 |
 | 部署 | GitHub Actions → GitHub Pages |
@@ -103,7 +103,7 @@ math: true
 toc: true
 ```
 
-`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式。
+`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式、AMS 编号与化学式；设置 `bibliography: true` 后，可用 `{% raw %}{% cite citation-key %}{% endraw %}` 引用 `_bibliography/references.bib` 中的文献。图、表、Mermaid 与实验元数据的完整语法见 [学术写作格式](https://jackie1732.github.io/writing/academic/)。
 
 ## 写下笔记
 

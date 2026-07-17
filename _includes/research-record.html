@@ -1,0 +1,47 @@
+{% if page.paper or page.experiment or page.presentation %}
+<aside class="research-record" aria-label="研究记录信息">
+  {% if page.paper %}
+  <section class="research-record-section" aria-labelledby="paper-record-title">
+    <h2 id="paper-record-title">论文信息</h2>
+    <dl>
+      {% if page.paper.title %}<div><dt>题目</dt><dd>{{ page.paper.title }}</dd></div>{% endif %}
+      {% if page.paper.authors %}<div><dt>作者</dt><dd>{{ page.paper.authors }}</dd></div>{% endif %}
+      {% if page.paper.venue %}<div><dt>发表处</dt><dd>{{ page.paper.venue }}{% if page.paper.year %}（{{ page.paper.year }}）{% endif %}</dd></div>{% elsif page.paper.year %}<div><dt>年份</dt><dd>{{ page.paper.year }}</dd></div>{% endif %}
+      {% if page.paper.doi %}
+        {% assign doi_url = page.paper.doi %}
+        {% unless doi_url contains '://' %}{% assign doi_url = 'https://doi.org/' | append: page.paper.doi %}{% endunless %}
+        <div><dt>DOI</dt><dd><a href="{{ doi_url }}" target="_blank" rel="noopener">{{ page.paper.doi }}</a></dd></div>
+      {% endif %}
+      {% if page.paper.arxiv %}<div><dt>arXiv</dt><dd><a href="https://arxiv.org/abs/{{ page.paper.arxiv }}" target="_blank" rel="noopener">{{ page.paper.arxiv }}</a></dd></div>{% endif %}
+      {% if page.paper.pdf %}<div><dt>论文</dt><dd><a href="{{ page.paper.pdf }}" target="_blank" rel="noopener">PDF ↗</a></dd></div>{% endif %}
+      {% if page.paper.code %}<div><dt>实现</dt><dd><a href="{{ page.paper.code }}" target="_blank" rel="noopener">代码仓库 ↗</a></dd></div>{% endif %}
+    </dl>
+  </section>
+  {% endif %}
+
+  {% if page.experiment %}
+  <section class="research-record-section" aria-labelledby="experiment-record-title">
+    <h2 id="experiment-record-title">实验信息</h2>
+    <dl>
+      {% if page.experiment.dataset %}<div><dt>数据</dt><dd>{{ page.experiment.dataset }}</dd></div>{% endif %}
+      {% if page.experiment.environment %}<div><dt>环境</dt><dd>{{ page.experiment.environment }}</dd></div>{% endif %}
+      {% if page.experiment.hardware %}<div><dt>硬件</dt><dd>{{ page.experiment.hardware }}</dd></div>{% endif %}
+      {% if page.experiment.seed != nil %}<div><dt>随机种子</dt><dd>{{ page.experiment.seed }}</dd></div>{% endif %}
+      {% if page.experiment.commit %}<div><dt>提交</dt><dd><code>{{ page.experiment.commit }}</code></dd></div>{% endif %}
+      {% if page.experiment.artifacts %}<div><dt>产物</dt><dd><a href="{{ page.experiment.artifacts }}" target="_blank" rel="noopener">数据与产物 ↗</a></dd></div>{% endif %}
+    </dl>
+  </section>
+  {% endif %}
+
+  {% if page.presentation %}
+  <section class="research-record-section" aria-labelledby="presentation-record-title">
+    <h2 id="presentation-record-title">分享信息</h2>
+    <dl>
+      {% if page.presentation.event %}<div><dt>场合</dt><dd>{{ page.presentation.event }}</dd></div>{% endif %}
+      {% if page.presentation.date %}<div><dt>日期</dt><dd>{{ page.presentation.date }}</dd></div>{% endif %}
+      {% if page.presentation.slides %}<div><dt>材料</dt><dd><a href="{{ page.presentation.slides }}" target="_blank" rel="noopener">演示文稿 ↗</a></dd></div>{% endif %}
+    </dl>
+  </section>
+  {% endif %}
+</aside>
+{% endif %}

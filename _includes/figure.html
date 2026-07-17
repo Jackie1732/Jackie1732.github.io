@@ -1,0 +1,26 @@
+{% assign figure_src = include.src %}
+{% assign figure_href = include.href | default: figure_src %}
+{% if figure_src contains '://' %}
+  {% assign figure_src_url = figure_src %}
+{% else %}
+  {% assign figure_src_url = figure_src | relative_url %}
+{% endif %}
+{% if figure_href contains '://' %}
+  {% assign figure_href_url = figure_href %}
+{% else %}
+  {% assign figure_href_url = figure_href | relative_url %}
+{% endif %}
+{% assign figure_alt = include.alt | default: include.caption | default: '' %}
+
+<figure{% if include.label %} id="{{ include.label | escape }}"{% endif %} class="academic-figure{% if include.width %} academic-figure--{{ include.width | escape }}{% endif %}" markdown="0">
+  {% if include.href %}<a class="academic-figure-link" href="{{ figure_href_url }}"{% if include.external %} target="_blank" rel="noopener"{% endif %}>{% endif %}
+  <img src="{{ figure_src_url }}" alt="{{ figure_alt | escape }}" loading="{{ include.loading | default: 'lazy' }}" decoding="async"{% if include.width_px %} width="{{ include.width_px | escape }}"{% endif %}{% if include.height_px %} height="{{ include.height_px | escape }}"{% endif %}>
+  {% if include.href %}</a>{% endif %}
+  {% if include.number or include.caption or include.source %}
+  <figcaption>
+    {% if include.number %}<span class="academic-figure-number">图 {{ include.number | escape }}.</span>{% endif %}
+    {% if include.caption %}<span>{{ include.caption | escape }}</span>{% endif %}
+    {% if include.source %}<span class="academic-figure-source">来源：{% if include.source_url %}<a href="{{ include.source_url }}" target="_blank" rel="noopener">{{ include.source | escape }}</a>{% else %}{{ include.source | escape }}{% endif %}</span>{% endif %}
+  </figcaption>
+  {% endif %}
+</figure>

@@ -29,6 +29,7 @@ defaults:
       layout: "note"
       section: "ai"
       toc: true
+      article_tools: true
 
 collections:
   notes:
@@ -45,6 +46,7 @@ plugins:
   - jekyll-seo-tag
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-scholar
 
 markdown: kramdown
 kramdown:
@@ -58,6 +60,17 @@ kramdown:
   smart_quotes: [apos, apos, quot, quot]
   syntax_highlighter_opts:
     default_lang: text
+
+# BibTeX-based references for paper notes and experiment reports. Individual
+# pages opt in to an automatically generated bibliography with
+# `bibliography: true` in front matter.
+scholar:
+  source: ./_bibliography
+  bibliography: references.bib
+  style: apa
+  locale: en
+  sort_by: year
+  order: descending
 
 # Custom variables
 owner: "GAiLO"
@@ -160,6 +173,23 @@ note_type_map:
   experiment:
     label: "实验复盘"
     class: "note-kind-experiment"
+  group-meeting:
+    label: "组会分享"
+    class: "note-kind-meeting"
+
+note_status_map:
+  draft:
+    label: "草稿"
+    class: "note-status-draft"
+  active:
+    label: "持续修订"
+    class: "note-status-active"
+  reviewed:
+    label: "已复核"
+    class: "note-status-reviewed"
+  archived:
+    label: "已归档"
+    class: "note-status-archived"
 
 # Difficulty levels
 difficulty_map:

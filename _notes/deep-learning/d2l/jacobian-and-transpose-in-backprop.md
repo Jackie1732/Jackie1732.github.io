@@ -6,6 +6,7 @@ updated: 2026-07-17
 permalink: /notes/deep-learning/d2l/jacobian-and-transpose-in-backprop/
 track: foundations
 content_type: study-note
+status: active
 audience: "正在学习 D2L、PyTorch 自动求导与反向传播的读者。"
 prerequisites: [矩阵乘法, 偏导数, 列向量]
 categories: [deep-learning]
