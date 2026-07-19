@@ -67,10 +67,14 @@ kramdown:
 scholar:
   source: ./_bibliography
   bibliography: references.bib
-  style: apa
-  locale: en
-  sort_by: year
-  order: descending
+  style: china-national-standard-gb-t-7714-2015-numeric
+  locale: zh-CN
+  sort_by: none
+  order: ascending
+  bibliography_template: bibliography_item
+  separate_links: false
+  bibliography_item_attributes:
+    class: reference-item
 
 # Custom variables
 owner: "GAiLO"

@@ -1,0 +1,12 @@
+{% if page.bibliography %}
+<section class="references" aria-labelledby="references-title" aria-describedby="references-description" role="doc-bibliography">
+  <div class="references-header">
+    <div>
+      <h2 id="references-title">参考文献</h2>
+      <p id="references-description">采用 GB/T 7714—2015 顺序编码制，按正文首次引用顺序排列。</p>
+    </div>
+    <span class="references-count" aria-label="参考文献数量">{% bibliography_count --cited %} 条</span>
+  </div>
+  {% bibliography --cited_in_order %}
+</section>
+{% endif %}

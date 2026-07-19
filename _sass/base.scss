@@ -1276,30 +1276,200 @@ body {
     }
   }
 
+  a.citation {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.08em;
+    padding: 0.02em 0.3em;
+    border: 1px solid rgba($accent-cyan, 0.3);
+    border-radius: 4px;
+    background: $accent-cyan-dim;
+    color: $accent-cyan;
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.78em;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    vertical-align: 0.16em;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+    sup {
+      position: static;
+      top: auto;
+      font-size: 1em;
+      line-height: inherit;
+      vertical-align: baseline;
+    }
+
+    &:hover {
+      border-color: rgba($accent-cyan, 0.65);
+      background: rgba($accent-cyan, 0.22);
+      color: $text-primary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accent-cyan;
+      outline-offset: 2px;
+    }
+  }
+
   .references {
-    margin-top: 44px;
-    padding-top: 20px;
+    margin-top: 48px;
+    padding-top: 28px;
     border-top: 1px solid $border-default;
   }
 
-  .references > h2 {
-    margin-top: 0;
+  .references-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+
+    h2 {
+      margin: 0 0 4px;
+    }
+  }
+
+  .references-description {
+    margin: 0;
+    color: $text-muted;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .references-count {
+    flex: 0 0 auto;
+    margin-top: 5px;
+    padding: 3px 9px;
+    border: 1px solid $border-default;
+    border-radius: 999px;
+    background: rgba($bg-secondary, 0.72);
+    color: $text-muted;
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   .bibliography,
   ol.bibliography {
-    padding-left: 0;
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
     list-style: none;
   }
 
-  .bibliography li {
-    margin: 0 0 12px;
-    padding-left: 2.2em;
+  .bibliography li.reference-item {
+    margin: 0;
+    padding: 0;
+    color: $text-secondary;
+    list-style: none;
+    text-indent: 0;
+  }
+
+  .reference-entry {
+    padding: 15px 17px;
+    border: 1px solid $border-default;
+    border-radius: 8px;
+    background: rgba($bg-secondary, 0.58);
+    box-shadow: inset 3px 0 0 transparent;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+
+    &:hover {
+      border-color: rgba($accent-blue, 0.42);
+      background: rgba($bg-secondary, 0.82);
+      box-shadow: inset 3px 0 0 rgba($accent-blue, 0.75);
+    }
+  }
+
+  .reference-copy {
     color: $text-secondary;
     font-size: 14px;
-    line-height: 1.7;
-    list-style: none;
-    text-indent: -2.2em;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+
+    > span {
+      display: block;
+      scroll-margin-top: 88px;
+      border-radius: 4px;
+    }
+
+    > span:target {
+      background: $accent-blue-dim;
+      box-shadow: 0 0 0 4px $accent-blue-dim;
+    }
+
+    i {
+      color: $text-primary;
+    }
+  }
+
+  .reference-number {
+    display: inline-block;
+    min-width: 2em;
+    margin-right: 0.42em;
+    color: $accent-cyan;
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    font-weight: 600;
+  }
+
+  .reference-url {
+    color: $accent-blue;
+    text-decoration: underline;
+    text-decoration-color: rgba($accent-blue, 0.42);
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: $accent-cyan;
+      text-decoration-color: currentColor;
+    }
+  }
+
+  .reference-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid $border-muted;
+  }
+
+  .reference-type {
+    color: $text-muted;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .reference-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .reference-action {
+    padding: 3px 8px;
+    border: 1px solid $border-default;
+    border-radius: 5px;
+    background: $bg-overlay;
+    color: $text-secondary;
+    font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    font-size: 10px;
+    line-height: 1.4;
+    text-decoration: none;
+
+    &:hover {
+      border-color: $accent-blue;
+      color: $text-primary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $accent-blue;
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -3156,6 +3326,29 @@ body {
   .empty-note-state {
     padding: 22px 20px;
   }
+
+  .post-content,
+  .page-content,
+  .note-content {
+    .references-header {
+      gap: 10px;
+    }
+
+    .reference-entry {
+      padding: 14px;
+    }
+
+    .reference-meta {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .reference-actions {
+      justify-content: flex-start;
+      margin-left: 0;
+    }
+  }
 }
 
 @media print {
@@ -3244,6 +3437,63 @@ body {
     pre,
     blockquote {
       break-inside: avoid;
+    }
+
+    a.citation {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #111;
+      font-family: inherit;
+      font-size: 0.8em;
+      text-decoration: none;
+    }
+
+    .references {
+      padding-top: 18px;
+      border-color: #777;
+    }
+
+    .references-description {
+      color: #333;
+    }
+
+    .references-count,
+    .reference-meta {
+      display: none;
+    }
+
+    .bibliography,
+    ol.bibliography {
+      display: block;
+    }
+
+    .bibliography li.reference-item {
+      margin-bottom: 8pt;
+      break-inside: avoid;
+    }
+
+    .reference-entry {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .reference-copy {
+      color: #111;
+      font-size: 9.5pt;
+      line-height: 1.55;
+    }
+
+    .reference-number {
+      color: #111;
+    }
+
+    .reference-url {
+      color: #111;
+      text-decoration: none;
     }
   }
 }

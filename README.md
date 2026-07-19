@@ -67,7 +67,7 @@ bundle exec jekyll serve
 
 ### Windows：将构建环境固定在 F 盘
 
-仓库提供 [`scripts/build-jekyll.ps1`](scripts/build-jekyll.ps1)。它不改系统 `PATH`，而是在当前 PowerShell 进程中将 Ruby、Gem、Bundler 缓存和生成站点分别指向 `F:\Ruby33-x64` 与 `F:\dev-tools\jekyll`：
+仓库提供 [`scripts/build-jekyll.ps1`](scripts/build-jekyll.ps1)。脚本保持系统 `PATH` 不变，并在当前 PowerShell 进程中将 Ruby、Gem、Bundler 缓存和生成站点分别指向 `F:\Ruby33-x64` 与 `F:\dev-tools\jekyll`：
 
 ```powershell
 # 安装 / 更新依赖并构建静态站点到 F:\dev-tools\jekyll\site
@@ -103,7 +103,7 @@ math: true
 toc: true
 ```
 
-`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式、AMS 编号与化学式；设置 `bibliography: true` 后，可用 `{% raw %}{% cite citation-key %}{% endraw %}` 引用 `_bibliography/references.bib` 中的文献。图、表、Mermaid 与实验元数据的完整语法见[本地学术写作指南](templates/academic-writing-guide.md)。
+`track` 是知识库的主分类，`tags` 用于细粒度检索；不要依赖标题关键词为新笔记自动分类。设置 `math: true` 后，页面会按需加载 MathJax，以支持 TeX 公式、AMS 编号与化学式；设置 `bibliography: true` 后，可用 `{% raw %}{% cite citation-key %}{% endraw %}` 引用 `_bibliography/references.bib` 中的文献。参考文献采用 GB/T 7714—2015 顺序编码制，按正文首次引用顺序生成。图、表、Mermaid 与实验元数据的完整语法见[本地学术写作指南](templates/academic-writing-guide.md)。
 
 ## 写下笔记
 

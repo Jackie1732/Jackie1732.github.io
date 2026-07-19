@@ -1,0 +1,27 @@
+---
+---
+<article class="reference-entry" data-reference-type="{{ type }}">
+  <div class="reference-copy">{{ reference | linkify_bibliography }}</div>
+  <div class="reference-meta">
+    {% case type %}
+      {% when "article" %}<span class="reference-type">期刊论文</span>
+      {% when "inproceedings" %}<span class="reference-type">会议论文</span>
+      {% when "book" %}<span class="reference-type">专著</span>
+      {% when "incollection" %}<span class="reference-type">书籍章节</span>
+      {% when "thesis" %}<span class="reference-type">学位论文</span>
+      {% when "techreport" %}<span class="reference-type">技术报告</span>
+      {% when "misc" %}<span class="reference-type">在线资料</span>
+      {% else %}<span class="reference-type">文献</span>
+    {% endcase %}
+    {% if entry.doi or entry.url %}
+    <span class="reference-actions" aria-label="文献链接">
+      {% if entry.doi %}
+      <a class="reference-action" href="https://doi.org/{{ entry.doi | escape }}" target="_blank" rel="noopener noreferrer">DOI <span aria-hidden="true">↗</span></a>
+      {% endif %}
+      {% if entry.url %}
+      <a class="reference-action" href="{{ entry.url | escape }}" target="_blank" rel="noopener noreferrer">访问来源 <span aria-hidden="true">↗</span></a>
+      {% endif %}
+    </span>
+    {% endif %}
+  </div>
+</article>

@@ -21,12 +21,7 @@ layout: default
 
   <div class="post-content">
     {{ content }}
-    {% if page.bibliography %}
-    <section class="references" aria-labelledby="references-title">
-      <h2 id="references-title">参考文献</h2>
-      {% bibliography --cited_in_order %}
-    </section>
-    {% endif %}
+    {% include bibliography.html %}
   </div>
 
   <footer class="post-footer">

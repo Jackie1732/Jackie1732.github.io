@@ -79,7 +79,7 @@ $$
 
 ## 参考
 
-文献条目放在 `_bibliography/references.bib`，正文引用写作：`{% raw %}{% cite citation-key %}{% endraw %}`。将 `bibliography` 设为 `true` 后，文末会自动生成已引用条目的参考文献表。
+文献条目放在 `_bibliography/references.bib`，正文引用写作：`{% raw %}{% cite citation-key %}{% endraw %}`。将 `bibliography` 设为 `true` 后，文末会按 GB/T 7714—2015 顺序编码制自动生成已引用条目，无需手写编号列表。
 
 ## 图、表与提示块
 
