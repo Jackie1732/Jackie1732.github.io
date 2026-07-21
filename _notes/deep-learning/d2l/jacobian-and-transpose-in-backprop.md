@@ -1,8 +1,8 @@
 ---
-title: "从 Jacobian 到转置：线性层怎样传回梯度"
-description: "区分向量函数的 Jacobian 与标量损失的梯度，理解线性层反向传播中为何出现 A 的转置。"
+title: "从 Jacobian 到批量反传：线性层的转置结构"
+description: "从 Jacobian、上游梯度与微分出发，推导单样本和批量线性层的输入、权重与偏置梯度。"
 date: 2026-07-17
-updated: 2026-07-17
+updated: 2026-07-21
 permalink: /notes/deep-learning/d2l/jacobian-and-transpose-in-backprop/
 track: foundations
 content_type: study-note
@@ -19,40 +19,21 @@ toc: true
 
 ## 摘要
 
-- 对向量函数 $y=Ax$，导数是 Jacobian 矩阵 $A$，而不是 $A^T$。
-- 当 $y$ 再经过标量损失 $L(y)$ 时，才有
+- 线性映射 $y=Ax$ 的 Jacobian 为 $A$。
+- 标量损失 $L(y)$ 的输入梯度满足 $\nabla_xL=A^T\nabla_yL$。
+- 批量线性层 $Z=XW+b$ 的反向传播给出 $\nabla_XL=G_ZW^T$、$\nabla_WL=X^TG_Z$ 与 $\nabla_bL=G_Z^T\mathbf{1}$。
 
-  $$
-  \nabla_x L=A^T\nabla_y L.
-  $$
+## 对象与坐标约定
 
-- $A^T$ 的职责是把输出端的梯度传回输入端；若要更新权重 $A$，单个样本对应的梯度是 $(\nabla_yL)x^T$。
+线性层的推导涉及输入向量、向量值映射和标量损失。
 
-## 先把三个对象分开
-
-线性层的讨论里，最容易混在一起的是向量、向量值函数与标量函数：
-
-| 对象 | 输入与输出 | 描述它的一阶变化 |
+| 对象 | 输入与输出 | 一阶变化的表示 |
 | --- | --- | --- |
-| 输入向量 $x$ | $x\in\mathbb{R}^n$ | 它本身没有导数 |
-| 线性映射 $y=Ax$ | $\mathbb{R}^n\to\mathbb{R}^m$ | Jacobian：$A$ |
-| 损失 $L(y)$ | $\mathbb{R}^m\to\mathbb{R}$ | 梯度：$\nabla_yL$ |
+| 输入向量 $x$ | $x\in\mathbb{R}^n$ | 坐标向量 |
+| 线性映射 $y=Ax$ | $\mathbb{R}^n\to\mathbb{R}^m$ | Jacobian 矩阵 $A$ |
+| 损失 $L(y)$ | $\mathbb{R}^m\to\mathbb{R}$ | 梯度 $\nabla_yL$ |
 
-真正被训练的复合函数是：
-
-$$
-x\longrightarrow y=Ax\longrightarrow L(y)\in\mathbb{R}.
-$$
-
-因此，“$Ax$ 的梯度是 $A^T$”并不准确。更严谨的说法是：
-
-$$
-\nabla_x\bigl(L(Ax)\bigr)=A^T\nabla_yL.
-$$
-
-## 向量为什么通常写成列？
-
-抽象向量没有行、列之分。选定一组基后，才用坐标记录它；把坐标写为列向量是最常见的约定。
+单个样本采用列向量约定：
 
 $$
 x\in\mathbb{R}^{n\times1},\qquad
@@ -60,87 +41,101 @@ A\in\mathbb{R}^{m\times n},\qquad
 y=Ax\in\mathbb{R}^{m\times1}.
 $$
 
-这样线性映射和函数复合的顺序一致：先做 $A$，再做 $B$，便写成 $B(Ax)=(BA)x$。
-
-行向量同样合法。若 $x_{\mathrm{row}}$ 是 $1\times n$ 行向量，则同一个映射可写为：
+该约定使线性映射与函数复合具有一致的书写顺序：
 
 $$
-y_{\mathrm{row}}=x_{\mathrm{row}}A^T.
+B(Ax)=(BA)x.
 $$
 
-区别只是所有矩阵乘法的左右顺序与转置都要一并改变；并不是行向量“不能表示函数输入”。
+批量计算采用 PyTorch 常用的行样本约定。第 $r$ 行保存第 $r$ 个样本的特征向量。
 
-## Jacobian：向量输出的一阶变化
+## Jacobian 描述向量输出的一阶变化
 
-对一般向量函数 $y(x):\mathbb{R}^n\to\mathbb{R}^m$，采用“行对应输出、列对应输入”的约定：
+向量函数 $y(x):\mathbb{R}^n\to\mathbb{R}^m$ 的 Jacobian 采用行对应输出、列对应输入的约定：
 
 $$
 J_y(x)=\left[\frac{\partial y_i}{\partial x_j}\right]_{i,j}
 \in\mathbb{R}^{m\times n}.
 $$
 
-它回答的是：输入发生一个很小的变化 $dx$ 时，输出会如何变化？
+Jacobian 给出输入微小变化 $dx$ 所引起的输出变化：
 
 $$
 dy\approx J_y(x)\,dx.
 $$
 
-现在令：
+令：
 
 $$
 y=Ax,\qquad
 y_i=\sum_{j=1}^{n}A_{ij}x_j.
 $$
 
-于是：
+各元素的偏导数满足：
 
 $$
-\frac{\partial y_i}{\partial x_j}=A_{ij},
-\qquad
-\boxed{J_y(x)=A.}
+\frac{\partial y_i}{\partial x_j}=A_{ij}.
 $$
 
-线性映射没有高阶项，因此这里的关系是精确的：
+因此：
 
 $$
-dy=A\,dx.
+J_y(x)=A,\qquad dy=A\,dx.
 $$
 
-有些资料把 Jacobian 排成“列对应输出、行对应输入”，会把同一组偏导写成 $A^T$。这是 Jacobian 的排版约定不同，不是导数本身变了。
+线性映射满足精确微分关系 $dy=A\,dx$。Jacobian 的另一种排布约定会将相同的偏导数数组写为 $A^T$，因此推导时需要先声明行列约定。
 
-## 标量损失：把输出变成可优化的目标
+## 标量损失与上游梯度
 
-模型输出 $y$ 往往有多个分量，但训练需要一个可以比较、可以最小化的数。给定目标 $t$，平方误差就是一个常见的标量损失：
+训练目标通常为标量损失。给定目标向量 $t$，平方误差定义为：
 
 $$
 L(y)=\frac12\lVert y-t\rVert_2^2.
 $$
 
-它的输出梯度：
+输出端梯度记为：
 
 $$
-g_y=\nabla_yL
+g_y=\nabla_yL.
 $$
 
-表示：分别轻微改变每个 $y_i$ 时，损失会怎样变化。对于上面的平方误差，有 $g_y=y-t$。
+对于平方误差：
 
-把向量输出压成一个标量，并不是为了数学形式好看，而是为了让优化器有一个明确的目标：沿哪个方向调整参数，能使损失下降。
+$$
+g_y=y-t.
+$$
 
-## 转置在哪里出现？
+上游梯度表示损失对当前节点输出的敏感度。反向传播在每个节点执行链式法则。若节点满足 $v=f(u)$，则：
 
-由正向传播：
+$$
+\nabla_uL=J_f(u)^T\nabla_vL.
+$$
+
+标量关系 $v=cu$ 给出局部导数 $dv/du=c$，因此：
+
+$$
+\frac{\partial L}{\partial u}
+=
+\frac{\partial L}{\partial v}\,c.
+$$
+
+当 loss 为标量时，loss.backward() 以 $\partial L/\partial L=1$ 作为反向传播的初始梯度。计算图中的每个操作依据自身的局部导数产生新的上游梯度，并将来自多条路径的贡献相加。
+
+## 转置在输入反传中的来源
+
+正向微分满足：
 
 $$
 dy=A\,dx.
 $$
 
-又因为 $L$ 是标量函数：
+标量损失的微分满足：
 
 $$
 dL=(\nabla_yL)^Tdy.
 $$
 
-将前式代入：
+代入正向微分可得：
 
 $$
 \begin{aligned}
@@ -150,30 +145,116 @@ dL
 \end{aligned}
 $$
 
-另一方面，按输入梯度的定义：
+输入梯度的定义为：
 
 $$
 dL=(\nabla_xL)^Tdx.
 $$
 
-比较两式便得到：
+比较两式得到：
 
 $$
-\boxed{\nabla_xL=A^T\nabla_yL.}
+\nabla_xL=A^T\nabla_yL.
+\tag{1}\label{eq:linear-input-backward}
 $$
 
-这也可由内积理解：
+该式也满足内积恒等式：
 
 $$
 \langle g_y,A\,dx\rangle
 =\langle A^Tg_y,dx\rangle.
 $$
 
-正向的 $A$ 把输入扰动送往输出；反向的 $A^T$ 把输出端“对损失的敏感度”传回输入端。这里的 $x$ 常常是前一层的激活值，因此这个梯度会继续向网络更前方传播。[^d2l-autograd]
+矩阵 $A$ 将输入扰动映射到输出空间。矩阵 $A^T$ 将输出端梯度映射回输入空间。前一层的激活值接收该输入梯度，并继续执行反向传播。[^d2l-autograd]
 
-## 一个数值例子
+## 单样本的权重梯度
 
-令：
+单样本线性层满足 $y=Ax$。元素形式给出：
+
+$$
+\frac{\partial L}{\partial A_{ij}}
+=
+\frac{\partial L}{\partial y_i}
+\frac{\partial y_i}{\partial A_{ij}}
+=
+\frac{\partial L}{\partial y_i}x_j.
+$$
+
+矩阵形式为：
+
+$$
+\nabla_A L=(\nabla_yL)x^T.
+\tag{2}\label{eq:single-sample-weight-backward}
+$$
+
+公式 \eqref{eq:linear-input-backward} 与公式 \eqref{eq:single-sample-weight-backward} 分别给出输入梯度和权重梯度。
+
+## 批量线性层的矩阵推导
+
+设 batch 大小为 $B$，输入特征数为 $d$，输出特征数为 $m$。行样本约定下：
+
+$$
+X\in\mathbb{R}^{B\times d},\qquad
+W\in\mathbb{R}^{d\times m},\qquad
+b\in\mathbb{R}^{m},\qquad
+Z=XW+\mathbf{1}_B b^T.
+$$
+
+其中 $\mathbf{1}_B\in\mathbb{R}^{B}$ 为全 $1$ 列向量。目标张量记为 $T\in\mathbb{R}^{B\times m}$。逐元素均方误差的标量损失定义为：
+
+$$
+L=\frac{1}{2Bm}\lVert Z-T\rVert_F^2.
+$$
+
+输出端梯度为：
+
+$$
+G_Z=\nabla_ZL=\frac{Z-T}{Bm}.
+\tag{3}\label{eq:output-gradient}
+$$
+
+线性层的微分为：
+
+$$
+dZ=dX\,W+X\,dW+\mathbf{1}_B\,db^T.
+$$
+
+Frobenius 内积将标量损失微分写为：
+
+$$
+dL=\operatorname{tr}(G_Z^T\,dZ).
+$$
+
+将 $dZ$ 代入并按 $dX$、$dW$ 与 $db$ 分组：
+
+$$
+\begin{aligned}
+dL
+&=\operatorname{tr}(G_Z^TdXW)
++\operatorname{tr}(G_Z^TXdW)
++\operatorname{tr}(G_Z^T\mathbf{1}_Bdb^T)\\
+&=\operatorname{tr}\!\left((G_ZW^T)^TdX\right)
++\operatorname{tr}\!\left((X^TG_Z)^TdW\right)
++\left(G_Z^T\mathbf{1}_B\right)^Tdb.
+\end{aligned}
+$$
+
+因此批量线性层的反向传播公式为：
+
+$$
+\nabla_XL=G_ZW^T,
+\qquad
+\nabla_WL=X^TG_Z,
+\qquad
+\nabla_bL=G_Z^T\mathbf{1}_B.
+\tag{4}\label{eq:batch-linear-backward}
+$$
+
+偏置梯度等于 $G_Z$ 在 batch 维度上的求和。该求和来自同一个偏置向量对每个样本输出的共享作用。
+
+## 单样本数值核验
+
+设：
 
 $$
 A=
@@ -190,57 +271,29 @@ t=
 \begin{bmatrix}4\\10\\18\end{bmatrix}.
 $$
 
-正向计算为：
+正向结果为：
 
 $$
 y=Ax=
 \begin{bmatrix}5\\11\\17\end{bmatrix}.
 $$
 
-取平方误差：
+平方误差损失的输出端梯度为：
 
 $$
-L=\frac12\lVert y-t\rVert_2^2,
-\qquad
 \nabla_yL=y-t=
 \begin{bmatrix}1\\1\\-1\end{bmatrix}.
 $$
 
-向输入端反传：
+输入梯度与权重梯度分别为：
 
 $$
-\nabla_xL=
-\begin{bmatrix}
-1&3&5\\
-2&4&6
-\end{bmatrix}
-\begin{bmatrix}1\\1\\-1\end{bmatrix}
-=
-\begin{bmatrix}-1\\0\end{bmatrix}.
+\nabla_xL=A^T\nabla_yL=
+\begin{bmatrix}-1\\0\end{bmatrix},
 $$
 
-这说明当前位置附近，增大 $x_1$ 会使损失下降；$x_2$ 的一阶影响恰好为零。
-
-## 传回梯度，不等于直接更新输入
-
-若 $x$ 是原始数据，通常不会在训练中修改它。$\nabla_xL$ 的主要作用是继续传给前一层。
-
-若 $A$ 才是待训练的权重，那么对单个样本：
-
 $$
-\frac{\partial L}{\partial A_{ij}}
-=\frac{\partial L}{\partial y_i}x_j,
-\qquad
-\boxed{\nabla_A L=(\nabla_yL)x^T.}
-$$
-
-在上面的例子中：
-
-$$
-\nabla_A L=
-\begin{bmatrix}1\\1\\-1\end{bmatrix}
-\begin{bmatrix}1&2\end{bmatrix}
-=
+\nabla_AL=(\nabla_yL)x^T=
 \begin{bmatrix}
 1&2\\
 1&2\\
@@ -248,42 +301,49 @@ $$
 \end{bmatrix}.
 $$
 
-优化器随后才会更新参数：
+该结果满足公式 \eqref{eq:linear-input-backward} 与公式 \eqref{eq:single-sample-weight-backward}。
 
-$$
-A\leftarrow A-\eta\nabla_A L.
-$$
+## PyTorch 中的梯度存储与参数更新
 
-## 用 PyTorch 验证
+批量线性层可由下列计算表达：
 
-```python
-import torch
-
-A = torch.tensor(
-    [[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]],
-    requires_grad=True,
-)
-x = torch.tensor([1.0, 2.0], requires_grad=True)
-t = torch.tensor([4.0, 10.0, 18.0])
-
-y = A @ x
-loss = 0.5 * ((y - t) ** 2).sum()
+~~~python
+Z = X @ W + b
+loss = 0.5 * ((Z - target) ** 2).mean()
 loss.backward()
+~~~
 
-print(x.grad)  # tensor([-1.,  0.])
-print(A.grad)
-# tensor([[ 1.,  2.],
-#         [ 1.,  2.],
-#         [-1., -2.]])
-```
+在此定义下，loss.backward() 计算公式 \eqref{eq:batch-linear-backward} 的各项，并将叶子张量的梯度累积到对应的 .grad 属性：
 
-`x.grad` 对应 $A^T\nabla_yL$；`A.grad` 对应 $(\nabla_yL)x^T$。
+~~~python
+X.grad  # G_Z @ W.T
+W.grad  # X.T @ G_Z
+b.grad  # G_Z.sum(dim=0)
+~~~
+
+优化器依据参数梯度执行更新：
+
+$$
+W\leftarrow W-\eta\nabla_WL,
+\qquad
+b\leftarrow b-\eta\nabla_bL.
+$$
+
+训练循环在新的反向传播前清理上一轮累积的参数梯度：
+
+~~~python
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+~~~
 
 ## 小结
 
-1. 对向量函数 $y=Ax$，其 Jacobian 是 $A$。
-2. 对标量复合函数 $L(Ax)$，其输入梯度是 $A^T\nabla_yL$。
-3. 训练权重时，单个样本的线性层满足 $\nabla_A L=(\nabla_yL)x^T$。
+1. 线性映射 $y=Ax$ 的 Jacobian 为 $A$。
+2. 标量损失将输出端梯度按 $A^T$ 传回输入端。
+3. 单样本权重梯度为 $(\nabla_yL)x^T$。
+4. 批量线性层的输入、权重和偏置梯度由公式 \eqref{eq:batch-linear-backward} 给出。
+5. backward() 计算并累积梯度，优化器依据参数梯度执行更新。
 
 ## 参考资料
 
