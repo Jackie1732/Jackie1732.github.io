@@ -1,8 +1,8 @@
 ---
-title: "从 Jacobian 到批量反传：线性层的转置结构"
-description: "从 Jacobian、上游梯度与微分出发，推导单样本和批量线性层的输入、权重与偏置梯度。"
+title: "从计算图到批量反传：梯度传播、停止梯度与线性层"
+description: "从计算图、上游梯度与微分出发，推导停止梯度、单样本与批量线性层的反向传播。"
 date: 2026-07-17
-updated: 2026-07-21
+updated: 2026-07-22
 permalink: /notes/deep-learning/d2l/jacobian-and-transpose-in-backprop/
 track: foundations
 content_type: study-note
@@ -22,6 +22,7 @@ toc: true
 - 线性映射 $y=Ax$ 的 Jacobian 为 $A$。
 - 标量损失 $L(y)$ 的输入梯度满足 $\nabla_xL=A^T\nabla_yL$。
 - 批量线性层 $Z=XW+b$ 的反向传播给出 $\nabla_XL=G_ZW^T$、$\nabla_WL=X^TG_Z$ 与 $\nabla_bL=G_Z^T\mathbf{1}$。
+- 停止梯度算子保持前向数值，并为其输入指定零梯度的反向规则。
 
 ## 对象与坐标约定
 
@@ -85,6 +86,29 @@ $$
 
 线性映射满足精确微分关系 $dy=A\,dx$。Jacobian 的另一种排布约定会将相同的偏导数数组写为 $A^T$，因此推导时需要先声明行列约定。
 
+## 计算图、叶子张量与梯度累积
+
+前向传播计算张量数值，并记录张量之间的运算依赖。该依赖结构称为计算图。张量构成图中的节点，运算构成节点之间的有向边。
+
+设：
+
+$$
+x\xrightarrow{\times}y=x^2\xrightarrow{\operatorname{sg}}u\xrightarrow{\times}z=ux\xrightarrow{\operatorname{sum}}L.
+$$
+
+其中 $\operatorname{sg}$ 表示停止梯度算子。该图同时包含从 $x$ 到 $y$ 的路径和从 $x$ 到 $z$ 的直接路径。
+
+| 张量 | 来源 | 图中的角色 |
+| --- | --- | --- |
+| $x$ | 用户创建且 requires_grad=True | 叶子张量，保存最终累积的梯度 |
+| $y=x^2$ | 张量运算 | 非叶子张量，保存运算的反向规则 |
+| $u=y.\operatorname{detach}()$ | 停止梯度 | 叶子张量，作为后续运算中的固定数值 |
+| $L=\operatorname{sum}(z)$ | 张量运算 | 标量损失，提供反向传播的起点 |
+
+叶子张量通常由用户直接创建。需要梯度的叶子张量在反向传播后将梯度累积到 .grad 属性。由运算产生的非叶子张量携带 grad_fn，该对象保存相应运算的反向规则。每次前向传播创建一张新的动态计算图。
+
+detach() 返回与原张量共享数值的张量，并在该位置建立计算图边界。独立的数据副本可由 y.detach().clone() 创建。梯度累积通过 zero_grad() 或 x.grad.zero_() 清理。
+
 ## 标量损失与上游梯度
 
 训练目标通常为标量损失。给定目标向量 $t$，平方误差定义为：
@@ -120,6 +144,87 @@ $$
 $$
 
 当 loss 为标量时，loss.backward() 以 $\partial L/\partial L=1$ 作为反向传播的初始梯度。计算图中的每个操作依据自身的局部导数产生新的上游梯度，并将来自多条路径的贡献相加。
+
+## 乘法节点的局部梯度
+
+设乘法节点满足：
+
+$$
+z=ux.
+$$
+
+该节点的微分为：
+
+$$
+dz=x\,du+u\,dx.
+$$
+
+上游梯度记为：
+
+$$
+g_z=\frac{\partial L}{\partial z}.
+$$
+
+链式法则给出两个输入端的梯度：
+
+$$
+\frac{\partial L}{\partial u}
+=
+g_zx,
+\qquad
+\frac{\partial L}{\partial x}
+=
+g_zu.
+\tag{1}\label{eq:multiply-backward}
+$$
+
+局部偏导数 $\partial z/\partial u=x$ 固定 $x$ 的当前数值，局部偏导数 $\partial z/\partial x=u$ 固定 $u$ 的当前数值。上游梯度 $g_z$ 将这两个局部敏感度转换为损失梯度。
+
+## 停止梯度的反向规则
+
+停止梯度算子满足：
+
+$$
+\operatorname{sg}(v)=v,
+\qquad
+\frac{\partial\operatorname{sg}(v)}{\partial v}=0.
+\tag{2}\label{eq:stop-gradient}
+$$
+
+该算子保持前向数值，并指定零梯度的反向规则。令：
+
+$$
+y=x^2,\qquad
+u=\operatorname{sg}(y),\qquad
+z=ux.
+$$
+
+前向数值满足 $z=x^3$。反向规则 \eqref{eq:stop-gradient} 给出：
+
+$$
+\frac{dz}{dx}
+=
+\frac{\partial z}{\partial u}\frac{du}{dx}
++
+\frac{\partial z}{\partial x}
+=
+x\cdot0+u
+=
+x^2.
+\tag{3}\label{eq:detached-product-backward}
+$$
+
+普通复合函数 $z=x^3$ 的导数为 $3x^2$。公式 \eqref{eq:detached-product-backward} 是带有停止梯度规则的计算图导数。
+
+设一次前向传播的输入为 $x_0$，则 $u_0=x_0^2$。反向传播将 $u_0$ 作为固定值，并计算函数 $\tilde z(x;x_0)=u_0x$ 在 $x=x_0$ 的导数：
+
+$$
+\left.\frac{\partial\tilde z(x;x_0)}{\partial x}\right|_{x=x_0}
+=u_0
+=x_0^2.
+$$
+
+该表达式给出 detach 后梯度与普通复合函数导数的关系。
 
 ## 转置在输入反传中的来源
 
@@ -337,13 +442,28 @@ loss.backward()
 optimizer.step()
 ~~~
 
+## 工程中的梯度边界
+
+停止梯度用于定义哪些计算结果作为固定目标，哪些参数接收当前损失的梯度。
+
+| 场景 | 前向关系 | 梯度接收范围 |
+| --- | --- | --- |
+| 教师—学生训练 | $t=\operatorname{sg}(f_{\mathrm{teacher}}(x))$，$L=\ell(f_{\mathrm{student}}(x),t)$ | 学生模型参数 |
+| DQN 目标值 | $t=r+\gamma\operatorname{sg}(\max_aQ_{\mathrm{target}}(s',a))$ | 当前价值网络参数 |
+| GAN 判别器更新 | $L_D=\ell(D(G(\epsilon)_{\operatorname{sg}}),1)$ | 判别器参数 |
+| 截断时间反向传播 | $h_{k+1}=\operatorname{sg}(h_{k+1})$ | 当前时间块的模型参数 |
+| 指标与数据导出 | $v=\operatorname{sg}(\hat y)$ | 训练图以外的记录与可视化流程 |
+
+教师模型输出、强化学习目标值和生成器样本在相应训练步骤中构成固定监督信号。循环网络在时间块边界停止梯度，计算图长度与显存占用由时间块长度控制。日志、可视化和 NumPy 转换使用停止梯度后的张量，记录流程与训练图保持独立。
+
 ## 小结
 
-1. 线性映射 $y=Ax$ 的 Jacobian 为 $A$。
-2. 标量损失将输出端梯度按 $A^T$ 传回输入端。
-3. 单样本权重梯度为 $(\nabla_yL)x^T$。
-4. 批量线性层的输入、权重和偏置梯度由公式 \eqref{eq:batch-linear-backward} 给出。
-5. backward() 计算并累积梯度，优化器依据参数梯度执行更新。
+1. 计算图记录前向运算依赖，并在反向传播时提供局部导数规则。
+2. 叶子张量保存累积梯度，非叶子张量连接相邻计算节点。
+3. 乘法节点 $z=ux$ 向两个输入分别传递 $g_zx$ 与 $g_zu$。
+4. 停止梯度算子保持前向数值，并在反向传播中将输入梯度设为零。
+5. 线性映射 $y=Ax$ 的 Jacobian 为 $A$，标量损失的输入梯度为 $A^T\nabla_yL$。
+6. 批量线性层的输入、权重和偏置梯度由公式 \eqref{eq:batch-linear-backward} 给出。
 
 ## 参考资料
 
