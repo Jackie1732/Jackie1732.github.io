@@ -1,8 +1,9 @@
 ---
-title: Agentic Concolic Execution论文阅读
-description: ConcoLLMic以源码插桩、执行抽象和工具增强LLM Agent扩展混合符号执行的环境建模与约束求解能力。
+title: CONCOLLMIC：面向跨语言路径探索的 Agentic Concolic Execution
+description: 解析CONCOLLMIC如何通过源码插桩、执行抽象、双Agent与具体验证扩展混合符号执行。
 date: 2026-07-22
 updated: 2026-07-22
+permalink: /notes/papers/agentic-concolic-execution/
 track: papers
 content_type: paper-review
 status: reviewed
@@ -27,77 +28,128 @@ paper:
 
 ## 摘要
 
-论文提出Agentic Concolic Execution，并实现原型ConcoLLMic。系统以源码插桩获得具体执行轨迹，以执行抽象向LLM Agent提供路径相关证据，再由路径约束概括Agent和约束求解Agent生成下一轮测试驱动。其主要目标是降低传统动态符号执行对语言语义模型、运行时模型和大规模SMT公式的依赖。{% cite luo2026agenticconcolic %}
+论文提出 Agentic Concolic Execution，并实现原型 CONCOLLMIC。系统以源码插桩记录具体执行轨迹，以执行抽象向 LLM Agent 提供路径相关证据，再由路径约束概括 Agent 和约束求解 Agent 生成下一轮测试驱动。其目标是降低传统动态符号执行对语言语义模型、运行时环境模型和大规模 SMT 公式的依赖。{% cite luo2026agenticconcolic %}
 
-论文将具体执行验证放在每轮测试末尾。生成输入只有达到目标分支或带来新覆盖时才保留，因此LLM的错误约束和错误求解难以持续污染后续输入集合。该机制提供基于实际运行的反馈，分析结果仍受插桩粒度、编译结果、环境准备和LLM推理质量约束。
+CONCOLLMIC 将每轮候选输入放回插桩程序中具体执行。候选输入只有到达目标分支或带来新增覆盖时才进入 WorkList。该闭环将 Agent 输出约束为可观察的运行时结果，并保留了输入、命令行参数、文件、环境变量和外部准备步骤组成的可复现测试驱动。
 
 ## 问题与研究定位
 
-传统混合符号执行同时执行具体程序和符号程序。执行器将路径上的比较、算术和内存操作编码为约束，再翻转某个分支条件并请求SMT求解器构造新输入。KLEE等系统依赖LLVM bitcode语义、符号内存、库函数和POSIX环境模型实现该过程。循环分支组合、浮点、字符串、位级运算和外部系统交互会扩大建模和求解成本。
+传统混合符号执行同时维护具体状态和符号状态。执行器将路径上的比较、算术和内存操作编码为公式，在分支处翻转一个条件，再请求 SMT 求解器构造新输入。KLEE 在 LLVM bitcode 层完成指令语义、符号内存和库函数模型的解释。循环路径组合、浮点运算、字符串、位级计算和外部环境交互共同扩大了建模与求解成本。
 
-论文围绕两项困难展开：
+CONCOLLMIC 将分析粒度提升到源代码块、具体轨迹和高层路径语义。LLM Agent 负责理解目标分支与程序意图，Python、Z3 和编译工具负责数值计算、可满足性检查与环境准备。该设计覆盖了传统 DSE 中人工模型投入较大的环境约束，也保留具体验证作为测试输入的最终准入条件。
 
-1. 现代程序的语言构造和环境交互需要大量人工符号模型。文件、网络、命令行参数、动态库和外部服务共同影响可达路径。
-2. 完整路径约束可能包含大量变量、位向量和条件。SMT求解在复杂数据格式、浮点和环境状态下容易成为探索瓶颈。
+### 浮点动机实例
 
-ConcoLLMic将符号化重心从逐条LLVM指令解释提升到源码块、具体轨迹和路径语义概括。LLM负责理解目标分支与高层条件，Python和Z3负责格式构造、精确计算和可满足性检查。系统因此形成以具体执行证据约束的Agent测试框架。{% cite luo2026agenticconcolic %}
+图 1 的程序接收两个命令行字符串，将其转换为单精度浮点数，并逐个枚举区间内可表示的浮点值。循环体通过复制浮点数位表示、递增整数表示、再复制回浮点变量的方式获得下一个可表示值。区间中的浮点值数量不超过 20 时，程序进入缺陷分支。
 
-## 核心系统
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-1-motivating-example.png'
+  alt='FP-Bench浮点动机示例及插桩语句'
+  number='1'
+  caption='FP-Bench中的浮点计数程序。蓝色语句表示源码级执行追踪插桩。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
+
+从初始输入推导完整路径公式时，循环迭代会产生大量与浮点位向量有关的子句。CONCOLLMIC 先将目标表述为两个浮点数之间的可表示值少于 20 个，再由求解 Agent 调用 Python 计算相邻单精度浮点值，构造满足条件的具体端点。图 4 展示了该过程的实际工具调用轨迹。该实例说明系统将实现级约束提炼为高层约束，再将精确计算交给受控工具。
+
+## 系统设计
 
 ### 源码插桩与执行抽象
 
-插桩模块按控制流边界划分源代码块，并插入带唯一标识符的轨迹语句。静态映射 $M$ 将块标识符关联到文件、函数和源码行范围。插桩程序运行后输出块序列，系统再利用 $M$ 和源代码构建执行抽象 $EA(\widetilde{P}\mid I)$。
+系统在由条件分支和循环自然界定的源代码块边界插入带唯一标识符的追踪语句。插桩阶段产生两个工件：运行时输出块序列的插桩程序 $\widetilde{P}$，以及从文件路径和块标识符映射到函数与源代码行范围的映射 $M$。映射 $M$ 使运行时日志能够回链到对应的源代码位置。
 
-执行抽象保存函数调用关系、已执行块、未覆盖块和路径相关源码位置。它为Agent提供足以选择目标分支的局部上下文，并避免将完整仓库或完整符号状态持续放入上下文。块级轨迹提供覆盖信息，函数调用链和精确控制流仍存在近似。
+给定输入 $I$，插桩程序输出执行轨迹 $T$。系统结合 $T$、$M$、源文件和覆盖记录生成执行抽象 $EA(\widetilde{P}\mid I)$。执行抽象保留函数调用关系、已执行块、未覆盖块、目标行和局部源代码上下文。它以较小的文本表示向 Agent 提供路径信息，也保留了按需请求更多代码片段的入口。
 
-~~~text
-测试输入 I
-→ 插桩程序执行
-→ 块ID轨迹 T
-→ T + M + 源代码
-→ 执行抽象 EA(Ṕ|I)
-~~~
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-2-workflow.png'
+  alt='CONCOLLMIC插桩与测试流程'
+  number='2'
+  caption='CONCOLLMIC由插桩阶段和迭代测试阶段组成。灰色模块由LLM驱动。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
 
-### 双Agent测试循环
+图 2 的阶段一对应插桩程序和映射 $M$ 的构建。阶段二从初始输入集合开始，具体执行维护覆盖信息，执行抽象驱动两个 Agent 生成候选输入，验证模块决定输入是否回流 WorkList。崩溃输入被单独记录，覆盖导向输入继续用于后续路径探索。
 
-路径约束概括Agent从执行抽象中选择当前路径上的目标分支，读取相关源码，输出目标分支、路径条件和预期新增覆盖行。约束求解Agent将路径条件转化为测试驱动。它可以直接推理简单条件，通过Z3处理位级和算术关系，并通过Python准备文件、参数、环境变量或外部服务。
+### 双 Agent 测试循环
 
-每轮循环维护待探索输入集合WorkList。新输入经过具体执行验证后，目标翻转成功或产生新覆盖时进入WorkList。该筛选规则将LLM输出转化为可观察的运行时结果，并使失败候选在单轮内终止。
+路径约束概括 Agent 从执行抽象中选择未覆盖目标分支，读取相关代码，并生成自包含的高层路径约束。约束中包含输入格式、变量关系、运行条件和预期覆盖行。约束求解 Agent 将这些约束转化为 `harness.py` 中的测试驱动，并可调用 Python、Z3、编译器或本地命令准备精确数值和执行环境。
 
-~~~text
-EA(Ṕ|I)
-→ 概括Agent选择分支并给出路径条件
-→ 求解Agent生成harness.py与输入 I′
-→ 具体执行验证
-→ 新覆盖或目标可达时将 I′ 加入WorkList
-~~~
+两类 Agent 的接口是路径约束。概括 Agent 解决应当翻转哪一条分支以及该路径需要满足什么语义条件，求解 Agent 解决如何构造具体输入和环境。每次生成后都执行目标程序，验证成功的输入成为后续搜索种子，失败候选在当前轮结束。
 
-## 与传统执行器的差异
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-4-agent-workflow.png'
+  alt='概括Agent与求解Agent在浮点实例上的工作流'
+  number='4'
+  caption='两个Agent在浮点实例上的协同过程。概括Agent选择未覆盖分支并提炼约束，求解Agent通过代码执行计算具体浮点端点。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
 
-KLEE在LLVM层构造精确的符号表达式，并在条件分支处创建可行状态。其优势来自形式化指令语义和SMT模型，限制来自路径爆炸、求解开销和环境模型覆盖范围。AFL++通过输入变异与覆盖反馈积累种子，具有高吞吐特征，复杂条件和环境状态通常需要较长的探索过程。
+图 4 左侧的概括 Agent 将未覆盖的缺陷分支归纳为三个条件：程序接收两个命令行参数，两个参数可解析为满足大小关系的浮点数，区间内可表示的单精度浮点数数量至多为 20。右侧求解 Agent 以初始值 1.0 为起点，执行 Python 代码计算第 20 个可表示值，并据此构造新的命令行输入。工具返回的计算结果进入后续动作历史，测试生成过程因而具有可检查的中间证据。
 
-ConcoLLMic将环境操作保留在具体执行中。Agent可以构造动态库包装器、命令行参数、文件内容和环境变量等测试条件。bc案例通过生成malloc包装库并设置LD_PRELOAD，使分配调用返回空指针，从而覆盖内存分配失败处理分支。测试驱动同时包含运行环境和字节输入。{% cite luo2026agenticconcolic %}
+### 环境约束的构造能力
 
-系统未提供传统符号执行器的完整语义健全性。LLM生成的路径条件属于高层概括，具体执行验证确认输入效果。验证失败的候选会被舍弃，验证成功也只证明当前构建、当前环境和当前输入下的行为。
+CONCOLLMIC 的测试驱动包含程序输入以外的环境状态。论文在 `bc` 中选择内存分配失败处理分支作为目标。正常执行很难使 `malloc` 返回空指针，求解 Agent 生成 C 语言分配器包装器，编译为共享库，并通过 `LD_PRELOAD` 拦截分配调用。包装器在预定次数后返回空指针，目标程序因而进入错误处理路径。
+
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-6-environment-case.png'
+  alt='bc内存分配失败环境约束案例'
+  number='6'
+  caption='bc案例中，求解Agent生成分配器包装库并利用LD_PRELOAD构造内存分配失败环境。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
+
+该案例体现了论文的关键边界。Agent 可以通过工具组合构造外部状态，具体执行仍负责确认目标行是否实际到达。系统获得了环境操控能力，同时仍受限于本地依赖、权限、操作系统语义和测试环境的可复现性。
 
 ## 实验证据
 
-单语言C/C++实验以GCov分支覆盖率为统一指标。ConcoLLMic相对KLEE、KLEE-Pending、SymCC和SymSan的平均分支覆盖率分别提高233%、135%、130%和115%，相对AFL++提高81%。比较在8个真实对象上进行，每个工具运行5次，单次预算为48小时。{% cite luo2026agenticconcolic %}
+### 单语言覆盖率
 
-多语言实验覆盖Python-C、Java-C、Python-Java和Go-C++系统。论文使用内部行覆盖率描述跨语言进展，并在C/C++对象上测得该指标与GCov行覆盖率的平均和中位相关系数均为94%。ultrajson、jansi、py4j和protobuf-go相对初始输入的覆盖率分别增长3.5倍、8.2倍、1.9倍和1.9倍。
+论文在 8 个 C/C++ 真实程序上使用 GCov 分支覆盖率进行比较。每个工具重复运行 5 次，单次预算为 48 小时。CONCOLLMIC 相对 KLEE、KLEE-Pending、SymCC、SymSan 的平均分支覆盖率分别提高 233%、135%、130% 和 115%，相对 AFL++ 提高 81%。{% cite luo2026agenticconcolic %}
 
-FP-Bench中的26个可测试程序用于验证复杂约束处理。ConcoLLMic的平均分支覆盖率为77.87%，KLEE-Float为64.81%，基础KLEE为37.67%。结果显示高层约束概括可以减少对专用浮点符号模型的依赖，Python和Z3仍承担精确计算任务。
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-5-coverage.png'
+  alt='八个C和C加加程序的GCov分支覆盖率增长曲线'
+  number='5'
+  caption='八个C/C++对象的GCov分支覆盖率增长。实线和阴影表示均值与标准差，虚线表示30分钟覆盖停滞后的CONCOLLMIC退出位置。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
 
-漏洞评估在C/C++对象上结合AddressSanitizer和UndefinedBehaviorSanitizer，在多语言对象上使用运行时异常和崩溃作为检测信号。ConcoLLMic发现11个此前未知的错误，测试驱动记录输入、参数、环境设置和外部准备步骤，支持具体执行复现。{% cite luo2026agenticconcolic %}
+图 5 中的红线表示 CONCOLLMIC。多个对象在前几个小时内快速达到较高覆盖，再因覆盖停滞提前退出。图中的比较关系说明方法将测试预算集中在较难的路径上，并不表示单个输入生成的吞吐量高于覆盖反馈模糊测试。论文将这种特征归因于高层约束推理和环境构造能力。
 
-## 可信度与局限
+多语言评估覆盖 Python-C、Java-C、Python-Java 和 Go-C++ 组合。内部行覆盖率在 C/C++ 对象上与 GCov 行覆盖率的平均和中位相关系数均为 94%。相对初始输入，ultrajson、jansi、py4j 和 protobuf-go 的覆盖率分别增长 3.5 倍、8.2 倍、1.9 倍和 1.9 倍。该结果表明统一文本日志和源码插桩可以跨越不同运行时收集探索信号。
 
-插桩阶段的内部行覆盖率与GCov呈现94%的平均和中位相关系数。目标行验证的精确率为84%，F1值为81%。内部覆盖率适合驱动测试调度，不能代替完整的源码级或分支级真实覆盖度量。块边界遗漏、未插桩控制流和调用链近似都会造成偏差。
+### 复杂约束、漏洞与验证
 
-系统平均每生成一个测试输入消耗69秒和0.21美元。插桩平均成本为每千行代码0.56美元，并支持按函数增量重插桩。LLM延迟使ConcoLLMic的输入吞吐量低于传统执行器，论文以目标明确的输入质量交换测试速度。{% cite luo2026agenticconcolic %}
+FP-Bench 的 26 个可测试程序用于评估复杂浮点约束。CONCOLLMIC 的平均分支覆盖率为 77.87%，KLEE-Float 为 64.81%，基础 KLEE 为 37.67%。论文将差异与高层约束概括、外部精确计算和工具调用结合使用联系起来。
 
-论文评估使用Claude 3.7 Sonnet。模型训练数据与开源基准之间可能存在重合，作者使用训练截止日期之后发布的krep和confetti减轻该风险。LLM错误、源码插桩不完整、外部环境不可复现和编译器优化删除路径都会限制测试结果。AddressSanitizer和UndefinedBehaviorSanitizer报告已执行路径上的错误，无法恢复优化阶段已经删除的未定义行为分支。
+漏洞评估在 C/C++ 对象中结合 AddressSanitizer 与 UndefinedBehaviorSanitizer，在多语言对象中使用运行时异常和崩溃作为检测信号。系统报告 11 个此前未知的问题，其中 9 个已被确认和修复。每个候选都通过记录输入、参数、环境设置和外部步骤的 `harness.py` 重新具体执行，复现验证构成报告漏洞前的必要环节。
+
+### 插桩保真度与开销
+
+覆盖驱动测试依赖内部追踪是否足以反映真实执行。图 8 左侧给出内部行覆盖率与 GCov 行覆盖率的相关性分布，平均和中位值均为 94%。右侧给出目标行验证结果，精确率为 84%，F1 值为 81%。
+
+{% include figure.html
+  src='/assets/figures/papers/agentic-concolic-execution/figure-8-fidelity.png'
+  alt='CONCOLLMIC插桩覆盖追踪与目标行验证结果'
+  number='8'
+  caption='内部覆盖追踪与GCov覆盖结果的对照，以及目标行验证的混淆矩阵。'
+  source='Agentic Concolic Execution'
+  source_url='https://arxiv.org/pdf/2511.20555'
+%}
+
+插桩边界、未插桩控制流和 GCov 的统计规则会造成两类覆盖指标的差异。该测量说明内部覆盖可以用于搜索调度，也限定了其解释范围。论文报告的平均插桩成本为每千行代码 0.56 美元，平均生成一个测试输入耗时 69 秒、成本 0.21 美元。LLM 调用延迟使其输入吞吐量低于传统执行器。
+
+## 局限性
+
+CONCOLLMIC 不提供传统符号执行器的语义完备性或形式化健全性保证。块级日志和调用链重建存在近似，Agent 的路径约束也可能遗漏实现细节。具体验证确认的是当前构建、当前输入和当前环境中的实际可达性。
+
+C/C++ 中的未定义行为还受编译选项影响。有符号整数溢出、无效指针访问等行为可能在优化阶段被删除或改写。AddressSanitizer 与 UndefinedBehaviorSanitizer 能报告实际执行到且仍存在于构建产物中的检测点，无法恢复编译优化已经删除的路径。论文以编译后的可执行程序为测试对象，未解决该类被优化删除的路径恢复问题。
 
 ## 总结
 
-Agentic Concolic Execution将传统混合符号执行重构为插桩观测、语义概括、工具求解和具体验证组成的闭环。该设计扩大了环境构造和跨语言测试的适用范围，并以运行时反馈约束LLM输出。它适合作为复杂程序的候选路径探索器，与fuzzing、传统符号执行和人工审计共同组成测试流程。
+CONCOLLMIC 将混合符号执行组织为源码插桩、执行抽象、高层路径概括、工具增强求解和具体验证组成的闭环。该框架将环境设置纳入测试驱动，并以运行时结果筛选 Agent 生成的候选路径。它适合作为 fuzzing、传统符号执行和人工审计之间的补充路径探索组件。{% cite luo2026agenticconcolic %}
