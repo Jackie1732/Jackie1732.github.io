@@ -1,17 +1,31 @@
 ---
 layout: page
 title: 安全文章
+hide_title: true
+wide: true
 ---
 
-<div class="archive-intro" markdown="0">
-  <p>按时间排列的攻防、应急响应与开发记录。也可以从 <a href="{{ '/tags' | relative_url }}">主题</a> 进入。</p>
-</div>
-
-<div class="archive-stats" markdown="0">
-  <span>共 <strong>{{ site.posts | size }}</strong> 篇</span>
-</div>
+<section class="listing-intro motion-enter" aria-labelledby="archive-title" markdown="0">
+  <div class="intro-lead">
+    <p class="research-kicker">安全记录</p>
+    <h1 id="archive-title">按时间回看每一次练习。</h1>
+  </div>
+  <div class="intro-aside">
+    <p>这里收录授权靶场、竞赛环境、应急响应与开发记录。每一篇保留当时的过程，也方便以后从新的理解重新校正。</p>
+    <div class="listing-intro-meta">
+      <span><strong>{{ site.posts | size }}</strong> 篇已归档</span>
+      <a href="{{ '/tags' | relative_url }}">按主题浏览 <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
 
 <section class="archive" markdown="0">
+  <div class="section-heading-row">
+    <div>
+      <p class="section-kicker">全部记录</p>
+      <h2 class="section-heading">文章索引</h2>
+    </div>
+  </div>
   {% if site.posts[0] %}
     {% assign currentYear = "" %}
     {% for post in site.posts %}

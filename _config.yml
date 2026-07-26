@@ -21,6 +21,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      article_tools: true
   -
     scope:
       path: ""

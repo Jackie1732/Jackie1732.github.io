@@ -1,89 +1,106 @@
 /*
-   卷宗 · 稿纸 (Dossier on manuscript paper)
-   Palette for a Chinese security & AI research log.
+   Palette — warm bone paper, near-black ink, clay accent, one dark panel.
 
-   The page is 墨 (ink) on 稿纸 (manuscript paper). Exactly one chromatic
-   colour — 印泥 vermilion (`$mark`), the red of a seal and of 朱批 margin
-   corrections — is allowed, and only for annotation: the masthead seal, the
-   "recently filed" mark, figure/citation numbers, risk levels, the current
-   TOC row. Never as a large fill. That restraint, plus the seal and the faint
-   grid, is the identity.
+   Four families, nothing else:
+     · bone      — the page. Warm off-white, never pure #fff.
+     · ink       — text. Near-black with a warm cast, plus three quieter steps.
+     · clay      — the single accent. Used as a *fill* (buttons, panels, chips)
+                   at $clay, and as *text* only at $clay-deep, which passes AA.
+     · panel     — the dark block. One per page at most, for rhythm.
 
-   Contrast is a first-class constraint. Every text colour below is checked
-   against $paper for WCAG: ink 14.5:1, slate 5.7:1, slate-light 4.5:1,
-   mark 5.3:1, mark-deep 7.8:1. Metadata that must be read uses $slate; only
-   truly decorative marks use $slate-light.
+   Contrast is checked against $bone (the page) and $panel (the dark block):
+     ink 15.9:1 · ink-soft 9.6:1 · stone 6.0:1 · stone-light 4.9:1
+     clay-deep 5.1:1 · white-on-clay-deep 5.9:1
+     bone-on-panel 15.2:1 · kraft-on-panel 7.8:1 · panel-dim-on-panel 7.3:1
+   $clay itself is 2.8:1 — a fill colour, never small text.
 */
 
-// 稿纸 — warm manuscript paper, three steps.
-$paper:            #f3f2ee;   // page — manuscript paper
-$paper-raised:     #fbfaf7;   // raised surfaces (code, quotes, seals)
-$paper-sunken:     #e9e7df;   // wells, row hovers
+// bone — the page and its two nearby surfaces.
+$bone:             #f0eee6;   // page
+$bone-raised:      #faf9f5;   // cards, code, quotes (lighter than the page)
+$bone-sunken:      #e8e6dc;   // chips, row hover, wells
 
-// 墨 — ink and its softer relations. All pass AA on paper.
-$ink:              #17212c;   // body text, titles         (14.5:1)
-$ink-soft:         #33404b;   // secondary headings        ( 9.9:1)
-$slate:            #52616d;   // metadata, captions         ( 5.7:1)
-$slate-light:      #5f6a72;   // faint metadata             ( 4.5:1)
+// ink — text. All four pass AA on bone.
+$ink:              #141413;   // titles, body            (15.9:1)
+$ink-soft:         #3d3b35;   // secondary text          ( 9.6:1)
+$stone:            #5c594f;   // metadata, captions      ( 6.0:1)
+$stone-light:      #6b675c;   // faint metadata          ( 4.9:1)
 
-// Rules — hairlines on paper, warm-grey. Never heavy fills.
-$grid:             #e2e0d6;   // 稿纸 grid lines (very faint)
-$line:             #d3d1c7;   // default hairline
-$line-strong:      #bdbbaf;   // emphasis rule
+// rules — warm hairlines. Low contrast on purpose; structure comes from
+// spacing and fills, not from outlines.
+$line:             #ddd9cb;
+$line-strong:      #c8c3b2;
 
-// 印泥 — the one accent. Seal-ink vermilion, used only for annotation.
-$mark:             #c0271e;   // seal / marker / risk       ( 5.3:1)
-$mark-soft:        #f0ddd6;   // faint wash (targets, current row)
-$mark-deep:        #97160f;   // hover / active             ( 7.8:1)
+// clay — the accent.
+$clay:             #cc785c;   // fills, panels, marks    (2.8:1 — no small text)
+$clay-deep:        #a8462a;   // accent text, links      (5.1:1)
+$clay-soft:        #f2e4dc;   // faint wash
+
+// panel — the dark block and the colours that live on it.
+$panel:            #191917;
+$panel-raised:     #24241f;
+$panel-line:       #34342e;
+$kraft:            #d4a27f;   // accent on dark          (7.8:1)
+$panel-dim:        #a9a6a0;   // secondary text on dark  (7.3:1)
+$panel-soft:       #c9c6bf;   // body text on dark      (10.3:1)
 
 // --- Semantic aliases used across components -------------------------------
-$bg-primary:       $paper;
-$bg-secondary:     $paper-raised;
-$bg-tertiary:      $paper-sunken;
-$bg-overlay:       $paper-raised;
+$paper:            $bone;
+$paper-raised:     $bone-raised;
+$paper-sunken:     $bone-sunken;
+$slate:            $stone;
+$slate-light:      $stone-light;
+$grid:             $line;
+$mark:             $clay-deep;   // "the accent, as text"
+$mark-soft:        $clay-soft;
+$mark-deep:        $clay-deep;
+
+$bg-primary:       $bone;
+$bg-secondary:     $bone-raised;
+$bg-tertiary:      $bone-sunken;
+$bg-overlay:       $bone-raised;
 
 $border-default:   $line;
 $border-muted:     $line;
 
 $text-primary:     $ink;
-$text-secondary:   $slate;
-$text-muted:       $slate-light;
+$text-secondary:   $stone;
+$text-muted:       $stone-light;
 
 // Legacy accent names still referenced by templates/pages. All collapse onto
-// the single annotation colour or the ink scale so no stray hues appear.
-$accent-green:     $mark;
-$accent-green-dim: $mark-soft;
+// the single accent or the ink scale so no stray hues appear.
+$accent-green:     $clay-deep;
+$accent-green-dim: $clay-soft;
 $accent-blue:      $ink-soft;
-$accent-blue-dim:  $paper-sunken;
-$accent-purple:    $mark;
-$accent-purple-dim: $mark-soft;
-$accent-orange:    $mark;
-$accent-orange-dim: $mark-soft;
-$accent-red:       $mark;
-$accent-red-dim:   $mark-soft;
+$accent-blue-dim:  $bone-sunken;
+$accent-purple:    $clay-deep;
+$accent-purple-dim: $clay-soft;
+$accent-orange:    $clay-deep;
+$accent-orange-dim: $clay-soft;
+$accent-red:       $clay-deep;
+$accent-red-dim:   $clay-soft;
 $accent-cyan:      $ink-soft;
-$accent-cyan-dim:  $paper-sunken;
-$accent-pink:      $mark;
-$accent-pink-dim:  $mark-soft;
-$accent-yellow:    $mark;
-$accent-yellow-dim: $mark-soft;
+$accent-cyan-dim:  $bone-sunken;
+$accent-pink:      $clay-deep;
+$accent-pink-dim:  $clay-soft;
+$accent-yellow:    $clay-deep;
+$accent-yellow-dim: $clay-soft;
 
 // --- Rouge (syntax highlight) token colours --------------------------------
-// A quiet paper-light code theme: ink text, cinnabar keywords, slate comments,
-// muted forest strings and ochre types. Tuned so dark terminal screenshots and
-// inline code share one calm register.
+// Quiet code on bone: ink text, clay keywords, stone comments, one muted
+// green for literals and one ochre for types. Nothing saturated.
 $alto:             $ink;         // plaintext
-$chelsea-cucumber: #1d6b4f;      // strings / literals — muted forest
-$conifer:          #1d6b4f;
-$bouquet:          $mark;        // keywords — cinnabar
-$cod-grey:         $paper;
-$grey:             $slate;       // comments
-$rajah:            #935114;      // preprocessor / namespace — ochre
+$chelsea-cucumber: #3f6b46;      // strings / literals
+$conifer:          #3f6b46;
+$bouquet:          $clay-deep;   // keywords
+$cod-grey:         $bone;
+$grey:             $stone;       // comments
+$rajah:            #8a5a24;      // preprocessor / namespace
 $hippie-blue:      $ink-soft;    // attributes / headers
-$raw-sienna:       #935114;      // keyword types
-$gulf-stream:      #1d6b4f;      // regex
-$potters-clay:     #935114;      // escapes
-$apple-blossom:    $mark;        // errors / deleted
-$dove-grey:        $slate-light;
+$raw-sienna:       #8a5a24;      // keyword types
+$gulf-stream:      #3f6b46;      // regex
+$potters-clay:     #8a5a24;      // escapes
+$apple-blossom:    $clay-deep;   // errors / deleted
+$dove-grey:        $stone-light;
 $gallery:          $ink;
-$silver-chalice:   $slate;
+$silver-chalice:   $stone;

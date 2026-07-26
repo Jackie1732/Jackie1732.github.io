@@ -2,16 +2,24 @@
 layout: default
 ---
 
-<section class="home-masthead motion-enter" aria-labelledby="home-title">
-  <p class="masthead-kicker">安全研究 · 深度学习 · 大语言模型</p>
-  <h1 id="home-title" class="masthead-title">在攻防与模型之间，把每一步都写清楚。</h1>
-  <p class="masthead-lede">靶场、应急响应、论文与实验——按时间归档，留下证据，也留下尚未解开的地方。</p>
-  <div class="masthead-tally" aria-label="站点内容统计">
-    <span class="tally-item"><span class="tally-num">{{ site.posts | size }}</span> 篇安全文章</span>
-    {% if site.notes.size > 0 %}
-    <span class="tally-item"><span class="tally-num">{{ site.notes | size }}</span> 篇研究笔记</span>
-    {% endif %}
-    <span class="tally-item"><span class="tally-num">{{ site.note_track_map | size }}</span> 条学习路线</span>
+<section class="home-hero motion-enter" aria-labelledby="home-title">
+  <div class="hero-lead">
+    <p class="masthead-kicker">安全研究 · 深度学习 · 大语言模型</p>
+    <h1 id="home-title" class="masthead-title">在攻防与模型之间，把每一步都写清楚。</h1>
+  </div>
+  <div class="hero-aside">
+    <p class="masthead-lede">靶场、应急响应、论文与实验——按时间归档，留下证据，也留下尚未解开的地方。</p>
+    <div class="masthead-tally" aria-label="站点内容统计">
+      <span class="tally-item"><span class="tally-num">{{ site.posts | size }}</span> 篇安全文章</span>
+      {% if site.notes.size > 0 %}
+      <span class="tally-item"><span class="tally-num">{{ site.notes | size }}</span> 篇研究笔记</span>
+      {% endif %}
+      <span class="tally-item"><span class="tally-num">{{ site.note_track_map | size }}</span> 条学习路线</span>
+    </div>
+    <div class="hero-actions">
+      <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">读研究笔记 <span aria-hidden="true">&rarr;</span></a>
+      <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">全部归档 <span aria-hidden="true">&rarr;</span></a>
+    </div>
   </div>
 </section>
 
@@ -41,9 +49,20 @@ layout: default
 </section>
 {% endif %}
 
+<section class="home-panel motion-enter motion-enter-delay-1" aria-labelledby="home-panel-title">
+  <div class="panel-lead">
+    <p class="panel-kicker">写法与边界</p>
+    <h2 id="home-panel-title" class="panel-title">先讲清怎么做的，再讲结论。</h2>
+  </div>
+  <div class="panel-body">
+    <p>安全部分只涉及授权靶场、竞赛环境与公开材料，尽量从利用回到检测与防守；模型部分标注课程、论文与实验的来处，复现不了的地方也照实写下来。</p>
+    <a class="panel-link" href="{{ '/about' | relative_url }}">关于此站 <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
 <section class="ledger motion-enter motion-enter-delay-2" aria-labelledby="ledger-title">
   <div class="ledger-head">
-    <h2 id="ledger-title" class="ledger-caption">安全文章 · 案卷</h2>
+    <h2 id="ledger-title" class="ledger-caption">安全文章</h2>
     <a href="{{ '/archive' | relative_url }}" class="ledger-more">全部归档 <span aria-hidden="true">&rarr;</span></a>
   </div>
   <ul class="ledger-list">

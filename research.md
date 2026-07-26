@@ -2,34 +2,40 @@
 layout: page
 title: 研究笔记
 permalink: /research/
+hide_title: true
+wide: true
 ---
 
 {% assign notes = site.notes | sort: 'updated' | reverse %}
 
 <div class="research-hub" markdown="0">
   <section class="research-intro motion-enter" aria-labelledby="research-intro-title">
-    <p class="research-kicker">深度学习 · LLM · 论文与实验</p>
-    <h2 id="research-intro-title">从数学地基走到语言模型，逐题记录。</h2>
-    <p>课程、论文与实验都标注来处，也留着尚未解开的地方。按学习路线组织，方便回看与续读。</p>
-    <div class="research-intro-actions">
-      <a class="action-link action-link-primary" href="#research-tracks">查看学习路线 <span aria-hidden="true">&darr;</span></a>
-      <a class="action-link action-link-secondary" href="{{ '/about' | relative_url }}">关于此站 <span aria-hidden="true">&rarr;</span></a>
+    <div class="intro-lead">
+      <p class="research-kicker">深度学习 · LLM · 论文与实验</p>
+      <h1 id="research-intro-title">从数学地基走到语言模型，逐题记录。</h1>
+    </div>
+    <div class="intro-aside">
+      <p>课程、论文与实验都标注来处，也留着尚未解开的地方。按学习路线组织，方便回看与续读。</p>
+      <div class="research-intro-actions">
+        <a class="action-link action-link-primary" href="#research-tracks">查看学习路线 <span aria-hidden="true">&darr;</span></a>
+        <a class="action-link action-link-secondary" href="{{ '/about' | relative_url }}">关于此站 <span aria-hidden="true">&rarr;</span></a>
+      </div>
     </div>
   </section>
 
   <section class="research-principles motion-enter motion-enter-delay-1" aria-label="学习脉络">
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">一</span>
+      <span class="research-principle-icon" aria-hidden="true">01 /</span>
       <h2>基础</h2>
       <p>线性代数、概率、张量与 PyTorch——先把地基夯实。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">二</span>
+      <span class="research-principle-icon" aria-hidden="true">02 /</span>
       <h2>模型</h2>
       <p>训练、表达与推理，在实现与论文之间反复对照。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">三</span>
+      <span class="research-principle-icon" aria-hidden="true">03 /</span>
       <h2>系统</h2>
       <p>让论文、代码与实验结果彼此印证，落到可复现的结论。</p>
     </article>

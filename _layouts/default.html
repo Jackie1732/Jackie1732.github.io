@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 {% include head.html %}
 
-<body id="top" class="layout-{{ page.layout | default: 'default' }}">
+<body id="top" class="layout-{{ page.layout | default: 'default' }}{% if page.wide %} page-wide{% endif %}">
   <a class="skip-link" href="#main-content">跳到正文</a>
   {% include header.html %}
 
@@ -22,7 +22,7 @@
           <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="page-btn prev">&larr; 上一页</a>
         {% endif %}
       {% else %}
-        <span class="page-btn prev disabled">&larr; 上一页</span>
+        <span class="page-btn prev disabled" aria-disabled="true">&larr; 上一页</span>
       {% endif %}
 
       <span class="page-info">{{ paginator.page }} / {{ paginator.total_pages }}</span>
@@ -30,7 +30,7 @@
       {% if paginator.next_page %}
         <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" class="page-btn next">下一页 &rarr;</a>
       {% else %}
-        <span class="page-btn next disabled">下一页 &rarr;</span>
+        <span class="page-btn next disabled" aria-disabled="true">下一页 &rarr;</span>
       {% endif %}
     </div>
   </nav>

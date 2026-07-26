@@ -3,9 +3,15 @@ layout: default
 ---
 
 <article class="page">
+  {% comment %}
+    Pages that open with their own hero headline (research, about) set
+    hide_title so the same words aren't printed twice.
+  {% endcomment %}
+  {% unless page.hide_title %}
   <header class="page-header">
     <h1 class="page-title">{{ page.title }}</h1>
   </header>
+  {% endunless %}
   <div class="page-content">
     {{ content }}
     {% include bibliography.html %}

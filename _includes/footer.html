@@ -1,7 +1,29 @@
 <footer class="site-footer">
   <div class="footer-inner">
-    <p class="footer-motto">{{ site.motto }}</p>
-    <p class="footer-copy">&copy; {{ site.year }}&ndash;{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> <span class="footer-sep" aria-hidden="true">·</span> <a href="{{ '/atom.xml' | relative_url }}">RSS</a> <span class="footer-sep" aria-hidden="true">·</span> <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
+    <div class="footer-brand">
+      <a href="{{ '/' | relative_url }}" class="footer-title">
+        <span class="footer-mark" aria-hidden="true">§</span>
+        <span>{{ site.title }}</span>
+      </a>
+      <p class="footer-motto">{{ site.motto }}</p>
+    </div>
+
+    <nav class="footer-nav" aria-label="页脚导航">
+      <div class="footer-nav-group">
+        <p class="footer-nav-title">阅读</p>
+        <a href="{{ '/research/' | relative_url }}">研究笔记</a>
+        <a href="{{ '/archive' | relative_url }}">安全文章</a>
+        <a href="{{ '/tags' | relative_url }}">主题导航</a>
+      </div>
+      <div class="footer-nav-group">
+        <p class="footer-nav-title">站点</p>
+        <a href="{{ '/about' | relative_url }}">关于</a>
+        <a href="{{ '/atom.xml' | relative_url }}">RSS</a>
+        <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+
+    <p class="footer-copy">&copy; {{ site.year }}&ndash;{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a></p>
   </div>
 </footer>
 

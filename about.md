@@ -2,15 +2,21 @@
 layout: page
 title: 关于
 permalink: /about
+hide_title: true
+wide: true
 ---
 
 <section class="about-intro" markdown="0">
-  <p class="research-kicker">GAiLO-Blog</p>
-  <h2>把学过、做过的，写成能回看的记录。</h2>
-  <p>这里存放安全、模型与系统方面的学习和实践。写下来是为了两件事：一是逼自己把话说清楚，二是隔一段时间还能查回去。</p>
-  <div class="about-intro-actions">
-    <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">阅读 AI / LLM <span aria-hidden="true">&rarr;</span></a>
-    <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">阅读安全文章 <span aria-hidden="true">&rarr;</span></a>
+  <div class="intro-lead">
+    <p class="research-kicker">GAiLO-Blog</p>
+    <h1>把学过、做过的，写成能回看的记录。</h1>
+  </div>
+  <div class="intro-aside">
+    <p>这里存放安全、模型与系统方面的学习和实践。写下来是为了两件事：一是逼自己把话说清楚，二是隔一段时间还能查回去。</p>
+    <div class="about-intro-actions">
+      <a class="action-link action-link-primary" href="{{ '/research/' | relative_url }}">阅读 AI / LLM <span aria-hidden="true">&rarr;</span></a>
+      <a class="action-link action-link-secondary" href="{{ '/archive' | relative_url }}">阅读安全文章 <span aria-hidden="true">&rarr;</span></a>
+    </div>
   </div>
 </section>
 

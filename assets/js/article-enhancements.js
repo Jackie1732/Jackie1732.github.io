@@ -129,6 +129,12 @@
     });
   }
 
+  function cleanDeprecatedRoles() {
+    queryContent(['[role="doc-endnote"]']).forEach(function (endnote) {
+      endnote.removeAttribute('role');
+    });
+  }
+
   function activateCurrentTocItem() {
     var toc = document.querySelector('.note-toc');
     if (!toc) return;
@@ -161,6 +167,7 @@
     addHeadingAnchors();
     addCodeTools();
     enhanceCallouts();
+    cleanDeprecatedRoles();
     activateCurrentTocItem();
   });
 })();
