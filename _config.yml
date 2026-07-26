@@ -144,6 +144,77 @@ tag_map:
     label: "AI 系统"
     class: "tag-ai-systems"
 
+# Curated categories shown on the public topic navigation page. Fine-grained
+# article tags remain available on article cards, but do not become navigation
+# categories automatically.
+primary_topics:
+  - id: hackthebox
+    source: tags
+    keys: [HTB]
+    label: "HackTheBox"
+    group: "安全练习"
+    description: "HackTheBox 靶机记录"
+  - id: xuanji
+    source: tags
+    keys: [玄机]
+    label: "玄机"
+    group: "安全练习"
+    description: "应急响应与实战题目"
+  - id: chunqiu
+    source: tags
+    keys: [春秋云]
+    label: "春秋云境"
+    group: "安全练习"
+    description: "春秋云境靶场记录"
+  - id: active-directory
+    source: tags
+    keys: [域渗透, Active_Directory, ADCS]
+    label: "域渗透"
+    group: "安全练习"
+    description: "Active Directory 与 ADCS"
+  - id: ctf
+    source: tags
+    keys: [CTF]
+    label: "CTF"
+    group: "安全练习"
+    description: "竞赛题目与解题记录"
+  - id: foundations
+    source: track
+    key: foundations
+    label: "数学与基础"
+    group: "AI / LLM"
+    description: "数学、D2L 与 PyTorch"
+  - id: deep-learning
+    source: track
+    key: deep-learning
+    label: "深度学习"
+    group: "AI / LLM"
+    description: "网络、优化和训练"
+  - id: llm
+    source: track
+    key: llm
+    label: "大语言模型"
+    group: "AI / LLM"
+    description: "Transformer 与语言模型"
+  - id: papers
+    source: track
+    key: papers
+    label: "论文阅读"
+    group: "AI / LLM"
+    description: "论文笔记与方法梳理"
+  - id: experiments
+    source: track
+    key: experiments
+    label: "实验与项目"
+    group: "开发"
+    description: "实验、小项目和开发过程"
+  - id: development
+    source: tags
+    keys: [开发, Go, Java]
+    label: "开发"
+    group: "开发"
+    description: "代码、工具和开发笔记"
+
 # Controlled learning tracks for the evergreen research-note collection.
 note_track_map:
   foundations:
