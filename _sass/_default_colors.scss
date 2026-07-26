@@ -1,32 +1,40 @@
 /*
-   卷宗 (Dossier) — a paper-light palette for a security & AI research log.
+   卷宗 · 稿纸 (Dossier on manuscript paper)
+   Palette for a Chinese security & AI research log.
 
-   The whole page is ink on paper: text is the dark ink `$ink`, metadata is a
-   lighter `$slate`, rules are faint `$line`. Exactly one chromatic colour,
-   cinnabar `$mark`, is allowed — and only for annotation: figure numbers,
-   citation markers, the "recently updated" margin rule, risk levels, the
-   current TOC position. Never for large fills. This restraint is the identity.
+   The page is 墨 (ink) on 稿纸 (manuscript paper). Exactly one chromatic
+   colour — 印泥 vermilion (`$mark`), the red of a seal and of 朱批 margin
+   corrections — is allowed, and only for annotation: the masthead seal, the
+   "recently filed" mark, figure/citation numbers, risk levels, the current
+   TOC row. Never as a large fill. That restraint, plus the seal and the faint
+   grid, is the identity.
+
+   Contrast is a first-class constraint. Every text colour below is checked
+   against $paper for WCAG: ink 14.5:1, slate 5.7:1, slate-light 4.5:1,
+   mark 5.3:1, mark-deep 7.8:1. Metadata that must be read uses $slate; only
+   truly decorative marks use $slate-light.
 */
 
-// Paper — three steps of warm off-white, lightest to slightly recessed.
-$paper:            #f4f4f2;   // page background
-$paper-raised:     #fbfbfa;   // cards / code / raised surfaces
-$paper-sunken:     #ecebe7;   // subtle wells, hovers
+// 稿纸 — warm manuscript paper, three steps.
+$paper:            #f3f2ee;   // page — manuscript paper
+$paper-raised:     #fbfaf7;   // raised surfaces (code, quotes, seals)
+$paper-sunken:     #e9e7df;   // wells, row hovers
 
-// Ink — the reading colour and its softer relations.
-$ink:              #16202b;   // body text, titles
-$ink-soft:         #2f3a45;   // secondary headings
-$slate:            #5b6b78;   // metadata, captions
-$slate-light:      #8a95a0;   // faint metadata, disabled
+// 墨 — ink and its softer relations. All pass AA on paper.
+$ink:              #17212c;   // body text, titles         (14.5:1)
+$ink-soft:         #33404b;   // secondary headings        ( 9.9:1)
+$slate:            #52616d;   // metadata, captions         ( 5.7:1)
+$slate-light:      #5f6a72;   // faint metadata             ( 4.5:1)
 
-// Rules & borders — hairlines, never heavy.
-$line:             #d9dad5;   // default hairline
-$line-strong:      #c4c6bf;   // emphasis rule (year headings, current section)
+// Rules — hairlines on paper, warm-grey. Never heavy fills.
+$grid:             #e2e0d6;   // 稿纸 grid lines (very faint)
+$line:             #d3d1c7;   // default hairline
+$line-strong:      #bdbbaf;   // emphasis rule
 
-// The one accent. Cinnabar — a seal-ink red used only for annotation.
-$mark:             #b4322a;   // figure/citation/risk/current markers
-$mark-soft:        #f3e3e0;   // faint cinnabar wash (targets, current TOC row)
-$mark-deep:        #8f2820;   // hover / active on cinnabar
+// 印泥 — the one accent. Seal-ink vermilion, used only for annotation.
+$mark:             #c0271e;   // seal / marker / risk       ( 5.3:1)
+$mark-soft:        #f0ddd6;   // faint wash (targets, current row)
+$mark-deep:        #97160f;   // hover / active             ( 7.8:1)
 
 // --- Semantic aliases used across components -------------------------------
 $bg-primary:       $paper;
@@ -61,19 +69,20 @@ $accent-yellow:    $mark;
 $accent-yellow-dim: $mark-soft;
 
 // --- Rouge (syntax highlight) token colours --------------------------------
-// A quiet paper-light code theme: ink text, cinnabar keywords, slate comments.
-// Muted so 230 dark terminal screenshots and inline code share one register.
+// A quiet paper-light code theme: ink text, cinnabar keywords, slate comments,
+// muted forest strings and ochre types. Tuned so dark terminal screenshots and
+// inline code share one calm register.
 $alto:             $ink;         // plaintext
-$chelsea-cucumber: #1f6f52;      // strings / literals — muted forest
-$conifer:          #1f6f52;
+$chelsea-cucumber: #1d6b4f;      // strings / literals — muted forest
+$conifer:          #1d6b4f;
 $bouquet:          $mark;        // keywords — cinnabar
 $cod-grey:         $paper;
 $grey:             $slate;       // comments
-$rajah:            #9a5b1e;      // preprocessor / namespace — ochre
+$rajah:            #935114;      // preprocessor / namespace — ochre
 $hippie-blue:      $ink-soft;    // attributes / headers
-$raw-sienna:       #9a5b1e;      // keyword types
-$gulf-stream:      #1f6f52;      // regex
-$potters-clay:     #9a5b1e;      // escapes
+$raw-sienna:       #935114;      // keyword types
+$gulf-stream:      #1d6b4f;      // regex
+$potters-clay:     #935114;      // escapes
 $apple-blossom:    $mark;        // errors / deleted
 $dove-grey:        $slate-light;
 $gallery:          $ink;

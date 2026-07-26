@@ -1,31 +1,38 @@
 /*
-   卷宗 (Dossier) — a paper-light research log.
+   卷宗 · 稿纸 (Dossier on manuscript paper)
 
-   One idea runs through everything: this is a case file, not a blog. HTB boxes,
-   incident response, paper reads — all of it is dated, evidence-backed, and
-   meant to be re-checked. So the page reads like a ledger. Ink on paper, one
-   annotation colour (cinnabar), hairline rules, no gradients, no drop shadows,
-   no card lift-on-hover. Boldness is spent in two places only: the dense archive
-   index on the home page, and the cinnabar margin rule that marks recent work.
+   The page is a case file written on Chinese manuscript paper. Two motifs carry
+   the identity, both in seal-ink vermilion so the single accent means something:
+     · 朱丝栏 — the faint vermilion column rules of old manuscript paper, behind
+       the masthead only.
+     · 钤印 — a stamped seal at the head of the file, and a small "recent" mark
+       in the ledger margin.
+   Everything else is quiet: ink on paper, hairline dividers, open columns
+   instead of boxed grids, whitespace for rhythm. Monospace is reserved for real
+   data — dates, counts, code, citations — never for prose or labels, so the page
+   never reads as a developer dashboard. Contrast is checked: all text ≥ AA.
 */
 
 @use "rouge-paper";
 @use "default_colors" as *;
 
 /* ===== Type roles =====
-   Chinese body/display: system CJK stack (no webfont — a CJK font is megabytes
-   and would block first paint). Latin/data: a monospaced stack. The identity is
-   carried by the sans/mono contrast and the type scale, not by a font download. */
-$font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
-  "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC",
+   No webfont (a CJK face is megabytes and blocks paint). Identity comes from the
+   sans/mono split and a deliberate scale, not a download. $sans carries prose and
+   display; $mono is strictly for tabular data, code and numbering. */
+$font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+  "Microsoft YaHei", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC",
   "WenQuanYi Micro Hei", sans-serif;
 $font-mono: "Cascadia Code", "Cascadia Mono", "SFMono-Regular", "SF Mono",
-  Consolas, "Liberation Mono", "JetBrains Mono", Menlo, monospace;
+  Consolas, "JetBrains Mono", "Liberation Mono", Menlo, monospace;
+/* Seal & display serif — CJK serif reads as carved/printed, unlike the sans UI. */
+$font-serif: "Songti SC", "STSong", "SimSun", "Source Han Serif SC",
+  "Noto Serif CJK SC", Georgia, serif;
 
-$measure: 720px;   // reading column width
-$shell: 1080px;    // outer content width
+$measure: 720px;   // reading column
+$shell: 1080px;    // outer width
 
-/* ===== Reset & Base ===== */
+/* ===== Reset & base ===== */
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -37,7 +44,6 @@ html {
 
 body {
   margin: 0;
-  padding: 0;
   background: $paper;
   color: $ink;
   font-family: $font-sans;
@@ -49,15 +55,11 @@ body {
 }
 
 a { color: $ink; text-decoration: none; }
-
 img { max-width: 100%; }
 
 ::selection { background: $mark-soft; color: $mark-deep; }
 
-:focus-visible {
-  outline: 2px solid $mark;
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid $mark; outline-offset: 2px; }
 
 .sr-only {
   position: absolute;
@@ -85,17 +87,33 @@ img { max-width: 100%; }
   &:focus { transform: translateY(0); }
 }
 
-/* ===== Header =====
-   A running header like the top of a filed document: seal mark + title on the
-   left, section tabs on the right, a single hairline under it. No blur, no
-   translucency — those read as app chrome, not paper. */
+/* Shared kicker: small sans, seal-ink, letter-spaced. NOT monospace — Chinese
+   in a mono face looks broken. */
+%kicker {
+  display: inline-block;
+  margin: 0 0 12px;
+  color: $mark;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* Shared data type: monospace, tabular. Dates, counts, citation numbers. */
+%data {
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ===== Header ===== */
 
 .site-header {
-  border-bottom: 1px solid $line;
-  background: $paper;
   position: sticky;
   top: 0;
   z-index: 100;
+  background: rgba($paper, 0.94);
+  backdrop-filter: saturate(1.1) blur(6px);
+  border-bottom: 1px solid $line;
 }
 
 .header-inner {
@@ -120,18 +138,22 @@ img { max-width: 100%; }
   white-space: nowrap;
 }
 
+/* The § logo becomes a small seal chip — the header echo of the masthead stamp. */
 .logo-mark {
-  color: $mark;
-  font-size: 19px;
+  align-self: center;
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  background: $mark;
+  color: $paper;
+  font-family: $font-serif;
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1;
+  border-radius: 3px;
+  transform: rotate(-3deg);
 }
 
-.site-nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.site-nav { display: flex; align-items: center; gap: 2px; }
 
 .nav-link {
   position: relative;
@@ -146,11 +168,11 @@ img { max-width: 100%; }
     content: "";
     position: absolute;
     left: 11px; right: 11px; bottom: 6px;
-    height: 1.5px;
+    height: 2px;
     background: $mark;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.16s ease;
+    transition: transform 0.18s ease;
   }
 
   &:hover { color: $ink; }
@@ -158,7 +180,6 @@ img { max-width: 100%; }
   &.active {
     color: $ink;
     font-weight: 600;
-
     &::after { transform: scaleX(1); }
   }
 }
@@ -180,7 +201,7 @@ img { max-width: 100%; }
 
   span {
     display: block;
-    width: 20px; height: 1.5px;
+    width: 20px; height: 2px;
     background: $ink;
     transition: transform 0.25s, opacity 0.25s;
   }
@@ -190,24 +211,11 @@ img { max-width: 100%; }
   &.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -5px); }
 }
 
-/* Mobile nav: no-JS fallback shows the links stacked; JS collapses to a toggle. */
 @media (max-width: 680px) {
-  .header-inner {
-    height: auto;
-    min-height: 60px;
-    flex-wrap: wrap;
-    padding: 0 18px;
-  }
-
-  .site-nav {
-    flex-basis: 100%;
-    flex-wrap: wrap;
-    padding-bottom: 10px;
-  }
-
+  .header-inner { height: auto; min-height: 60px; flex-wrap: wrap; padding: 0 18px; }
+  .site-nav { flex-basis: 100%; flex-wrap: wrap; padding-bottom: 10px; }
   .js .header-inner { height: 60px; flex-wrap: nowrap; }
   .js .menu-toggle { display: flex; }
-
   .js .site-nav {
     position: absolute;
     top: 60px; left: 0; right: 0;
@@ -218,7 +226,6 @@ img { max-width: 100%; }
     background: $paper;
     border-bottom: 1px solid $line;
   }
-
   .js .site-nav.open { display: flex; }
   .nav-link { padding: 9px 8px; }
 }
@@ -230,147 +237,240 @@ img { max-width: 100%; }
 .container {
   max-width: $shell;
   margin: 0 auto;
-  padding: 40px 28px 56px;
+  padding: 44px 28px 64px;
 }
 
-/* Reading pages (post / note / page) keep a narrow measure for long-form text.
-   The home/index/hub pages use the full shell. */
 .layout-post .container,
 .layout-note .container,
-.layout-page .container {
-  max-width: $measure + 120px;
-}
+.layout-page .container { max-width: $measure + 120px; }
 
-/* ===== Home: masthead =====
-   The most characteristic thing here is the record itself, so the masthead is
-   quiet: a kicker, a plain statement of what this is, and a live tally that
-   doubles as the ledger's header row. */
+/* ===== Home masthead =====
+   Signature. A ruled manuscript sheet (朱丝栏, faint vermilion column rules)
+   with a stamped seal at the head. This is where boldness is spent; the rest of
+   the page stays quiet. */
 
 .home-masthead {
-  margin-bottom: 34px;
-  padding-bottom: 22px;
-  border-bottom: 2px solid $ink;
+  position: relative;
+  margin-bottom: 46px;
+  padding: 6px 0 26px;
+  border-bottom: 1px solid $ink;
+  /* 朱丝栏 — faint vermilion column rules of manuscript paper. */
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0, transparent 40px,
+    rgba($mark, 0.05) 40px, rgba($mark, 0.05) 41px
+  );
+  background-position: left top;
 }
 
-.masthead-kicker,
-.section-kicker,
-.hero-eyebrow,
-.research-kicker,
-.content-area-kicker,
-.about-card-kicker {
-  display: inline-block;
-  margin: 0 0 12px;
-  color: $mark;
-  font-family: $font-mono;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* A second, darker rule just below — the "filed" double line of a document head. */
+.home-masthead::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 2px;
+  background: $mark;
 }
 
-.masthead-title,
-.hero-title {
-  margin: 0 0 14px;
+.masthead-kicker { @extend %kicker; margin-top: 4px; }
+
+.masthead-title {
+  margin: 0 0 16px;
+  max-width: 18em;
   color: $ink;
-  font-size: clamp(27px, 4vw, 38px);
+  font-size: clamp(28px, 4.4vw, 42px);
   font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
-  max-width: 20em;
+  line-height: 1.24;
+  letter-spacing: -0.02em;
 }
 
-.masthead-lede,
-.hero-desc {
+.masthead-lede {
   margin: 0;
-  max-width: 44em;
+  max-width: 42em;
   color: $ink-soft;
-  font-size: 16px;
+  font-size: 16.5px;
   line-height: 1.8;
 }
 
 .masthead-tally {
   display: flex;
   flex-wrap: wrap;
-  gap: 22px;
-  margin-top: 20px;
+  gap: 26px;
+  margin-top: 24px;
 }
 
 .tally-item,
 .stat-item {
   color: $slate;
   font-size: 13px;
-  font-family: $font-mono;
 }
 
 .tally-num,
 .stat-num {
-  color: $ink;
+  @extend %data;
+  color: $mark;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 17px;
+  margin-right: 3px;
 }
 
-/* ===== Home: the ledger (archive index) =====
-   Signature element. Every entry is one scannable row: date (mono, tabular),
-   type tag, title, topic. A cinnabar rule in the left margin flags the most
-   recent entries — the one place chromatic colour earns its keep. */
-
-.ledger {
-  margin: 0 0 44px;
+/* 钤印 — the seal stamped at the head of the file. CSS-only: a vermilion
+   carved border with the characters 卷宗 set vertically, tilted like a stamp. */
+.masthead-seal {
+  position: absolute;
+  top: 4px; right: 4px;
+  display: inline-grid;
+  place-items: center;
+  width: 74px; height: 74px;
+  padding: 5px;
+  color: $mark;
+  font-family: $font-serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0.04em;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  border: 2.5px solid $mark;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1.5px $paper, inset 0 0 0 3px rgba($mark, 0.35);
+  transform: rotate(-4deg);
+  user-select: none;
 }
 
+@media (max-width: 560px) {
+  /* Seal moves inline above the kicker so it never overlaps the title. */
+  .home-masthead { padding-top: 2px; }
+  .masthead-seal {
+    position: static;
+    display: inline-grid;
+    width: 52px; height: 52px;
+    margin: 0 0 14px;
+    font-size: 19px;
+    transform: rotate(-4deg);
+  }
+  .masthead-title { max-width: none; }
+}
+
+/* ===== Section heading row (shared) ===== */
+
+.section-heading-row,
 .ledger-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 14px;
-  margin: 0 0 6px;
+  margin: 0 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid $line-strong;
 }
 
+.section-kicker { @extend %kicker; margin-bottom: 5px; }
+
+.section-heading,
 .ledger-caption {
   margin: 0;
   color: $ink;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
+.section-more,
 .ledger-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: $slate;
   font-size: 13px;
-  font-family: $font-mono;
+  transition: color 0.14s;
 
   &:hover { color: $mark; }
 }
 
-.ledger-list {
+/* ===== Home: research-notes strip =====
+   Open columns divided by a single hairline — not a filled box grid. */
+
+.home-block { margin: 0 0 48px; }
+
+.note-preview-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 28px;
 }
 
-.ledger-row {
-  display: grid;
-  grid-template-columns: 108px 64px 1fr auto;
-  align-items: baseline;
-  gap: 16px;
-  padding: 11px 0 11px 16px;
-  border-bottom: 1px solid $line;
-  border-left: 2px solid transparent;
-  transition: background 0.13s ease, border-left-color 0.13s ease;
+.note-preview-card {
+  padding: 4px 0;
+  min-width: 0;
 
-  &:hover {
-    background: $paper-sunken;
+  h3 {
+    margin: 8px 0 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    a { color: $ink; &:hover { color: $mark; } }
   }
 
-  &.is-recent {
-    border-left-color: $mark;
+  p {
+    margin: 0;
+    color: $slate;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  /* 3-up on desktop, never wraps (stacks below 720px), so the divider between
+     adjacent cards is safe. */
+  & + & { padding-left: 28px; border-left: 1px solid $line; }
+}
+
+.note-preview-meta,
+.research-note-card-meta,
+.note-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  time { @extend %data; color: $slate; font-size: 12px; }
+}
+
+/* ===== Home ledger (dense archive index) — the scannable case list ===== */
+
+.ledger { margin: 0 0 8px; }
+
+.ledger-list { list-style: none; margin: 0; padding: 0; }
+
+.ledger-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 104px 66px 1fr auto;
+  align-items: baseline;
+  gap: 18px;
+  padding: 12px 4px 12px 18px;
+  border-bottom: 1px solid $line;
+  transition: background 0.13s ease;
+
+  &:hover { background: $paper-sunken; }
+
+  /* 钤印 mark for recently filed entries — a small seal tick in the margin. */
+  &.is-recent::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 50%;
+    width: 5px; height: 5px;
+    margin-top: -2.5px;
+    background: $mark;
+    border-radius: 1px;
+    transform: rotate(45deg);
   }
 }
 
 .ledger-date {
+  @extend %data;
   color: $slate;
-  font-family: $font-mono;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
   white-space: nowrap;
 }
 
@@ -381,17 +481,13 @@ img { max-width: 100%; }
   white-space: nowrap;
 }
 
-.ledger-kind[data-kind="paper"] { color: $mark; }
-
 .ledger-title {
   min-width: 0;
-
   a {
     color: $ink;
     font-size: 15.5px;
     font-weight: 500;
     line-height: 1.5;
-
     &:hover { color: $mark; text-decoration: underline; text-underline-offset: 3px; }
   }
 }
@@ -403,101 +499,17 @@ img { max-width: 100%; }
   justify-content: flex-end;
 }
 
-/* ===== Notes strip on home ===== */
-
-.home-block {
-  margin: 0 0 44px;
-}
-
-.section-heading-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 14px;
-  margin: 0 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid $line-strong;
-}
-
-.section-heading {
-  margin: 0;
-  color: $ink;
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.section-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: $slate;
-  font-size: 13px;
-  font-family: $font-mono;
-
-  &:hover { color: $mark; }
-}
-
-.note-preview-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  background: $line;
-  border: 1px solid $line;
-}
-
-.note-preview-card {
-  padding: 18px 18px 20px;
-  background: $paper;
-
-  h3 {
-    margin: 9px 0 8px;
-    font-size: 16px;
-    line-height: 1.5;
-
-    a { color: $ink; &:hover { color: $mark; } }
-  }
-
-  p {
-    margin: 0;
-    color: $slate;
-    font-size: 13.5px;
-    line-height: 1.7;
-  }
-}
-
-.note-preview-meta,
-.research-note-card-meta,
-.note-meta {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  flex-wrap: wrap;
-
-  time {
-    color: $slate-light;
-    font-family: $font-mono;
-    font-size: 12px;
-  }
-}
-
-/* ===== Shared: topic tags & type badges =====
-   Tags are typographic, not colourful chips — a mono label with a faint rule.
-   All the old per-topic hues collapse to ink; only paper-review type badges and
-   risk levels get cinnabar, because those actually signal something. */
+/* ===== Tags, kinds, badges =====
+   Typographic, not coloured chips. Mono only where the value is data. */
 
 .post-tag {
   display: inline-block;
   color: $slate;
-  font-family: $font-mono;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.02em;
-  padding: 1px 7px;
+  padding: 1px 8px;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 100px;
   white-space: nowrap;
 }
 
@@ -508,12 +520,11 @@ img { max-width: 100%; }
   display: inline-flex;
   align-items: center;
   color: $slate;
-  font-family: $font-mono;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 500;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 100px;
 }
 
 .note-kind-paper { color: $mark; border-color: rgba($mark, 0.4); }
@@ -521,21 +532,16 @@ img { max-width: 100%; }
 .note-status-verified { color: $ink; border-color: $line-strong; }
 .note-status-draft { color: $slate-light; }
 
-/* Difficulty: a real ordinal scale, so it earns marks. Filled cinnabar pips
-   count the level; empty pips show the ceiling. */
+/* Difficulty is an ordinal scale, so pips earn their marks. */
 .diff-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   color: $slate;
-  font-family: $font-mono;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
 
-  &::before {
-    letter-spacing: 1px;
-    color: $mark;
-  }
+  &::before { letter-spacing: 1px; color: $mark; }
 }
 
 .diff-easy::before   { content: "●○○○"; }
@@ -545,61 +551,52 @@ img { max-width: 100%; }
 
 /* ===== Pagination ===== */
 
-.pagination {
-  border-top: 1px solid $line;
-}
+.pagination { border-top: 1px solid $line; }
 
 .pagination-inner {
   max-width: $shell;
   margin: 0 auto;
-  padding: 20px 28px;
+  padding: 22px 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 20px;
 }
 
 .page-btn {
-  padding: 6px 15px;
+  padding: 7px 16px;
   color: $slate;
-  font-family: $font-mono;
   font-size: 13px;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 3px;
   transition: color 0.14s, border-color 0.14s;
 
   &:hover { color: $mark; border-color: $mark; }
-
-  &.disabled { opacity: 0.35; pointer-events: none; }
+  &.disabled { opacity: 0.4; pointer-events: none; }
 }
 
-.page-info {
-  color: $slate;
-  font-family: $font-mono;
-  font-size: 13px;
-  font-variant-numeric: tabular-nums;
-}
+.page-info { @extend %data; color: $slate; font-size: 13px; }
 
 /* ===== Content header (post & page) ===== */
 
 .post-header,
 .page-header {
-  margin-bottom: 34px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid $ink;
+  margin-bottom: 38px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid $ink;
 }
 
 .post-title,
 .page-title {
   margin: 0;
   color: $ink;
-  font-size: clamp(25px, 3.4vw, 33px);
+  font-size: clamp(26px, 3.6vw, 35px);
   font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
+  line-height: 1.26;
+  letter-spacing: -0.02em;
 }
 
-.post-title { margin-bottom: 15px; }
+.post-title { margin-bottom: 16px; }
 
 .post-meta {
   display: flex;
@@ -607,31 +604,25 @@ img { max-width: 100%; }
   gap: 12px;
   flex-wrap: wrap;
 
-  time {
-    color: $slate;
-    font-family: $font-mono;
-    font-size: 13px;
-    font-variant-numeric: tabular-nums;
-  }
+  time { @extend %data; color: $slate; font-size: 13px; }
 }
 
-/* ===== TOC (post inline) ===== */
+/* ===== TOC (inline, post) ===== */
 
 .toc {
-  margin: 0 0 32px;
+  margin: 0 0 34px;
   padding: 16px 20px;
   background: $paper-raised;
   border: 1px solid $line;
   border-left: 2px solid $mark;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .toc-title {
   margin: 0 0 10px;
   color: $slate;
-  font-family: $font-mono;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -639,20 +630,12 @@ img { max-width: 100%; }
 .toc-list { list-style: none; padding: 0; margin: 0; }
 
 .toc-item {
-  line-height: 1.65;
-
-  a {
-    color: $slate;
-    font-size: 14px;
-    &:hover { color: $mark; }
-  }
-
+  line-height: 1.7;
+  a { color: $slate; font-size: 14px; &:hover { color: $mark; } }
   &.toc-h3 a { padding-left: 16px; font-size: 13px; color: $slate-light; }
 }
 
-/* ===== Long-form content =====
-   The reading surface. Everything here is scoped under the three content roots
-   so page-structural components elsewhere are never touched. */
+/* ===== Long-form content ===== */
 
 .post-content,
 .page-content,
@@ -666,15 +649,11 @@ img { max-width: 100%; }
     font-weight: 700;
     line-height: 1.4;
     margin: 1.9em 0 0.7em;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   h1 { font-size: 27px; }
-  h2 {
-    font-size: 22px;
-    padding-bottom: 7px;
-    border-bottom: 1px solid $line;
-  }
+  h2 { font-size: 22px; padding-bottom: 7px; border-bottom: 1px solid $line; }
   h3 { font-size: 18.5px; }
   h4 { font-size: 16px; }
   h5 { font-size: 15px; color: $ink-soft; }
@@ -685,26 +664,23 @@ img { max-width: 100%; }
   a {
     color: $mark;
     text-decoration: underline;
-    text-decoration-color: rgba($mark, 0.35);
+    text-decoration-color: rgba($mark, 0.4);
     text-underline-offset: 2px;
     transition: text-decoration-color 0.14s;
-
     &:hover { text-decoration-color: $mark; }
   }
 
   strong { font-weight: 700; color: $ink; }
 
-  /* Screenshots are evidence: framed on paper, numbered feel. The frame makes
-     dark terminal captures read as exhibits rather than melting into the page. */
   img {
     display: block;
     max-width: 100%;
     height: auto;
-    margin: 22px 0;
+    margin: 24px 0;
     padding: 6px;
     background: $paper-raised;
     border: 1px solid $line;
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
   ul, ol { padding-left: 24px; margin: 0 0 17px; }
@@ -715,54 +691,40 @@ img { max-width: 100%; }
   ol li::marker { color: $slate; font-family: $font-mono; }
 
   blockquote {
-    margin: 20px 0;
-    padding: 4px 18px;
+    margin: 22px 0;
+    padding: 6px 20px;
     border-left: 2px solid $mark;
     color: $ink-soft;
-
     p:last-child { margin-bottom: 0; }
   }
 
   blockquote blockquote { border-left-color: $line-strong; margin-left: 0; }
 
-  /* Code: a raised paper block with a hairline. Screenshots and code share the
-     same framing language. */
   pre {
-    margin: 20px 0;
+    margin: 22px 0;
     padding: 15px 17px;
     background: $paper-raised;
     border: 1px solid $line;
-    border-radius: 2px;
+    border-radius: 3px;
     font-family: $font-mono;
     font-size: 13.5px;
     line-height: 1.62;
     overflow-x: auto;
 
-    code {
-      background: none;
-      border: 0;
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-    }
+    code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; }
   }
 
   code.highlighter-rouge {
     padding: 1px 5px;
     background: $paper-sunken;
     border: 1px solid $line;
-    border-radius: 2px;
+    border-radius: 3px;
     color: $mark-deep;
     font-family: $font-mono;
     font-size: 0.86em;
   }
 
-  table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
-    font-size: 14.5px;
-  }
+  table { width: 100%; margin: 22px 0; border-collapse: collapse; font-size: 14.5px; }
 
   th {
     text-align: left;
@@ -773,21 +735,11 @@ img { max-width: 100%; }
     white-space: nowrap;
   }
 
-  td {
-    padding: 9px 13px;
-    border-bottom: 1px solid $line;
-  }
-
+  td { padding: 9px 13px; border-bottom: 1px solid $line; }
   tr:hover td { background: $paper-sunken; }
 
-  hr {
-    height: 0;
-    border: 0;
-    border-top: 1px solid $line-strong;
-    margin: 34px 0;
-  }
+  hr { height: 0; border: 0; border-top: 1px solid $line-strong; margin: 36px 0; }
 
-  /* Task lists */
   ul.task-list, .task-list { list-style: none; padding-left: 0; }
   .task-list-item {
     position: relative;
@@ -800,7 +752,7 @@ img { max-width: 100%; }
       -webkit-appearance: none;
       width: 15px; height: 15px;
       border: 1px solid $line-strong;
-      border-radius: 2px;
+      border-radius: 3px;
       background: $paper-raised;
 
       &:checked {
@@ -819,25 +771,19 @@ img { max-width: 100%; }
     }
   }
 
-  /* Footnotes */
   .footnotes {
-    margin-top: 42px;
+    margin-top: 44px;
     padding-top: 20px;
     border-top: 1px solid $line;
     font-size: 14px;
     color: $slate;
-
     ol { padding-left: 20px; }
     li { margin-bottom: 8px; }
     p { margin: 0; }
     .reversefootnote { color: $mark; }
   }
 
-  sup a.footnote {
-    color: $mark;
-    font-weight: 600;
-    font-family: $font-mono;
-  }
+  sup a.footnote { color: $mark; font-weight: 600; font-family: $font-mono; }
 
   kbd {
     display: inline-block;
@@ -852,11 +798,11 @@ img { max-width: 100%; }
   }
 
   details {
-    margin: 20px 0;
+    margin: 22px 0;
     padding: 12px 17px;
     background: $paper-raised;
     border: 1px solid $line;
-    border-radius: 2px;
+    border-radius: 3px;
 
     summary {
       cursor: pointer;
@@ -866,42 +812,32 @@ img { max-width: 100%; }
       &::marker { color: $mark; }
     }
 
-    &[open] summary {
-      margin-bottom: 11px;
-      padding-bottom: 11px;
-      border-bottom: 1px solid $line;
-    }
+    &[open] summary { margin-bottom: 11px; padding-bottom: 11px; border-bottom: 1px solid $line; }
   }
 
-  dl { margin: 18px 0; }
+  dl { margin: 20px 0; }
   dt { font-weight: 700; color: $ink; margin-top: 13px; }
   dd { margin: 4px 0 9px 20px; color: $slate; }
 
   del, s { color: $slate-light; }
-
   mark { background: $mark-soft; color: $mark-deep; padding: 1px 4px; border-radius: 2px; }
-
   abbr[title] { text-decoration: underline dotted $slate-light; cursor: help; }
 
-  /* MathJax block scroll */
   mjx-container[display="true"] {
     display: block;
     max-width: 100%;
-    margin: 20px 0;
+    margin: 22px 0;
     overflow-x: auto;
     overflow-y: hidden;
   }
 
-  /* Table horizontal scroll wrapper (added by JS) */
   .table-scroll {
     max-width: 100%;
-    margin: 20px 0;
+    margin: 22px 0;
     overflow-x: auto;
     border: 1px solid $line;
-    border-radius: 2px;
-
+    border-radius: 3px;
     &:focus-visible { outline: 2px solid $mark; outline-offset: 2px; }
-
     > table { margin: 0; }
   }
 
@@ -916,14 +852,12 @@ img { max-width: 100%; }
 
   th[scope="row"] { color: $ink; font-weight: 600; }
 
-  /* Academic figures */
-  .academic-figure { margin: 28px 0; text-align: left; }
+  .academic-figure { margin: 30px 0; text-align: left; }
   .academic-figure-link { display: block; border: 0; }
-  .academic-figure img,
-  figure img { width: auto; max-width: 100%; margin: 0 auto; }
+  .academic-figure img, figure img { width: auto; max-width: 100%; margin: 0 auto; }
   .academic-figure--wide { max-width: 100%; }
 
-  figure { margin: 26px 0; }
+  figure { margin: 28px 0; }
 
   figcaption {
     margin-top: 10px;
@@ -933,25 +867,16 @@ img { max-width: 100%; }
     text-align: left;
   }
 
-  /* Figure numbers are annotation → cinnabar. This is the reference use. */
-  .academic-figure-number {
-    margin-right: 5px;
-    color: $mark;
-    font-family: $font-mono;
-    font-weight: 700;
-  }
-
+  .academic-figure-number { margin-right: 5px; color: $mark; font-family: $font-mono; font-weight: 700; }
   .academic-figure-source { display: block; margin-top: 3px; color: $slate-light; }
 
-  /* Callouts — a faint tinted well with a mono label. Only "caution" borrows
-     the cinnabar; the rest stay in ink/slate so alarm colour means alarm. */
   .callout {
-    margin: 22px 0;
-    padding: 13px 17px;
+    margin: 24px 0;
+    padding: 14px 18px;
     background: $paper-raised;
     border: 1px solid $line;
     border-left: 2px solid $slate;
-    border-radius: 2px;
+    border-radius: 3px;
     color: $ink-soft;
   }
 
@@ -964,7 +889,6 @@ img { max-width: 100%; }
   .callout-title {
     margin: 0 0 6px;
     color: $slate;
-    font-family: $font-mono;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -974,10 +898,8 @@ img { max-width: 100%; }
   .callout--warning .callout-title,
   .callout--caution .callout-title { color: $mark-deep; }
 
-  .callout-content > :last-child,
-  .callout > :last-child { margin-bottom: 0; }
+  .callout-content > :last-child, .callout > :last-child { margin-bottom: 0; }
 
-  /* Heading anchors */
   h2, h3 {
     .heading-anchor {
       margin-left: 9px;
@@ -988,19 +910,14 @@ img { max-width: 100%; }
       text-decoration: none;
       opacity: 0;
       transition: opacity 0.14s, color 0.14s;
-
       &:hover, &:focus-visible { color: $mark; opacity: 1; }
     }
-
-    &:hover .heading-anchor,
-    &:focus-within .heading-anchor { opacity: 0.6; }
+    &:hover .heading-anchor, &:focus-within .heading-anchor { opacity: 0.6; }
   }
 
-  /* Code block chrome (added by JS) */
   pre.code-block {
     position: relative;
     padding-top: 34px;
-
     &::before {
       content: attr(data-language);
       position: absolute;
@@ -1019,99 +936,80 @@ img { max-width: 100%; }
     padding: 3px 9px;
     background: $paper-sunken;
     border: 1px solid $line-strong;
-    border-radius: 2px;
+    border-radius: 3px;
     color: $slate;
     cursor: pointer;
     font-family: $font-mono;
     font-size: 11px;
-
     &:hover, &:focus-visible { border-color: $mark; color: $mark; outline: none; }
   }
 
   .mermaid {
     max-width: 100%;
-    margin: 22px 0;
+    margin: 24px 0;
     padding: 16px;
     overflow-x: auto;
     background: $paper-raised;
     border: 1px solid $line;
-    border-radius: 2px;
+    border-radius: 3px;
     text-align: center;
-
     svg { max-width: 100%; height: auto; }
   }
 
-  /* Citations — annotation markers, cinnabar mono superscripts */
   a.citation {
     display: inline-flex;
     align-items: center;
     margin: 0 0.1em;
-    padding: 0 0.32em;
-    border: 1px solid rgba($mark, 0.3);
-    border-radius: 2px;
+    padding: 0 0.34em;
+    border: 1px solid rgba($mark, 0.35);
+    border-radius: 3px;
     background: $mark-soft;
-    color: $mark;
+    color: $mark-deep;
     font-family: $font-mono;
     font-size: 0.76em;
     font-weight: 600;
     vertical-align: 0.15em;
     text-decoration: none;
 
-    sup {
-      position: static;
-      font-size: 1em;
-      vertical-align: baseline;
-    }
-
-    &:hover { background: rgba($mark, 0.16); color: $mark-deep; }
+    sup { position: static; font-size: 1em; vertical-align: baseline; }
+    &:hover { background: rgba($mark, 0.18); }
     &:focus-visible { outline: 2px solid $mark; outline-offset: 2px; }
   }
 
-  /* Bibliography */
-  .references { margin-top: 50px; padding-top: 28px; border-top: 2px solid $ink; }
+  .references { margin-top: 52px; padding-top: 28px; border-top: 1px solid $ink; }
 
   .references-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 18px;
-    margin-bottom: 20px;
-
+    margin-bottom: 22px;
     h2 { margin: 0 0 4px; border: 0; padding: 0; }
   }
 
   .references-description { margin: 0; color: $slate; font-size: 13px; }
 
   .references-count {
+    @extend %data;
     flex: 0 0 auto;
     padding: 3px 10px;
     border: 1px solid $line-strong;
-    border-radius: 2px;
+    border-radius: 100px;
     color: $slate;
-    font-family: $font-mono;
     font-size: 11px;
     white-space: nowrap;
   }
 
-  .bibliography, ol.bibliography {
-    display: grid;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
+  .bibliography, ol.bibliography { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
   .bibliography li.reference-item { margin: 0; padding: 0; list-style: none; }
 
   .reference-entry {
-    padding: 15px 17px;
+    padding: 15px 17px 15px 19px;
     background: $paper-raised;
-    border: 1px solid $line;
-    border-left: 2px solid transparent;
-    border-radius: 2px;
-    transition: border-left-color 0.14s;
-
-    &:hover { border-left-color: $mark; }
+    border-left: 2px solid $line-strong;
+    border-radius: 0 3px 3px 0;
+    transition: border-left-color 0.14s, background 0.14s;
+    &:hover { border-left-color: $mark; background: $paper-sunken; }
   }
 
   .reference-copy {
@@ -1119,25 +1017,17 @@ img { max-width: 100%; }
     font-size: 14px;
     line-height: 1.7;
     overflow-wrap: anywhere;
-
     > span { display: block; scroll-margin-top: 88px; border-radius: 2px; }
     > span:target { background: $mark-soft; box-shadow: 0 0 0 4px $mark-soft; }
     i { color: $ink; }
   }
 
-  .reference-number {
-    display: inline-block;
-    min-width: 2em;
-    margin-right: 0.4em;
-    color: $mark;
-    font-family: $font-mono;
-    font-weight: 700;
-  }
+  .reference-number { display: inline-block; min-width: 2em; margin-right: 0.4em; color: $mark; font-family: $font-mono; font-weight: 700; }
 
   .reference-url {
     color: $mark;
     text-decoration: underline;
-    text-decoration-color: rgba($mark, 0.35);
+    text-decoration-color: rgba($mark, 0.4);
     text-underline-offset: 2px;
     &:hover { text-decoration-color: $mark; }
   }
@@ -1153,25 +1043,17 @@ img { max-width: 100%; }
   }
 
   .reference-type { color: $slate-light; font-family: $font-mono; font-size: 11px; }
-
-  .reference-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 6px;
-    margin-left: auto;
-  }
+  .reference-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; margin-left: auto; }
 
   .reference-action {
     padding: 3px 9px;
     background: $paper-sunken;
     border: 1px solid $line-strong;
-    border-radius: 2px;
+    border-radius: 100px;
     color: $slate;
     font-family: $font-mono;
     font-size: 10px;
     text-decoration: none;
-
     &:hover { border-color: $mark; color: $mark; }
     &:focus-visible { outline: 2px solid $mark; outline-offset: 2px; }
   }
@@ -1181,37 +1063,29 @@ img { max-width: 100%; }
 
 .post-footer,
 .note-footer {
-  margin-top: 50px;
-  padding-top: 22px;
+  margin-top: 52px;
+  padding-top: 24px;
   border-top: 1px solid $line;
 }
 
 .note-footer { display: flex; flex-wrap: wrap; gap: 10px; }
-
 .post-footer-nav { margin-bottom: 16px; }
-
-.post-footer-prevnext {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+.post-footer-prevnext { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 
 .back-link,
 .prev-post,
 .next-post {
   display: inline-block;
-  padding: 8px 14px;
+  padding: 8px 15px;
   color: $slate;
   font-size: 13px;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 3px;
   max-width: 48%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.14s, border-color 0.14s;
-
   &:hover { color: $mark; border-color: $mark; }
 }
 
@@ -1220,118 +1094,92 @@ img { max-width: 100%; }
 /* ===== Note pages ===== */
 
 .note-header {
-  margin-bottom: 30px;
-  padding-bottom: 22px;
-  border-bottom: 2px solid $ink;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid $ink;
 }
 
 .note-breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   color: $slate-light;
   font-family: $font-mono;
   font-size: 12px;
-
   a { color: $slate; &:hover { color: $mark; } }
 }
 
 .note-title {
-  margin: 0 0 12px;
+  margin: 0 0 13px;
   color: $ink;
-  font-size: clamp(26px, 3.6vw, 34px);
+  font-size: clamp(26px, 3.8vw, 35px);
   font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.015em;
+  line-height: 1.26;
+  letter-spacing: -0.02em;
 }
 
-.note-description {
-  margin: 0 0 16px;
-  color: $ink-soft;
-  font-size: 16.5px;
-  line-height: 1.75;
-}
+.note-description { margin: 0 0 16px; color: $ink-soft; font-size: 16.5px; line-height: 1.75; }
 
+/* Reader guide — open two columns split by a hairline, no filled box. */
 .note-reader-guide {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 0 28px;
-  background: $line;
-  border: 1px solid $line;
+  gap: 0 26px;
+  margin: 0 0 30px;
+  padding: 16px 0 0;
+  border-top: 1px solid $line;
 
-  > div { padding: 15px 17px; background: $paper-raised; min-width: 0; }
-  p { margin: 4px 0 0; color: $ink-soft; font-size: 13.5px; }
+  > div { min-width: 0; }
+  > div + div { padding-left: 26px; border-left: 1px solid $line; }
+  p { margin: 5px 0 0; color: $ink-soft; font-size: 13.5px; }
 }
 
-.note-reader-guide-label {
-  color: $mark;
-  font-family: $font-mono;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
+.note-reader-guide-label { @extend %kicker; margin-bottom: 0; }
 
-/* Research record (paper / experiment / presentation metadata) */
+/* Research record — open columns, hairline dividers. */
 .research-record {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1px;
-  margin: 0 0 30px;
-  background: $line;
-  border: 1px solid $line;
+  gap: 20px 30px;
+  margin: 0 0 32px;
+  padding: 20px 0;
+  border-top: 1px solid $line;
+  border-bottom: 1px solid $line;
 }
 
 .research-record-section {
-  padding: 17px 19px;
-  background: $paper-raised;
   min-width: 0;
 
-  h2 {
-    margin: 0 0 11px;
-    color: $mark;
-    font-family: $font-mono;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
+  h2 { @extend %kicker; margin: 0 0 11px; }
 
-  dl { display: grid; gap: 8px; margin: 0; }
+  dl { display: grid; gap: 9px; margin: 0; }
   dl > div { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 10px; }
-  dt { color: $slate-light; font-size: 12px; }
+  dt { color: $slate; font-size: 12.5px; }
   dd { margin: 0; color: $ink-soft; font-size: 13.5px; overflow-wrap: anywhere; }
 
   a {
     color: $mark;
     text-decoration: underline;
-    text-decoration-color: rgba($mark, 0.35);
+    text-decoration-color: rgba($mark, 0.4);
     text-underline-offset: 2px;
     &:hover { text-decoration-color: $mark; }
   }
-
   code { color: $mark-deep; font-family: $font-mono; font-size: 0.9em; }
 }
 
-/* Note reading layout: content + sticky margin TOC. The TOC is the running
-   position marker of the document, so the active row gets the cinnabar. */
+/* Note reading layout: content + sticky margin TOC (the running position). */
 .note-reading-layout { min-width: 0; }
 
 .note-reading-layout.has-toc {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 216px;
+  grid-template-columns: minmax(0, 1fr) 208px;
   grid-template-areas: "content toc";
   align-items: start;
-  gap: 0 40px;
+  gap: 0 44px;
 }
 
-.note-reading-layout .note-content {
-  grid-area: content;
-  min-width: 0;
-  max-width: $measure;
-}
+.note-reading-layout .note-content { grid-area: content; min-width: 0; max-width: $measure; }
 
 .note-toc {
   grid-area: toc;
@@ -1343,15 +1191,7 @@ img { max-width: 100%; }
   overflow: auto;
   border-left: 1px solid $line;
 
-  .toc-title {
-    margin: 0 0 9px;
-    color: $slate-light;
-    font-family: $font-mono;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
+  .toc-title { margin: 0 0 9px; color: $slate-light; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
   .toc-list { padding-top: 6px; border-top: 1px solid $line; }
 
   .toc-item {
@@ -1365,35 +1205,37 @@ img { max-width: 100%; }
       border-left: 2px solid transparent;
       color: $slate;
       font-size: 13px;
-
       &:hover, &:focus-visible { color: $mark; border-left-color: $line-strong; outline: none; }
       &.is-active { color: $mark; border-left-color: $mark; font-weight: 600; }
     }
-
     &.toc-h3 a { padding-left: 29px; color: $slate-light; font-size: 12px; }
   }
 }
 
-/* ===== Research hub (research.md) ===== */
+/* ===== Research hub ===== */
 
 .research-hub { min-width: 0; }
 
 .research-intro {
-  margin: 0 0 34px;
-  padding-bottom: 22px;
-  border-bottom: 2px solid $ink;
+  margin: 0 0 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid $ink;
 
   h2 {
-    margin: 0 0 12px;
+    margin: 0 0 13px;
     color: $ink;
-    font-size: clamp(24px, 3.2vw, 32px);
+    font-size: clamp(25px, 3.4vw, 33px);
     font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.015em;
+    line-height: 1.28;
+    letter-spacing: -0.02em;
   }
-
-  p:last-child { margin: 0; color: $ink-soft; max-width: 44em; line-height: 1.8; }
+  p:last-child { margin: 0; color: $ink-soft; max-width: 42em; line-height: 1.8; }
 }
+
+.research-kicker,
+.about-card-kicker,
+.content-area-kicker,
+.hero-eyebrow { @extend %kicker; }
 
 .research-intro-actions,
 .hero-actions,
@@ -1401,18 +1243,18 @@ img { max-width: 100%; }
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 20px 0 0;
+  margin: 22px 0 0;
 }
 
 .action-link {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 16px;
+  padding: 9px 17px;
   font-size: 13.5px;
   font-weight: 600;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 3px;
   transition: color 0.14s, border-color 0.14s, background 0.14s;
 
   span { transition: transform 0.16s ease; }
@@ -1431,219 +1273,178 @@ img { max-width: 100%; }
   &:hover { color: $mark; border-color: $mark; }
 }
 
-/* Research tracks: a definition list of the syllabus, not decorative cards. */
-.research-tracks { margin: 0 0 40px; }
+/* The learning triad — a labelled progression, split by hairlines. */
+.research-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px 30px;
+  margin: 0 0 46px;
+
+  > .research-principle + .research-principle { padding-left: 30px; border-left: 1px solid $line; }
+}
+
+.research-principle {
+  min-width: 0;
+  h2 { margin: 13px 0 8px; color: $ink; font-size: 16px; font-weight: 700; }
+  p { margin: 0; color: $slate; font-size: 13.5px; line-height: 1.7; }
+}
+
+.research-principle-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  background: $mark;
+  color: $paper;
+  font-family: $font-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+}
+
+/* Track syllabus — open cards separated by hairlines, no filled-gap grid. */
+.research-tracks { margin: 0 0 46px; }
 
 .track-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0;
-  background: $line;
-  border: 1px solid $line;
+  gap: 0;
+  border-top: 1px solid $line;
 }
 
 .track-card {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  background: $paper;
   position: relative;
+  padding: 20px 22px;
+  border-bottom: 1px solid $line;
   transition: background 0.14s;
 
+  &:nth-child(odd) { border-right: 1px solid $line; padding-left: 2px; }
+  &:nth-child(even) { padding-left: 24px; }
+
   h3 { margin: 0 0 8px; color: $ink; font-size: 16px; font-weight: 700; }
-  p { margin: 0; color: $slate; font-size: 13.5px; line-height: 1.65; }
+  p { margin: 0; color: $slate; font-size: 13.5px; line-height: 1.7; }
 
   &:hover { background: $paper-sunken; }
-  &.is-planned { background: $paper-sunken; }
   &.is-planned h3 { color: $slate; }
+  &.is-planned p { color: $slate-light; }
 }
 
 .track-card-count {
+  @extend %data;
   position: absolute;
-  top: 18px; right: 20px;
+  top: 20px; right: 22px;
   color: $mark;
-  font-family: $font-mono;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
 }
 
-.track-card-action {
-  margin-top: auto;
-  padding-top: 14px;
-  color: $slate;
-  font-family: $font-mono;
-  font-size: 12px;
-  font-weight: 600;
-}
-
+.track-card-action { margin-top: auto; padding-top: 15px; color: $slate; font-size: 12.5px; font-weight: 600; }
 .track-card:hover .track-card-action { color: $mark; }
 
-.research-count {
-  color: $slate;
-  font-family: $font-mono;
-  font-size: 12px;
-  white-space: nowrap;
-}
+.research-count { @extend %data; color: $slate; font-size: 12.5px; white-space: nowrap; }
 
-/* Research principles: a real triad (foundations → models → systems), so it
-   reads as a labelled progression, not numbered filler. */
-.research-principles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 0 40px;
-  background: $line;
-  border: 1px solid $line;
-}
-
-.research-principle {
-  padding: 20px;
-  background: $paper;
-
-  h2 { margin: 12px 0 8px; color: $ink; font-size: 16px; font-weight: 700; }
-  p { margin: 0; color: $slate; font-size: 13.5px; line-height: 1.65; }
-}
-
-.research-principle-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px; height: 28px;
-  border: 1px solid $mark;
-  border-radius: 50%;
-  color: $mark;
-  font-size: 15px;
-}
-
-.research-note-section {
-  margin: 0 0 40px;
-  scroll-margin-top: 76px;
-}
-
-.research-note-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+.research-note-section { margin: 0 0 46px; scroll-margin-top: 76px; }
+.research-note-list { list-style: none; margin: 0; padding: 0; }
 
 .research-note-card {
-  padding: 18px 0 18px 16px;
+  position: relative;
+  padding: 20px 4px 20px 18px;
   border-bottom: 1px solid $line;
-  border-left: 2px solid transparent;
-  transition: background 0.13s, border-left-color 0.13s;
+  transition: background 0.13s;
 
-  &:hover { background: $paper-sunken; border-left-color: $mark; }
+  &:hover { background: $paper-sunken; }
 
   h3 {
-    margin: 8px 0 7px;
+    margin: 8px 0 8px;
     font-size: 17px;
     line-height: 1.45;
     a { color: $ink; &:hover { color: $mark; } }
   }
-
-  p { margin: 0 0 12px; color: $slate; font-size: 14px; line-height: 1.65; }
+  p { margin: 0 0 13px; color: $slate; font-size: 14px; line-height: 1.7; }
 }
 
-.research-note-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+.research-note-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .empty-note-state {
-  margin: 0 0 40px;
-  padding: 24px;
+  margin: 0 0 46px;
+  padding: 26px 26px 26px 24px;
   background: $paper-raised;
-  border: 1px solid $line;
   border-left: 2px solid $mark;
-  border-radius: 2px;
+  border-radius: 0 3px 3px 0;
 
-  h2 { margin: 0 0 9px; color: $ink; font-size: 19px; }
-  > p { margin: 0 0 16px; color: $slate; max-width: 44em; line-height: 1.75; }
+  h2 { margin: 0 0 10px; color: $ink; font-size: 20px; }
+  > p { margin: 0 0 18px; color: $slate; max-width: 42em; line-height: 1.75; }
 }
 
 .research-roadmap {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin: 16px 0 0;
+  gap: 18px 26px;
+  margin: 18px 0 0;
   padding: 0;
   list-style: none;
-  background: $line;
-  border: 1px solid $line;
 
-  li {
-    padding: 14px 15px;
-    background: $paper;
-    color: $slate;
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  strong { color: $ink; }
+  li { color: $slate; font-size: 13px; line-height: 1.7; padding-left: 13px; border-left: 2px solid $line-strong; }
+  strong { color: $ink; display: block; margin-bottom: 3px; }
 }
 
 /* ===== About page ===== */
 
 .about-intro {
-  margin: 0 0 32px;
-  padding-bottom: 22px;
-  border-bottom: 2px solid $ink;
+  margin: 0 0 38px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid $ink;
 
   h2 {
-    margin: 0 0 12px;
+    margin: 0 0 13px;
     color: $ink;
-    font-size: clamp(24px, 3.2vw, 31px);
+    font-size: clamp(25px, 3.4vw, 32px);
     font-weight: 700;
     line-height: 1.3;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
   }
-
-  > p:not(.research-kicker) { margin: 0; max-width: 46em; color: $ink-soft; line-height: 1.8; }
+  > p:not(.research-kicker) { margin: 0; max-width: 44em; color: $ink-soft; line-height: 1.8; }
 }
 
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 0 40px;
-  background: $line;
-  border: 1px solid $line;
+  gap: 22px 30px;
+  margin: 0 0 46px;
+
+  > .about-card + .about-card { padding-left: 30px; border-left: 1px solid $line; }
 }
 
 .about-card {
-  padding: 20px;
-  background: $paper;
-
-  h2 { margin: 10px 0 8px; color: $ink; font-size: 17px; font-weight: 700; }
+  min-width: 0;
+  h2 { margin: 11px 0 8px; color: $ink; font-size: 17px; font-weight: 700; }
   p { margin: 0; color: $slate; font-size: 13.5px; line-height: 1.7; }
 }
 
 .safety-note {
-  margin: 0 0 40px;
-  padding: 18px 20px;
+  margin: 0 0 46px;
+  padding: 18px 22px 18px 20px;
   background: $mark-soft;
-  border: 1px solid rgba($mark, 0.3);
   border-left: 2px solid $mark;
-  border-radius: 2px;
+  border-radius: 0 3px 3px 0;
 
-  h2 { margin: 0 0 7px; color: $mark-deep; font-size: 16px; }
+  h2 { margin: 0 0 8px; color: $mark-deep; font-size: 16px; }
   p { margin: 0; color: $ink-soft; font-size: 14px; line-height: 1.75; }
 }
 
 .about-contact {
-  margin: 0 0 24px;
-  padding-top: 24px;
+  margin: 0 0 26px;
+  padding-top: 26px;
   border-top: 1px solid $line;
 
-  h2 { margin: 0 0 9px; color: $ink; font-size: 18px; }
+  h2 { margin: 0 0 10px; color: $ink; font-size: 18px; }
   p { margin: 0; color: $ink-soft; }
-
   a {
     color: $mark;
     text-decoration: underline;
-    text-decoration-color: rgba($mark, 0.35);
+    text-decoration-color: rgba($mark, 0.4);
     text-underline-offset: 2px;
     &:hover { text-decoration-color: $mark; }
   }
@@ -1653,34 +1454,30 @@ img { max-width: 100%; }
 
 .archive-intro,
 .tags-intro {
-  max-width: 44em;
-  margin: 0 0 20px;
+  max-width: 42em;
+  margin: 0 0 22px;
   color: $ink-soft;
   font-size: 15px;
   line-height: 1.75;
-
   a { color: $mark; text-decoration: underline; text-underline-offset: 2px; }
 }
 
 .archive-stats {
-  margin-bottom: 26px;
+  margin-bottom: 30px;
   color: $slate;
-  font-family: $font-mono;
   font-size: 13px;
-
-  strong { color: $ink; font-weight: 700; }
+  strong { @extend %data; color: $mark; font-weight: 700; font-size: 15px; }
 }
 
 .archive-year {
-  margin: 34px 0 4px;
+  margin: 40px 0 4px;
   color: $ink;
   font-family: $font-mono;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  padding-bottom: 7px;
-  border-bottom: 2px solid $ink;
-
+  padding-bottom: 8px;
+  border-bottom: 1px solid $ink;
   &:first-of-type { margin-top: 0; }
 }
 
@@ -1688,74 +1485,52 @@ img { max-width: 100%; }
 
 .archive-item {
   display: grid;
-  grid-template-columns: 58px 1fr auto;
+  grid-template-columns: 54px 1fr auto;
   align-items: baseline;
-  gap: 14px;
-  padding: 9px 10px 9px 12px;
+  gap: 16px;
+  padding: 10px 6px 10px 4px;
   border-bottom: 1px solid $line;
-  border-left: 2px solid transparent;
-  transition: background 0.13s, border-left-color 0.13s;
+  transition: background 0.13s;
 
-  &:hover { background: $paper-sunken; border-left-color: $mark; }
+  &:hover { background: $paper-sunken; }
 
-  time {
-    color: $slate;
-    font-family: $font-mono;
-    font-size: 12.5px;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
+  time { @extend %data; color: $slate; font-size: 12.5px; white-space: nowrap; }
   a { color: $ink; font-size: 14.5px; &:hover { color: $mark; } }
 }
 
-.archive-item-tags {
-  display: inline-flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
+.archive-item-tags { display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ===== Tags page ===== */
 
 .tags-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 34px;
-  padding-bottom: 26px;
-  border-bottom: 2px solid $ink;
+  gap: 9px;
+  margin-bottom: 38px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid $ink;
 }
 
 .tag-cloud-item {
   display: inline-flex;
   align-items: baseline;
   gap: 7px;
-  padding: 6px 13px;
+  padding: 6px 14px;
   color: $ink;
   font-size: 14px;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 100px;
   transition: color 0.14s, border-color 0.14s;
 
   &:hover { color: $mark; border-color: $mark; }
-
-  .tag-count {
-    color: $slate-light;
-    font-family: $font-mono;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-  }
+  .tag-count { @extend %data; color: $slate-light; font-size: 12px; }
 }
 
-.tag-section {
-  margin-bottom: 34px;
-  scroll-margin-top: 76px;
-}
+.tag-section { margin-bottom: 38px; scroll-margin-top: 76px; }
 
 .tag-section-title {
   margin: 0 0 12px;
-  padding-bottom: 7px;
+  padding-bottom: 8px;
   color: $ink;
   font-size: 18px;
   font-weight: 700;
@@ -1764,10 +1539,7 @@ img { max-width: 100%; }
 
 /* ===== Footer ===== */
 
-.site-footer {
-  border-top: 1px solid $line;
-  padding: 26px 0;
-}
+.site-footer { border-top: 1px solid $line; padding: 28px 0; }
 
 .footer-inner {
   max-width: $shell;
@@ -1780,18 +1552,13 @@ img { max-width: 100%; }
   gap: 8px;
 }
 
-.footer-motto {
-  margin: 0;
-  color: $ink-soft;
-  font-size: 13.5px;
-}
+.footer-motto { margin: 0; color: $ink-soft; font-size: 13.5px; }
 
 .footer-copy {
   margin: 0;
   color: $slate-light;
   font-family: $font-mono;
   font-size: 12px;
-
   a { color: $slate; &:hover { color: $mark; } }
 }
 
@@ -1799,26 +1566,19 @@ img { max-width: 100%; }
 
 /* ===== 404 ===== */
 
-.notfound {
-  padding: 40px 0 56px;
-  text-align: center;
-}
+.notfound { padding: 44px 0 60px; text-align: center; }
 
 .notfound-code {
   margin: 0;
   color: $mark;
-  font-family: $font-mono;
-  font-size: clamp(64px, 12vw, 108px);
+  font-family: $font-serif;
+  font-size: clamp(66px, 13vw, 116px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
 }
 
-.notfound-text {
-  margin: 14px 0 28px;
-  color: $ink-soft;
-  font-size: 16px;
-}
+.notfound-text { margin: 16px 0 30px; color: $ink-soft; font-size: 16px; }
 
 /* ===== Back to top ===== */
 
@@ -1828,31 +1588,19 @@ img { max-width: 100%; }
   width: 38px; height: 38px;
   display: grid;
   place-items: center;
-  background: $paper;
+  background: $paper-raised;
   border: 1px solid $line-strong;
-  border-radius: 2px;
+  border-radius: 3px;
   color: $slate;
   font-size: 16px;
   text-decoration: none;
   transition: color 0.14s, border-color 0.14s, opacity 0.2s, transform 0.2s;
   z-index: 50;
-
   &:hover { color: $mark; border-color: $mark; }
 }
 
-.js .back-to-top {
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.js .back-to-top.visible {
-  visibility: visible;
-  pointer-events: auto;
-  opacity: 1;
-  transform: translateY(0);
-}
+.js .back-to-top { visibility: hidden; pointer-events: none; opacity: 0; transform: translateY(8px); }
+.js .back-to-top.visible { visibility: visible; pointer-events: auto; opacity: 1; transform: translateY(0); }
 
 /* ===== Scrollbar ===== */
 
@@ -1865,18 +1613,16 @@ img { max-width: 100%; }
   &:hover { background: $slate-light; }
 }
 
-/* ===== Motion =====
-   One subtle load-in on the home/hub blocks; everything else is static. */
+/* ===== Motion — one quiet load-in, nothing else. ===== */
 
 @media (prefers-reduced-motion: no-preference) {
   @keyframes rise-in {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
-  .motion-enter { animation: rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .motion-enter-delay-1 { animation-delay: 0.05s; }
-  .motion-enter-delay-2 { animation-delay: 0.1s; }
+  .motion-enter { animation: rise-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .motion-enter-delay-1 { animation-delay: 0.07s; }
+  .motion-enter-delay-2 { animation-delay: 0.14s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1897,19 +1643,18 @@ img { max-width: 100%; }
     grid-template-areas: "toc" "content";
     gap: 0;
   }
-
   .note-reading-layout .note-content { max-width: none; }
 
   .note-toc {
     position: static;
     max-height: none;
-    margin: 0 0 28px;
-    padding: 15px 17px;
+    margin: 0 0 30px;
+    padding: 16px 18px;
     overflow: visible;
     background: $paper-raised;
     border: 1px solid $line;
     border-left: 2px solid $mark;
-    border-radius: 2px;
+    border-radius: 3px;
 
     .toc-item a { margin-left: 0; padding-left: 0; border-left: 0; }
     .toc-item a.is-active { padding-left: 8px; }
@@ -1924,37 +1669,42 @@ img { max-width: 100%; }
   .note-preview-list,
   .note-reader-guide {
     grid-template-columns: 1fr;
+    gap: 0;
   }
+
+  /* Stacked: swap vertical hairline dividers for horizontal ones. */
+  .research-principles > .research-principle + .research-principle,
+  .about-grid > .about-card + .about-card {
+    padding-left: 0;
+    padding-top: 18px;
+    margin-top: 18px;
+    border-left: 0;
+    border-top: 1px solid $line;
+  }
+
+  .note-preview-card + .note-preview-card { padding-left: 0; padding-top: 16px; margin-top: 16px; border-left: 0; border-top: 1px solid $line; }
+  .note-reader-guide > div + div { padding-left: 0; padding-top: 14px; margin-top: 14px; border-left: 0; border-top: 1px solid $line; }
+  .research-roadmap li { padding-left: 0; border-left: 0; }
 }
 
 @media (max-width: 680px) {
-  .container { padding: 28px 18px 44px; }
+  .container { padding: 30px 18px 48px; }
 
-  .note-preview-list,
-  .research-principles,
-  .about-grid,
-  .track-grid,
-  .research-roadmap {
-    grid-template-columns: 1fr;
-  }
+  .track-grid { grid-template-columns: 1fr; }
+  .track-card:nth-child(odd),
+  .track-card:nth-child(even) { border-right: 0; padding-left: 2px; }
 
-  /* The ledger reflows: date + kind on one line, title below, topics wrap. */
   .ledger-row {
     grid-template-columns: 1fr;
     gap: 4px;
-    padding: 13px 0 13px 14px;
+    padding: 14px 4px 14px 18px;
   }
-
   .ledger-date { grid-row: 1; }
   .ledger-kind { grid-row: 1; margin-left: 12px; display: inline; }
   .ledger-title { grid-row: 2; }
   .ledger-topics { grid-row: 3; justify-content: flex-start; margin-top: 3px; }
 
-  .archive-item {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
+  .archive-item { grid-template-columns: 1fr; gap: 4px; }
   .archive-item-tags { justify-content: flex-start; }
 
   .post-footer-prevnext { flex-direction: column; }
@@ -1967,30 +1717,24 @@ img { max-width: 100%; }
 
 @media print {
   @page { margin: 16mm; }
-
   html, body { background: #fff !important; color: #111 !important; font-size: 11pt; }
 
   .site-header, .site-footer, .skip-link, .menu-toggle,
-  .note-toc, .back-to-top, .code-copy-button, .heading-anchor {
+  .note-toc, .back-to-top, .code-copy-button, .heading-anchor, .masthead-seal {
     display: none !important;
   }
 
   .container { max-width: none; padding: 0; }
+  .home-masthead { background-image: none; }
   .note-reading-layout.has-toc { display: block; }
   .note-reading-layout .note-content { max-width: none; }
 
   .post-content, .page-content, .note-content {
     color: #111;
     font-size: 10.5pt;
-
     a { color: #111; text-decoration: underline; }
     img { border-color: #999; }
-
-    pre, blockquote, .callout, .research-record, .mermaid, .table-scroll {
-      background: transparent;
-      break-inside: avoid;
-    }
-
+    pre, blockquote, .callout, .research-record, .mermaid, .table-scroll { background: transparent; break-inside: avoid; }
     figure, table, pre, blockquote { break-inside: avoid; }
     a.citation { border: 0; background: transparent; color: #111; }
     .references-count, .reference-meta { display: none; }
