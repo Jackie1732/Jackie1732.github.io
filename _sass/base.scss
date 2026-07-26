@@ -30,9 +30,9 @@ $measure: 730px;   // reading column
 $shell: 1180px;    // outer width
 
 /* Radii — large and soft. Cards read as objects, not as outlined regions. */
-$r-1: 10px;
-$r-2: 16px;
-$r-3: 26px;
+$r-1: 12px;
+$r-2: 20px;
+$r-3: 30px;
 $r-pill: 999px;
 
 /* ===== Reset & base ===== */
@@ -244,7 +244,7 @@ img { max-width: 100%; }
 .container {
   max-width: $shell;
   margin: 0 auto;
-  padding: 24px 32px 96px;
+  padding: 20px 32px 72px;
 }
 
 .layout-post .container,
@@ -258,13 +258,30 @@ img { max-width: 100%; }
    where scale is spent; everything below stays quiet. */
 
 .home-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-  align-items: end;
-  gap: 40px 56px;
-  padding: 52px 0 60px;
-  margin-bottom: 76px;
-  border-bottom: 1px solid $line;
+  align-items: center;
+  gap: 36px 52px;
+  padding: 46px 48px 48px;
+  margin: 12px 0 52px;
+  background: $bone-raised;
+  border-radius: $r-3;
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 260px;
+    height: 210px;
+    top: -92px;
+    right: -60px;
+    background: $clay-soft;
+    border-radius: 42% 58% 66% 34% / 50% 36% 64% 50%;
+    transform: rotate(-12deg);
+  }
 }
 
 .hero-lead { min-width: 0; }
@@ -275,10 +292,11 @@ img { max-width: 100%; }
 .masthead-title {
   margin: 0;
   color: $ink;
-  font-size: clamp(38px, 5.6vw, 68px);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  font-family: $font-serif;
+  font-size: clamp(38px, 5.1vw, 64px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.018em;
   text-wrap: balance;
 }
 
@@ -294,8 +312,8 @@ img { max-width: 100%; }
   display: flex;
   flex-wrap: wrap;
   gap: 12px 32px;
-  margin-top: 26px;
-  padding-top: 22px;
+  margin-top: 22px;
+  padding-top: 18px;
   border-top: 1px solid $line;
 }
 
@@ -406,7 +424,7 @@ img { max-width: 100%; }
 /* ===== Home: research-notes strip =====
    Three soft clay cards — the one warm row on the page. */
 
-.home-block { margin: 0 0 76px; }
+.home-block { margin: 0 0 52px; }
 
 .note-preview-list {
   list-style: none;
@@ -421,7 +439,7 @@ img { max-width: 100%; }
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 26px 24px 28px;
+  padding: 24px 23px 26px;
   background: $clay-soft;
   border-radius: $r-2;
   transition: background 0.16s ease, transform 0.16s ease;
@@ -463,8 +481,8 @@ img { max-width: 100%; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 28px 56px;
-  margin: 0 0 76px;
-  padding: 56px 52px 58px;
+  margin: 0 0 52px;
+  padding: 46px 48px 48px;
   background: $panel;
   border-radius: $r-3;
   color: $panel-soft;
@@ -719,7 +737,7 @@ img { max-width: 100%; }
 /* ===== Long-form content ===== */
 
 .post-content,
-.page-content,
+.page-content:not(.component-page-content),
 .note-content {
   font-size: 17px;
   line-height: 1.8;
@@ -1142,6 +1160,8 @@ img { max-width: 100%; }
   }
 }
 
+.component-page-content { overflow-wrap: anywhere; }
+
 /* ===== Post / note footers ===== */
 
 .post-footer,
@@ -1304,13 +1324,30 @@ img { max-width: 100%; }
 .research-intro,
 .about-intro,
 .listing-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-  align-items: start;
-  gap: 42px 72px;
-  margin: 0 0 58px;
-  padding: 48px 0 58px;
-  border-bottom: 1px solid $line;
+  align-items: center;
+  gap: 34px 64px;
+  margin: 12px 0 42px;
+  padding: 42px 46px 44px;
+  background: $bone-raised;
+  border-radius: $r-3;
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 220px;
+    height: 180px;
+    right: -88px;
+    bottom: -102px;
+    background: $clay-soft;
+    border-radius: 64% 36% 45% 55% / 42% 56% 44% 58%;
+    transform: rotate(18deg);
+  }
 }
 
 .intro-lead,
@@ -1320,15 +1357,16 @@ img { max-width: 100%; }
   margin: 0;
   max-width: 12em;
   color: $ink;
-  font-size: clamp(36px, 5.2vw, 60px);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.032em;
+  font-family: $font-serif;
+  font-size: clamp(36px, 4.8vw, 56px);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.018em;
   text-wrap: balance;
 }
 
 .intro-aside {
-  padding-top: 38px;
+  padding-top: 0;
 
   > p {
     margin: 0;
@@ -1351,46 +1389,46 @@ img { max-width: 100%; }
 .content-area-kicker,
 .hero-eyebrow { @extend %kicker; }
 
-/* The learning triad — a flat, ruled index rather than a card wall. */
+/* The learning triad is a set of soft surfaces, not a numbered process. */
 .research-principles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  margin: 0 0 76px;
-  border-top: 1px solid $line-strong;
-  border-bottom: 1px solid $line-strong;
+  gap: 14px;
+  margin: 0 0 48px;
 }
 
 .research-principle {
   @extend %card;
+  position: relative;
+  overflow: hidden;
   min-width: 0;
-  padding: 30px 28px 32px;
-  background: transparent;
+  padding: 25px 25px 27px;
+  background: $bone-sunken;
   border: 0;
-  border-left: 1px solid $line;
-  border-radius: 0;
-  transition: background 0.16s ease;
+  border-radius: $r-2;
+  transition: background 0.16s ease, transform 0.16s ease;
 
-  &:first-child { padding-left: 0; border-left: 0; }
-  &:last-child { padding-right: 0; }
-  &:hover { background: rgba($bone-raised, 0.42); }
+  &::before {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 8px;
+    margin-bottom: 22px;
+    background: $clay;
+    border-radius: 52% 48% 58% 42% / 64% 40% 60% 36%;
+    transform: rotate(-7deg);
+  }
 
-  h2 { margin: 16px 0 10px; color: $ink; font-size: 18px; font-weight: 600; letter-spacing: -0.012em; }
+  &:nth-child(2) { background: $clay-soft; }
+  &:nth-child(3) { background: $bone-raised; }
+  &:hover { transform: translateY(-2px); }
+
+  h2 { margin: 0 0 9px; color: $ink; font-family: $font-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.012em; }
   p { margin: 0; color: $ink-soft; font-family: $font-serif; font-size: 15.5px; line-height: 1.68; }
 }
 
-/* The step number, as data. */
-.research-principle-icon {
-  @extend %data;
-  display: inline-block;
-  color: $clay-deep;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
 /* Track syllabus — soft cards in a two-up grid. */
-.research-tracks { margin: 0 0 76px; }
+.research-tracks { margin: 0 0 52px; }
 
 .track-grid {
   display: grid;
@@ -1403,16 +1441,18 @@ img { max-width: 100%; }
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 26px 26px 24px;
+  padding: 24px 25px 23px;
+  background: $bone-raised;
+  border: 0;
+  border-radius: $r-2;
 
   h3 { margin: 0 0 10px; padding-right: 46px; color: $ink; font-size: 18px; font-weight: 600; letter-spacing: -0.012em; }
   p { margin: 0; color: $ink-soft; font-size: 14px; line-height: 1.7; }
 
-  &:hover { border-color: $line-strong; transform: translateY(-2px); }
+  &:hover { background: $clay-soft; transform: translateY(-2px); }
 
   &.is-planned {
-    background: transparent;
-    border-style: dashed;
+    background: rgba($bone-sunken, 0.72);
     &:hover { transform: none; }
     h3 { color: $ink-soft; }
     p { color: $stone; }
@@ -1433,30 +1473,26 @@ img { max-width: 100%; }
 
 .research-count { @extend %data; padding-bottom: 4px; color: $stone; font-size: 13px; white-space: nowrap; }
 
-.research-note-section { margin: 0 0 72px; scroll-margin-top: 96px; }
+.research-note-section { margin: 0 0 52px; scroll-margin-top: 96px; }
 .research-note-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0;
-  border-top: 1px solid $line-strong;
-  border-bottom: 1px solid $line-strong;
+  gap: 10px;
 }
 
 .research-note-card {
   @extend %card;
   position: relative;
   list-style: none !important;
-  padding: 26px 0 28px;
-  background: transparent;
+  padding: 22px 24px 23px;
+  background: $bone-raised;
   border: 0;
-  border-bottom: 1px solid $line;
-  border-radius: 0;
-  transition: background 0.14s ease;
+  border-radius: $r-2;
+  transition: background 0.14s ease, transform 0.14s ease;
 
-  &:last-child { border-bottom: 0; }
-  &:hover { background: rgba($bone-raised, 0.48); }
+  &:hover { background: $clay-soft; transform: translateY(-1px); }
 
   h3 {
     margin: 12px 0 10px;
@@ -1498,31 +1534,28 @@ img { max-width: 100%; }
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  margin: 0 0 72px;
-  border-top: 1px solid $line-strong;
-  border-bottom: 1px solid $line-strong;
+  gap: 14px;
+  margin: 0 0 48px;
 }
 
 .about-card {
   @extend %card;
   min-width: 0;
-  padding: 30px 28px 32px;
-  background: transparent;
+  padding: 25px 25px 27px;
+  background: $bone-raised;
   border: 0;
-  border-left: 1px solid $line;
-  border-radius: 0;
+  border-radius: $r-2;
 
-  &:first-child { padding-left: 0; border-left: 0; }
-  &:last-child { padding-right: 0; }
+  &:nth-child(2) { background: $clay-soft; }
+  &:nth-child(3) { background: $bone-sunken; }
 
-  h2 { margin: 14px 0 10px; color: $ink; font-size: 18px; font-weight: 600; letter-spacing: -0.012em; }
+  h2 { margin: 12px 0 9px; color: $ink; font-family: $font-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.012em; }
   p { margin: 0; color: $ink-soft; font-family: $font-serif; font-size: 15.5px; line-height: 1.68; }
 }
 
 .safety-note {
-  margin: 0 0 72px;
-  padding: 40px 40px 42px;
+  margin: 0 0 48px;
+  padding: 36px 38px 38px;
   background: $panel;
   border-radius: $r-3;
 
@@ -1595,33 +1628,42 @@ img { max-width: 100%; }
 .archive { max-width: 1040px; }
 
 .archive-year {
-  margin: 52px 0 6px;
+  display: inline-flex;
+  margin: 36px 0 12px;
+  padding: 5px 12px;
+  background: $bone-sunken;
+  border-radius: $r-pill;
   color: $ink;
   font-family: $font-mono;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.03em;
-  padding-bottom: 10px;
-  border-bottom: 1px solid $line-strong;
   &:first-of-type { margin-top: 0; }
 }
 
-.archive-list { list-style: none; padding: 0; margin: 0 0 8px; }
+.archive-list {
+  display: grid;
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
 
 .archive-item {
   display: grid;
-  grid-template-columns: 58px 1fr auto;
-  align-items: baseline;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  align-items: start;
   gap: 18px;
-  padding: 12px 14px;
-  border-bottom: 1px solid $line;
-  border-radius: $r-1;
-  transition: background 0.14s;
+  padding: 13px 16px;
+  background: rgba($bone-raised, 0.72);
+  border: 0;
+  border-radius: 14px;
+  transition: background 0.14s, transform 0.14s;
 
-  &:hover { background: $bone-sunken; }
+  &:hover { background: $bone-sunken; transform: translateX(2px); }
 
   time { @extend %data; color: $stone; font-size: 12.5px; white-space: nowrap; }
-  a { color: $ink; font-size: 15.5px; &:hover { color: $clay-deep; } }
+  > a { min-width: 0; color: $ink; font-size: 15.5px; line-height: 1.5; overflow-wrap: anywhere; &:hover { color: $clay-deep; } }
 }
 
 .archive-item-tags { display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
@@ -1634,7 +1676,7 @@ img { max-width: 100%; }
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 56px;
+  margin-bottom: 38px;
 }
 
 .tag-cloud-item {
@@ -1657,20 +1699,23 @@ img { max-width: 100%; }
 .tag-section { margin-bottom: 52px; scroll-margin-top: 96px; }
 
 .tag-section-title {
-  margin: 0 0 16px;
-  padding-bottom: 12px;
+  display: inline-flex;
+  margin: 0 0 12px;
+  padding: 5px 13px 6px;
+  background: $bone-sunken;
+  border-radius: $r-pill;
   color: $ink;
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.022em;
-  border-bottom: 1px solid $line-strong;
+  font-family: $font-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.012em;
 }
 
 /* ===== Footer ===== */
 
 .site-footer {
   border-top: 1px solid $panel-line;
-  padding: 68px 0 32px;
+  padding: 48px 0 28px;
   background: $panel;
   color: $panel-soft;
 }
@@ -1681,7 +1726,7 @@ img { max-width: 100%; }
   padding: 0 32px;
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: 52px 80px;
+  gap: 38px 72px;
 }
 
 .footer-brand { min-width: 0; }
@@ -1705,11 +1750,11 @@ img { max-width: 100%; }
 }
 
 .footer-motto {
-  margin: 30px 0 0;
+  margin: 22px 0 0;
   max-width: 12em;
   color: $bone;
   font-family: $font-serif;
-  font-size: clamp(26px, 3.2vw, 38px);
+  font-size: clamp(24px, 2.8vw, 34px);
   font-weight: 700;
   line-height: 1.28;
 }
@@ -1833,9 +1878,9 @@ img { max-width: 100%; }
   .home-hero {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
-    gap: 28px;
-    padding: 40px 0 48px;
-    margin-bottom: 60px;
+    gap: 24px;
+    padding: 38px 36px 40px;
+    margin-bottom: 44px;
   }
   .hero-aside { padding-bottom: 0; }
   .home-panel { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 44px 34px 46px; }
@@ -1844,8 +1889,8 @@ img { max-width: 100%; }
   .about-intro,
   .listing-intro {
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    padding: 36px 0 46px;
+    gap: 20px;
+    padding: 34px 36px 36px;
   }
   .intro-lead h1 { max-width: 15em; }
   .intro-aside { padding-top: 0; }
@@ -1876,7 +1921,7 @@ img { max-width: 100%; }
 }
 
 @media (max-width: 720px) {
-  .container { padding: 16px 20px 72px; }
+  .container { padding: 14px 18px 56px; }
   .layout-post .container,
   .layout-note .container,
   .layout-page .container { padding-top: 32px; }
@@ -1891,22 +1936,22 @@ img { max-width: 100%; }
   .research-record { padding: 22px 22px; }
   .safety-note { padding: 30px 26px 32px; }
   .empty-note-state { padding: 28px 24px; }
-  .home-panel { padding: 34px 26px 36px; border-radius: $r-2; }
-
-  .research-principles,
-  .about-grid {
-    border-top: 1px solid $line-strong;
-    border-bottom: 1px solid $line-strong;
-  }
+  .home-panel { padding: 32px 24px 34px; border-radius: $r-2; }
 
   .research-principle,
   .about-card {
-    padding: 26px 0 28px;
+    padding: 23px 22px 25px;
     border-left: 0;
-    border-top: 1px solid $line;
+    border-top: 0;
+  }
 
-    &:first-child { padding-left: 0; border-top: 0; }
-    &:last-child { padding-right: 0; }
+  .home-hero,
+  .research-intro,
+  .about-intro,
+  .listing-intro {
+    margin-top: 4px;
+    padding: 30px 24px 32px;
+    border-radius: $r-2;
   }
 
   .intro-lead h1 { font-size: clamp(34px, 11vw, 46px); }
@@ -1943,7 +1988,7 @@ img { max-width: 100%; }
   .post-footer-prevnext { flex-direction: column; }
   .prev-post, .next-post { max-width: 100%; margin-left: 0; text-align: left; }
 
-  .site-footer { padding: 50px 0 28px; }
+  .site-footer { padding: 40px 0 26px; }
   .footer-inner {
     padding: 0 20px;
     grid-template-columns: minmax(0, 1fr);

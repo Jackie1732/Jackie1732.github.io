@@ -25,17 +25,14 @@ wide: true
 
   <section class="research-principles motion-enter motion-enter-delay-1" aria-label="学习脉络">
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">01 /</span>
       <h2>基础</h2>
       <p>线性代数、概率、张量与 PyTorch——先把地基夯实。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">02 /</span>
       <h2>模型</h2>
       <p>训练、表达与推理，在实现与论文之间反复对照。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">03 /</span>
       <h2>系统</h2>
       <p>让论文、代码与实验结果彼此印证，落到可复现的结论。</p>
     </article>
