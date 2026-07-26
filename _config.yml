@@ -182,25 +182,25 @@ primary_topics:
     source: track
     key: foundations
     label: "数学与基础"
-    group: "AI / LLM"
+    group: "AI 学习"
     description: "数学、D2L 与 PyTorch"
   - id: deep-learning
     source: track
     key: deep-learning
     label: "深度学习"
-    group: "AI / LLM"
+    group: "AI 学习"
     description: "网络、优化和训练"
   - id: llm
     source: track
     key: llm
     label: "大语言模型"
-    group: "AI / LLM"
+    group: "AI 学习"
     description: "Transformer 与语言模型"
   - id: papers
     source: track
     key: papers
     label: "论文阅读"
-    group: "AI / LLM"
+    group: "AI 学习"
     description: "论文笔记与方法梳理"
   - id: experiments
     source: track
@@ -214,6 +214,11 @@ primary_topics:
     label: "开发"
     group: "开发"
     description: "代码、工具和开发笔记"
+
+primary_topic_groups:
+  - "安全练习"
+  - "AI 学习"
+  - "开发"
 
 # Controlled learning tracks for the evergreen research-note collection.
 note_track_map:

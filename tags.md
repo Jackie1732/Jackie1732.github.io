@@ -9,64 +9,74 @@ wide: true
 <div class="tags-page" markdown="0">
   {% assign content_items = site.posts | concat: site.notes %}
 
-  {% assign visible_topic_count = 0 %}
-  {% for topic in site.primary_topics %}
-    {% assign topic_item_count = 0 %}
-    {% for item in content_items %}
-      {% assign topic_match = false %}
-      {% if topic.source == "track" %}
-        {% if item.track == topic.key %}{% assign topic_match = true %}{% endif %}
-      {% else %}
-        {% include resolve_tags.html post=item %}
-        {% for item_tag in resolved_tags %}
-          {% assign item_tag_key = item_tag | strip %}
-          {% for topic_key in topic.keys %}
-            {% if item_tag_key == topic_key %}{% assign topic_match = true %}{% endif %}
-          {% endfor %}
-        {% endfor %}
-      {% endif %}
-      {% if topic_match %}{% assign topic_item_count = topic_item_count | plus: 1 %}{% endif %}
-    {% endfor %}
-    {% if topic_item_count > 0 %}{% assign visible_topic_count = visible_topic_count | plus: 1 %}{% endif %}
-  {% endfor %}
-
   <section class="listing-intro motion-enter" aria-labelledby="tags-title">
     <div class="intro-lead">
-      <p class="research-kicker">主要分类</p>
-      <h1 id="tags-title">按大类找文章，更简单一些。</h1>
+      <p class="research-kicker">主题导航</p>
+      <h1 id="tags-title">按主题翻一翻。</h1>
     </div>
     <div class="intro-aside">
-      <p>这里只列能归成一组文章的主要分类。具体技术词仍保留在每篇文章上，不会全部堆到这里。</p>
-      <p class="listing-count"><strong>{{ visible_topic_count }}</strong> 个分类</p>
+      <p>这里放几类我常写的内容。更具体的技术标签留在每篇文章里。</p>
     </div>
   </section>
 
   <div class="listing-body">
-    <nav class="primary-topic-grid" aria-label="主要主题">
-      {% for topic in site.primary_topics %}
-        {% assign topic_item_count = 0 %}
-        {% for item in content_items %}
-          {% assign topic_match = false %}
-          {% if topic.source == "track" %}
-            {% if item.track == topic.key %}{% assign topic_match = true %}{% endif %}
-          {% else %}
-            {% include resolve_tags.html post=item %}
-            {% for item_tag in resolved_tags %}
-              {% assign item_tag_key = item_tag | strip %}
-              {% for topic_key in topic.keys %}
-                {% if item_tag_key == topic_key %}{% assign topic_match = true %}{% endif %}
-              {% endfor %}
+    <nav class="primary-topic-nav" aria-label="主要主题">
+      {% for group_name in site.primary_topic_groups %}
+        {% assign visible_group_topics = 0 %}
+        {% for topic in site.primary_topics %}
+          {% if topic.group == group_name %}
+            {% assign topic_item_count = 0 %}
+            {% for item in content_items %}
+              {% assign topic_match = false %}
+              {% if topic.source == "track" %}
+                {% if item.track == topic.key %}{% assign topic_match = true %}{% endif %}
+              {% else %}
+                {% include resolve_tags.html post=item %}
+                {% for item_tag in resolved_tags %}
+                  {% assign item_tag_key = item_tag | strip %}
+                  {% for topic_key in topic.keys %}
+                    {% if item_tag_key == topic_key %}{% assign topic_match = true %}{% endif %}
+                  {% endfor %}
+                {% endfor %}
+              {% endif %}
+              {% if topic_match %}{% assign topic_item_count = topic_item_count | plus: 1 %}{% endif %}
             {% endfor %}
+            {% if topic_item_count > 0 %}{% assign visible_group_topics = visible_group_topics | plus: 1 %}{% endif %}
           {% endif %}
-          {% if topic_match %}{% assign topic_item_count = topic_item_count | plus: 1 %}{% endif %}
         {% endfor %}
-        {% if topic_item_count > 0 %}
-          <a href="#{{ topic.id }}" class="primary-topic-card">
-            <span class="primary-topic-group">{{ topic.group }}</span>
-            <strong>{{ topic.label }}</strong>
-            <span class="primary-topic-description">{{ topic.description }}</span>
-            <span class="primary-topic-count">{{ topic_item_count }} 篇</span>
-          </a>
+
+        {% if visible_group_topics > 0 %}
+        <section class="primary-topic-group" aria-labelledby="topic-group-{{ forloop.index }}">
+          <h2 id="topic-group-{{ forloop.index }}">{{ group_name }}</h2>
+          <div class="primary-topic-grid">
+            {% for topic in site.primary_topics %}
+              {% if topic.group == group_name %}
+                {% assign topic_item_count = 0 %}
+                {% for item in content_items %}
+                  {% assign topic_match = false %}
+                  {% if topic.source == "track" %}
+                    {% if item.track == topic.key %}{% assign topic_match = true %}{% endif %}
+                  {% else %}
+                    {% include resolve_tags.html post=item %}
+                    {% for item_tag in resolved_tags %}
+                      {% assign item_tag_key = item_tag | strip %}
+                      {% for topic_key in topic.keys %}
+                        {% if item_tag_key == topic_key %}{% assign topic_match = true %}{% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  {% endif %}
+                  {% if topic_match %}{% assign topic_item_count = topic_item_count | plus: 1 %}{% endif %}
+                {% endfor %}
+                {% if topic_item_count > 0 %}
+                  <a href="#{{ topic.id }}" class="primary-topic-link">
+                    <strong>{{ topic.label }}</strong>
+                    <span>{{ topic_item_count }} 篇</span>
+                  </a>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </section>
         {% endif %}
       {% endfor %}
     </nav>
