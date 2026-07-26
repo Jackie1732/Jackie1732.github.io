@@ -314,44 +314,6 @@ img { max-width: 100%; }
   margin-right: 3px;
 }
 
-/* 钤印 — the seal stamped at the head of the file. CSS-only: a vermilion
-   carved border with the characters 卷宗 set vertically, tilted like a stamp. */
-.masthead-seal {
-  position: absolute;
-  top: 4px; right: 4px;
-  display: inline-grid;
-  place-items: center;
-  width: 74px; height: 74px;
-  padding: 5px;
-  color: $mark;
-  font-family: $font-serif;
-  font-size: 27px;
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: 0.04em;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  border: 2.5px solid $mark;
-  border-radius: 7px;
-  box-shadow: inset 0 0 0 1.5px $paper, inset 0 0 0 3px rgba($mark, 0.35);
-  transform: rotate(-4deg);
-  user-select: none;
-}
-
-@media (max-width: 560px) {
-  /* Seal moves inline above the kicker so it never overlaps the title. */
-  .home-masthead { padding-top: 2px; }
-  .masthead-seal {
-    position: static;
-    display: inline-grid;
-    width: 52px; height: 52px;
-    margin: 0 0 14px;
-    font-size: 19px;
-    transform: rotate(-4deg);
-  }
-  .masthead-title { max-width: none; }
-}
-
 /* ===== Section heading row (shared) ===== */
 
 .section-heading-row,
@@ -1720,7 +1682,7 @@ img { max-width: 100%; }
   html, body { background: #fff !important; color: #111 !important; font-size: 11pt; }
 
   .site-header, .site-footer, .skip-link, .menu-toggle,
-  .note-toc, .back-to-top, .code-copy-button, .heading-anchor, .masthead-seal {
+  .note-toc, .back-to-top, .code-copy-button, .heading-anchor {
     display: none !important;
   }
 
