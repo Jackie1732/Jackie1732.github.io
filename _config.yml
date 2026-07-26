@@ -1,5 +1,5 @@
 title: GAiLO-Blog
-description: "安全、深度学习与 LLM 的学习笔记。"
+description: "我整理安全、深度学习和 LLM 学习过程的地方。"
 url: "https://jackie1732.github.io"
 author:
   name: "GAiLO"
@@ -82,7 +82,7 @@ owner: "GAiLO"
 year: "2025"
 github_username: Jackie1732
 repository: "Jackie1732/Jackie1732.github.io"
-motto: "读过，做过，写下。"
+motto: "边学边做，随手记下。"
 
 # Tag display configuration (label / css-class)
 tag_map:
@@ -148,23 +148,23 @@ tag_map:
 note_track_map:
   foundations:
     label: "数学与基础"
-    description: "线性代数、概率、Python 与 PyTorch 的地基。"
+    description: "线性代数、概率，以及用 Python 和 PyTorch 写下来的练习。"
     class: "track-foundations"
   deep-learning:
     label: "深度学习"
-    description: "从 D2L 出发，走进网络、优化与训练。"
+    description: "跟着 D2L 学网络、优化和训练。"
     class: "track-deep-learning"
   llm:
     label: "大语言模型"
-    description: "Transformer、预训练、微调与推理系统。"
+    description: "记录 Transformer、预训练、微调和推理。"
     class: "track-llm"
   papers:
     label: "论文阅读"
-    description: "从论文回到问题、方法与疑问。"
+    description: "读论文时留下的问题、方法和想法。"
     class: "track-papers"
   experiments:
     label: "实验与项目"
-    description: "让假设落到可观察的结果里。"
+    description: "放实验、小项目和开发过程。"
     class: "track-experiments"
 
 # Public-facing note metadata.

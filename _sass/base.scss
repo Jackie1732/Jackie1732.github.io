@@ -474,61 +474,6 @@ img { max-width: 100%; }
   time { @extend %data; color: $stone; font-size: 12px; }
 }
 
-/* ===== Home: dark panel =====
-   One block of near-black per page, for rhythm. Display type is serif here. */
-
-.home-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 28px 56px;
-  margin: 0 0 52px;
-  padding: 46px 48px 48px;
-  background: $panel;
-  border-radius: $r-3;
-  color: $panel-soft;
-}
-
-.panel-kicker { @extend %kicker; color: $kraft; }
-
-.panel-title {
-  margin: 0;
-  color: $bone;
-  font-family: $font-serif;
-  font-size: clamp(28px, 3.6vw, 42px);
-  font-weight: 700;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
-}
-
-.panel-body {
-  align-self: end;
-
-  p {
-    margin: 0 0 24px;
-    color: $panel-dim;
-    font-family: $font-serif;
-    font-size: 16.5px;
-    line-height: 1.75;
-  }
-}
-
-.panel-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 22px;
-  color: $panel;
-  background: $kraft;
-  font-size: 14.5px;
-  font-weight: 600;
-  border-radius: $r-pill;
-  transition: background 0.16s;
-
-  span { transition: transform 0.18s ease; }
-  &:hover { background: #e2b493; span { transform: translateX(3px); } }
-  &:focus-visible { outline: 2px solid $kraft; outline-offset: 3px; }
-}
-
 /* ===== Home ledger (dense archive index) — rows are meant to be scanned ===== */
 
 .ledger { margin: 0 0 8px; }
@@ -1408,17 +1353,6 @@ img { max-width: 100%; }
   border-radius: $r-2;
   transition: background 0.16s ease, transform 0.16s ease;
 
-  &::before {
-    content: "";
-    display: block;
-    width: 30px;
-    height: 8px;
-    margin-bottom: 22px;
-    background: $clay;
-    border-radius: 52% 48% 58% 42% / 64% 40% 60% 36%;
-    transform: rotate(-7deg);
-  }
-
   &:nth-child(2) { background: $clay-soft; }
   &:nth-child(3) { background: $bone-raised; }
   &:hover { transform: translateY(-2px); }
@@ -1551,23 +1485,6 @@ img { max-width: 100%; }
 
   h2 { margin: 12px 0 9px; color: $ink; font-family: $font-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.012em; }
   p { margin: 0; color: $ink-soft; font-family: $font-serif; font-size: 15.5px; line-height: 1.68; }
-}
-
-.safety-note {
-  margin: 0 0 48px;
-  padding: 36px 38px 38px;
-  background: $panel;
-  border-radius: $r-3;
-
-  h2 { margin: 0 0 12px; color: $bone; font-family: $font-serif; font-size: 26px; font-weight: 700; }
-  p {
-    margin: 0;
-    max-width: 42em;
-    color: $panel-dim;
-    font-family: $font-serif;
-    font-size: 16.5px;
-    line-height: 1.75;
-  }
 }
 
 .about-contact {
@@ -1883,7 +1800,6 @@ img { max-width: 100%; }
     margin-bottom: 44px;
   }
   .hero-aside { padding-bottom: 0; }
-  .home-panel { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 44px 34px 46px; }
   .note-preview-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .research-intro,
   .about-intro,
@@ -1934,9 +1850,7 @@ img { max-width: 100%; }
   .note-reader-guide { grid-template-columns: 1fr; }
 
   .research-record { padding: 22px 22px; }
-  .safety-note { padding: 30px 26px 32px; }
   .empty-note-state { padding: 28px 24px; }
-  .home-panel { padding: 32px 24px 34px; border-radius: $r-2; }
 
   .research-principle,
   .about-card {
@@ -2014,14 +1928,6 @@ img { max-width: 100%; }
   .container { max-width: none; padding: 0; }
   .note-reading-layout.has-toc { display: block; }
   .note-reading-layout .note-content { max-width: none; }
-
-  .home-panel, .safety-note {
-    background: transparent !important;
-    padding: 0 !important;
-    .panel-title, h2 { color: #111 !important; }
-    p { color: #333 !important; }
-  }
-  .panel-link { display: none !important; }
 
   .post-content, .page-content, .note-content {
     color: #111;

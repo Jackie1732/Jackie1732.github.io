@@ -7,13 +7,13 @@ wide: true
 
 <section class="listing-intro motion-enter" aria-labelledby="archive-title" markdown="0">
   <div class="intro-lead">
-    <p class="research-kicker">安全记录</p>
-    <h1 id="archive-title">按时间回看每一次练习。</h1>
+    <p class="research-kicker">安全与开发</p>
+    <h1 id="archive-title">做过的题，踩过的坑，都放在这里。</h1>
   </div>
   <div class="intro-aside">
-    <p>这里收录授权靶场、竞赛环境、应急响应与开发记录。每一篇保留当时的过程，也方便以后从新的理解重新校正。</p>
+    <p>主要是靶场、CTF、应急响应题目和开发笔记。文章按时间排列，想找具体内容也可以用主题导航。</p>
     <div class="listing-intro-meta">
-      <span><strong>{{ site.posts | size }}</strong> 篇已归档</span>
+      <span><strong>{{ site.posts | size }}</strong> 篇文章</span>
       <a href="{{ '/tags' | relative_url }}">按主题浏览 <span aria-hidden="true">→</span></a>
     </div>
   </div>
@@ -22,8 +22,8 @@ wide: true
 <section class="archive" markdown="0">
   <div class="section-heading-row">
     <div>
-      <p class="section-kicker">全部记录</p>
-      <h2 class="section-heading">文章索引</h2>
+      <p class="section-kicker">按年份</p>
+      <h2 class="section-heading">全部文章</h2>
     </div>
   </div>
   {% if site.posts[0] %}

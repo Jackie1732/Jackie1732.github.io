@@ -24,12 +24,12 @@ wide: true
 
   <section class="listing-intro motion-enter" aria-labelledby="tags-title">
     <div class="intro-lead">
-      <p class="research-kicker">主题索引</p>
-      <h1 id="tags-title">从线索进入，不必按时间阅读。</h1>
+      <p class="research-kicker">按主题找</p>
+      <h1 id="tags-title">想看什么，就从这里开始。</h1>
     </div>
     <div class="intro-aside">
-      <p>安全文章与研究笔记共用一套主题索引。先选一个概念，再沿着相关记录继续读下去。</p>
-      <p class="listing-count"><strong>{{ unique_tags | size }}</strong> 个主题</p>
+      <p>安全文章和学习笔记放在同一组标签里。点一个主题，就能看到相关内容。</p>
+      <p class="listing-count"><strong>{{ unique_tags | size }}</strong> 个标签</p>
     </div>
   </section>
 
