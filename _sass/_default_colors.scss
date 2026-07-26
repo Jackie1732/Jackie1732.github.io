@@ -1,53 +1,80 @@
 /*
-   Modern dark theme color palette
+   卷宗 (Dossier) — a paper-light palette for a security & AI research log.
+
+   The whole page is ink on paper: text is the dark ink `$ink`, metadata is a
+   lighter `$slate`, rules are faint `$line`. Exactly one chromatic colour,
+   cinnabar `$mark`, is allowed — and only for annotation: figure numbers,
+   citation markers, the "recently updated" margin rule, risk levels, the
+   current TOC position. Never for large fills. This restraint is the identity.
 */
 
-// Base colors
-$bg-primary: #0d1117;
-$bg-secondary: #161b22;
-$bg-tertiary: #1c2128;
-$bg-overlay: #21262d;
+// Paper — three steps of warm off-white, lightest to slightly recessed.
+$paper:            #f4f4f2;   // page background
+$paper-raised:     #fbfbfa;   // cards / code / raised surfaces
+$paper-sunken:     #ecebe7;   // subtle wells, hovers
 
-// Border
-$border-default: #30363d;
-$border-muted: #21262d;
+// Ink — the reading colour and its softer relations.
+$ink:              #16202b;   // body text, titles
+$ink-soft:         #2f3a45;   // secondary headings
+$slate:            #5b6b78;   // metadata, captions
+$slate-light:      #8a95a0;   // faint metadata, disabled
 
-// Text
-$text-primary: #e6edf3;
-$text-secondary: #8b949e;
-$text-muted: #656d76;
+// Rules & borders — hairlines, never heavy.
+$line:             #d9dad5;   // default hairline
+$line-strong:      #c4c6bf;   // emphasis rule (year headings, current section)
 
-// Accent
-$accent-green: #3fb950;
-$accent-green-dim: rgba(63, 185, 80, 0.15);
-$accent-blue: #58a6ff;
-$accent-blue-dim: rgba(88, 166, 255, 0.15);
-$accent-purple: #bc8cff;
-$accent-purple-dim: rgba(188, 140, 255, 0.15);
-$accent-orange: #d29922;
-$accent-orange-dim: rgba(210, 153, 34, 0.15);
-$accent-red: #f85149;
-$accent-red-dim: rgba(248, 81, 73, 0.15);
-$accent-cyan: #56d4dd;
-$accent-cyan-dim: rgba(86, 212, 221, 0.15);
-$accent-pink: #f778ba;
-$accent-pink-dim: rgba(247, 120, 186, 0.15);
-$accent-yellow: #e3b341;
-$accent-yellow-dim: rgba(227, 179, 65, 0.15);
+// The one accent. Cinnabar — a seal-ink red used only for annotation.
+$mark:             #b4322a;   // figure/citation/risk/current markers
+$mark-soft:        #f3e3e0;   // faint cinnabar wash (targets, current TOC row)
+$mark-deep:        #8f2820;   // hover / active on cinnabar
 
-// Legacy compat aliases used by rouge
-$apple-blossom: $accent-red;
-$alto: #d0d0d0;
-$bouquet: $accent-purple;
-$chelsea-cucumber: $accent-green;
-$cod-grey: $bg-primary;
-$conifer: $accent-green;
-$dove-grey: $text-muted;
-$gallery: $text-primary;
-$grey: $text-secondary;
-$gulf-stream: $accent-cyan;
-$hippie-blue: $accent-blue;
-$potters-clay: #8f5536;
-$rajah: $accent-orange;
-$raw-sienna: #d28445;
-$silver-chalice: $text-secondary;
+// --- Semantic aliases used across components -------------------------------
+$bg-primary:       $paper;
+$bg-secondary:     $paper-raised;
+$bg-tertiary:      $paper-sunken;
+$bg-overlay:       $paper-raised;
+
+$border-default:   $line;
+$border-muted:     $line;
+
+$text-primary:     $ink;
+$text-secondary:   $slate;
+$text-muted:       $slate-light;
+
+// Legacy accent names still referenced by templates/pages. All collapse onto
+// the single annotation colour or the ink scale so no stray hues appear.
+$accent-green:     $mark;
+$accent-green-dim: $mark-soft;
+$accent-blue:      $ink-soft;
+$accent-blue-dim:  $paper-sunken;
+$accent-purple:    $mark;
+$accent-purple-dim: $mark-soft;
+$accent-orange:    $mark;
+$accent-orange-dim: $mark-soft;
+$accent-red:       $mark;
+$accent-red-dim:   $mark-soft;
+$accent-cyan:      $ink-soft;
+$accent-cyan-dim:  $paper-sunken;
+$accent-pink:      $mark;
+$accent-pink-dim:  $mark-soft;
+$accent-yellow:    $mark;
+$accent-yellow-dim: $mark-soft;
+
+// --- Rouge (syntax highlight) token colours --------------------------------
+// A quiet paper-light code theme: ink text, cinnabar keywords, slate comments.
+// Muted so 230 dark terminal screenshots and inline code share one register.
+$alto:             $ink;         // plaintext
+$chelsea-cucumber: #1f6f52;      // strings / literals — muted forest
+$conifer:          #1f6f52;
+$bouquet:          $mark;        // keywords — cinnabar
+$cod-grey:         $paper;
+$grey:             $slate;       // comments
+$rajah:            #9a5b1e;      // preprocessor / namespace — ochre
+$hippie-blue:      $ink-soft;    // attributes / headers
+$raw-sienna:       #9a5b1e;      // keyword types
+$gulf-stream:      #1f6f52;      // regex
+$potters-clay:     #9a5b1e;      // escapes
+$apple-blossom:    $mark;        // errors / deleted
+$dove-grey:        $slate-light;
+$gallery:          $ink;
+$silver-chalice:   $slate;

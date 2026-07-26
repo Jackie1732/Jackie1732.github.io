@@ -1,7 +1,7 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-motto">{{ site.motto }}</p>
-    <p class="footer-copy">&copy; {{ site.year }}-{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> &middot; <a href="{{ '/atom.xml' | relative_url }}">RSS</a> &middot; <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
+    <p class="footer-copy">&copy; {{ site.year }}&ndash;{{ 'now' | date: "%Y" }} <a href="{{ site.author.url }}">{{ site.owner }}</a> <span class="footer-sep" aria-hidden="true">·</span> <a href="{{ '/atom.xml' | relative_url }}">RSS</a> <span class="footer-sep" aria-hidden="true">·</span> <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a></p>
   </div>
 </footer>
 

@@ -4,7 +4,7 @@ title: 安全文章
 ---
 
 <div class="archive-intro" markdown="0">
-  <p>沿着时间，回望攻防、响应与开发中的一段段判断；也可从 <a href="{{ '/tags' | relative_url }}">主题</a>进入。</p>
+  <p>按时间排列的攻防、应急响应与开发记录。也可以从 <a href="{{ '/tags' | relative_url }}">主题</a> 进入。</p>
 </div>
 
 <div class="archive-stats" markdown="0">

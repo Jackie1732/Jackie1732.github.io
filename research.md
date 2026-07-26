@@ -9,29 +9,29 @@ permalink: /research/
 <div class="research-hub" markdown="0">
   <section class="research-intro motion-enter" aria-labelledby="research-intro-title">
     <p class="research-kicker">深度学习 · LLM · 论文与实验</p>
-    <h2 id="research-intro-title">沿着问题，走进模型与语言。</h2>
-    <p>课程、论文与实验，都有来处，也留下尚未解开的地方。</p>
+    <h2 id="research-intro-title">从数学地基走到语言模型，逐题记录。</h2>
+    <p>课程、论文与实验都标注来处，也留着尚未解开的地方。按学习路线组织，方便回看与续读。</p>
     <div class="research-intro-actions">
       <a class="action-link action-link-primary" href="#research-tracks">查看学习路线 <span aria-hidden="true">&darr;</span></a>
       <a class="action-link action-link-secondary" href="{{ '/about' | relative_url }}">关于此站 <span aria-hidden="true">&rarr;</span></a>
     </div>
   </section>
 
-  <section class="research-principles motion-enter motion-enter-delay-1" aria-label="研究的线索">
+  <section class="research-principles motion-enter motion-enter-delay-1" aria-label="学习脉络">
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">↗</span>
+      <span class="research-principle-icon" aria-hidden="true">一</span>
       <h2>基础</h2>
-      <p>从数学、张量与代码起步。</p>
+      <p>线性代数、概率、张量与 PyTorch——先把地基夯实。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">⌁</span>
+      <span class="research-principle-icon" aria-hidden="true">二</span>
       <h2>模型</h2>
-      <p>在训练、表达与推理间追问。</p>
+      <p>训练、表达与推理，在实现与论文之间反复对照。</p>
     </article>
     <article class="research-principle">
-      <span class="research-principle-icon" aria-hidden="true">◎</span>
+      <span class="research-principle-icon" aria-hidden="true">三</span>
       <h2>系统</h2>
-      <p>让论文、代码与结果彼此照应。</p>
+      <p>让论文、代码与实验结果彼此印证，落到可复现的结论。</p>
     </article>
   </section>
 
@@ -57,9 +57,10 @@ permalink: /research/
           <span class="track-card-action">阅读笔记 <span aria-hidden="true">&rarr;</span></span>
         </a>
         {% else %}
-        <div class="track-card {{ track.class }} is-planned" aria-label="{{ track.label }}">
+        <div class="track-card {{ track.class }} is-planned" aria-label="{{ track.label }}（待补）">
           <h3>{{ track.label }}</h3>
           <p>{{ track.description }}</p>
+          <span class="track-card-action">待补</span>
         </div>
         {% endif %}
       {% endfor %}
@@ -70,8 +71,8 @@ permalink: /research/
   {% if notes.size == 0 %}
     <section class="empty-note-state" aria-labelledby="first-notes-title">
       <p class="research-kicker">从基础处开始</p>
-      <h2 id="first-notes-title">从基础处，慢慢走远。</h2>
-      <p>先是张量与数学，再是 D2L 与 PyTorch，随后走向 Transformer 和 LLM。</p>
+      <h2 id="first-notes-title">笔记还在路上。</h2>
+      <p>计划从张量与数学起步，经 D2L 与 PyTorch，走向 Transformer 与 LLM。下面是大致的顺序。</p>
       <ul class="research-roadmap">
         <li><strong>数学与张量</strong><br>形状、点积、范数与微积分。</li>
         <li><strong>D2L 与 PyTorch</strong><br>数据、训练与常见问题。</li>

@@ -6,7 +6,7 @@ permalink: /tags
 
 <div class="tags-page" markdown="0">
 
-  <p class="tags-intro">循着主题，找回散落在时间里的文章。</p>
+  <p class="tags-intro">按主题浏览安全文章与研究笔记。</p>
 
   {% comment %} Build a tag count map {% endcomment %}
   {% assign all_tags_arr = "" | split: "" %}

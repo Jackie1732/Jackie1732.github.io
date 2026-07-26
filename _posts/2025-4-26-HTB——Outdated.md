@@ -3,7 +3,7 @@ layout: post
 title: HTB——Outdated
 ---
 
-![01](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\01.png)
+![01](/pictures/Outdated/01.png)
 
 # 0x01 信息收集
 
@@ -139,11 +139,11 @@ Nmap done: 1 IP address (1 host up) scanned in 111.50 seconds
 
 拿到了弱密码的SMB账密，当然是先尝试查看分享文件有哪些。
 
-![02](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\02.png)
+![02](/pictures/Outdated/02.png)
 
 接下来将`Shared`内的所有文件都薅出来看看。下载下来pdf文件后我们查看，能看到一些CVE报告与一个邮箱地址。
 
-![03](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\03.png)
+![03](/pictures/Outdated/03.png)
 
 ---
 
@@ -174,11 +174,11 @@ html_payload += (
 print(html_payload)
 ```
 
-![04](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\04.png)
+![04](/pictures/Outdated/04.png)
 
 接收端口与反弹端口使用80与443，前面使用自定义端口无法正常触发payload，怀疑为防火墙阻拦了未经授权的端口流量所致。反弹后我们查看当前用户为`btables`，首先查看此用户有无滥用的特权。
 
-![06](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\06.png)
+![06](/pictures/Outdated/06.png)
 
 可以查看到，`btables`用户对`sflowers`用户具有`AddKeyCredentialLink`权限。基于此特权，我们就要用的新的`ps1`脚本来进行操作
 
@@ -234,7 +234,7 @@ PS C:\Users\btables> .\Whisker.exe add /domain:outdated.htb /target:sflowers /dc
 
 获取到其base64格式的证书后，我们再次申请即可拿到sflowers的NTLM，我们使用winrm上线
 
-![07](C:\Users\GAiLO\Pictures\blog图片\HTB\Outdated\07.png)
+![07](/pictures/Outdated/07.png)
 
 ---
 
